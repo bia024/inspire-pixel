@@ -15,83 +15,54 @@ import ImgRocks from '../assets/rocks.png'
 import ImgWaterfall from '../assets/waterfall.png'
 import ImgNight from '../assets/night.jpg'
 
-const props = defineProps({ searchQuery: String, userMode: String })
+import { useAuth } from '../composables/useAuth'
+import { useToast } from '../composables/useToast'
+import { useRouter } from 'vue-router'
+
+const props = defineProps({ searchQuery: String })
+const { isPro } = useAuth()
+const { addToast } = useToast()
+const router = useRouter()
 
 const activeTab = ref('all')
+const isLoading = ref(true)
 
-// Safe localStorage operations with comprehensive error handling
-const loadFavoritesFromStorage = () => {
-  try {
-    const stored = localStorage.getItem('favorites')
-    if (!stored) return []
+// ... (keep existing onMounted)
 
-    const parsed = JSON.parse(stored)
-    // Validate that parsed data is an array of numbers
-    if (!Array.isArray(parsed)) {
-      console.warn('Invalid favorites data format, resetting to empty array')
-      return []
-    }
+// ... (keep existing loadFavoritesFromStorage)
 
-    // Filter out invalid IDs (non-numbers or invalid ranges)
-    const validIds = parsed.filter(
-      (id) => typeof id === 'number' && id > 0 && id <= images.value.length && Number.isInteger(id)
-    )
-
-    if (validIds.length !== parsed.length) {
-      console.warn('Some invalid favorite IDs were filtered out')
-    }
-
-    return validIds
-  } catch (error) {
-    console.error('Error loading favorites from localStorage:', error)
-    // Clear corrupted data
-    try {
-      localStorage.removeItem('favorites')
-    } catch (clearError) {
-      console.error('Error clearing corrupted favorites data:', clearError)
-    }
-    return []
-  }
-}
-
-const saveFavoritesToStorage = (favoritesArray) => {
-  try {
-    localStorage.setItem('favorites', JSON.stringify(favoritesArray))
-  } catch (error) {
-    console.error('Error saving favorites to localStorage:', error)
-    // Could implement fallback storage here if needed
-  }
-}
+// ... (keep existing saveFavoritesToStorage)
 
 const favorites = ref(loadFavoritesFromStorage())
 
 const images = ref([
-  { id: 1, src: ImgSki, title: 'Skiing in Mountains', category: 'nature' },
-  { id: 2, src: ImgSwans, title: 'Swans', category: 'nature' },
-  { id: 3, src: ImgBridge, title: 'Old Bridge', category: 'architecture' },
-  { id: 4, src: ImgSunset, title: 'Sunset', category: 'nature' },
-  { id: 5, src: ImgSeascape, title: 'Seascape Sunset', category: 'nature' },
-  { id: 6, src: ImgBeach, title: 'Paradise Beach', category: 'nature' },
-  { id: 7, src: ImgCanoe, title: 'Canoe on Lake', category: 'nature' },
-  { id: 8, src: ImgSunflowers, title: 'Sunflower Field', category: 'nature' },
-  { id: 9, src: ImgMountain, title: 'Majestic Mountain', category: 'nature' },
-  { id: 10, src: ImgRocks, title: 'Sea Rocks', category: 'nature' },
+  { id: 1, src: ImgSki, title: 'Skiing in Mountains', category: 'nature', premium: false },
+  { id: 2, src: ImgSwans, title: 'Swans', category: 'nature', premium: true },
+  { id: 3, src: ImgBridge, title: 'Old Bridge', category: 'architecture', premium: false },
+  { id: 4, src: ImgSunset, title: 'Sunset', category: 'nature', premium: true },
+  { id: 5, src: ImgSeascape, title: 'Seascape Sunset', category: 'nature', premium: false },
+  { id: 6, src: ImgBeach, title: 'Paradise Beach', category: 'nature', premium: true },
+  { id: 7, src: ImgCanoe, title: 'Canoe on Lake', category: 'nature', premium: false },
+  { id: 8, src: ImgSunflowers, title: 'Sunflower Field', category: 'nature', premium: true },
+  { id: 9, src: ImgMountain, title: 'Majestic Mountain', category: 'nature', premium: false },
+  { id: 10, src: ImgRocks, title: 'Sea Rocks', category: 'nature', premium: true },
   {
     id: 11,
     src: ImgWaterfall,
     title: 'Powerful Waterfall',
     category: 'nature',
+    premium: false,
   },
-  { id: 12, src: ImgNight, title: 'Starry Night', category: 'nature' },
+  { id: 12, src: ImgNight, title: 'Starry Night', category: 'nature', premium: true },
 ])
 
 const filteredImages = computed(() => {
   let result = images.value
 
-  // Limit images based on user mode
-  if (props.userMode === 'free') {
-    result = result.slice(0, 6)
-  }
+  // No longer slicing for free users, instead we show them locked
+  // if (props.userMode === 'free') {
+  //   result = result.slice(0, 6)
+  // }
 
   if (activeTab.value === 'favorites')
     result = images.value.filter((img) => favorites.value.includes(img.id))
@@ -103,6 +74,15 @@ const filteredImages = computed(() => {
     )
   return result
 })
+
+const handlePremiumClick = (img) => {
+  if (img.premium && !isPro.value) {
+    addToast('This is a Premium image. Upgrade to Pro to access!', 'warning')
+    router.push({ name: 'mode-selection' })
+    return
+  }
+  // Logic for opening image (lightbox) would go here
+}
 
 const toggleFavorite = (imageId) => {
   // Validate imageId parameter
@@ -284,7 +264,7 @@ onUnmounted(() => {
           :tabindex="activeTab === 'all' ? 0 : -1"
           aria-label="View all images"
         >
-          Todas as Imagens
+          All Images
         </button>
         <button
           :class="{ active: activeTab === 'favorites' }"
@@ -297,7 +277,7 @@ onUnmounted(() => {
           :aria-label="'View favorite images (' + favorites.length + ' items)'"
         >
           <Icon icon="material-symbols:favorite" aria-hidden="true" />
-          Favoritas ({{ favorites.length }})
+          Favorites ({{ favorites.length }})
         </button>
       </nav>
 
@@ -315,7 +295,11 @@ onUnmounted(() => {
           role="article"
           :aria-label="'Image: ' + img.title + ', Category: ' + img.category"
         >
-          <div class="image-container">
+          <div 
+            class="image-container" 
+            :class="{ 'is-locked': img.premium && !isPro }"
+            @click="handlePremiumClick(img)"
+          >
             <picture>
               <!-- WebP format for modern browsers -->
               <source
@@ -335,12 +319,19 @@ onUnmounted(() => {
                 loading="lazy"
               />
             </picture>
-            <div class="overlay">
+            
+            <!-- Premium Lock Overlay -->
+            <div v-if="img.premium && !isPro" class="lock-overlay">
+              <Icon icon="material-symbols:lock" class="lock-icon" />
+              <span>Premium</span>
+            </div>
+
+            <div class="overlay" v-else>
               <button
                 class="favorite-btn"
                 :class="{ favorited: isFavorite(img.id) }"
-                @click="toggleFavorite(img.id)"
-                @keydown="handleFavoriteKeydown($event, img.id)"
+                @click.stop="toggleFavorite(img.id)"
+                @keydown.stop="handleFavoriteKeydown($event, img.id)"
                 :aria-label="
                   isFavorite(img.id)
                     ? 'Remove ' + img.title + ' from favorites'
@@ -378,8 +369,8 @@ onUnmounted(() => {
         aria-label="No favorite images"
       >
         <Icon icon="material-symbols:favorite-outline" aria-hidden="true" />
-        <p>Nenhuma imagem favorita ainda.</p>
-        <p>Explore a galeria e clique no coração para adicionar aos favoritos!</p>
+        <p>No favorite images yet.</p>
+        <p>Explore the gallery and click the heart to add to favorites!</p>
       </aside>
     </div>
   </section>
@@ -462,15 +453,49 @@ onUnmounted(() => {
     position: relative;
     overflow: hidden;
     height: 250px;
+    cursor: pointer;
+
+    &.is-locked img {
+      filter: blur(4px) grayscale(50%);
+    }
   }
   .image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s;
+    transition: transform 0.3s, filter 0.3s;
   }
   .image-container:hover img {
     transform: scale(1.1);
+  }
+
+  .lock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    z-index: 2;
+    
+    .lock-icon {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      color: #f1c40f;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    }
+
+    span {
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
   }
 
   .overlay {
@@ -558,6 +583,53 @@ onUnmounted(() => {
   }
   .image-container {
     height: 200px;
+  }
+}
+
+/* Skeleton Loading Styles */
+.skeleton-card {
+  pointer-events: none;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 100%;
+  background: #eee;
+  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  background-size: 200% 100%;
+  animation: 1.5s shine linear infinite;
+}
+
+.absolute-skeleton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.skeleton-text {
+  background: #eee;
+  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  background-size: 200% 100%;
+  animation: 1.5s shine linear infinite;
+  border-radius: 4px;
+}
+
+.skeleton-text.title {
+  height: 24px;
+  width: 70%;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-text.category {
+  height: 20px;
+  width: 40%;
+  border-radius: 20px;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
   }
 }
 </style>

@@ -1,4 +1,4 @@
-# InspiraPixel
+# InspirePixel
 
 ## Author
 

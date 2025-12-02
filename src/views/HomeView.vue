@@ -1,0 +1,40 @@
+<script setup>
+import Header from '../components/Header.vue'
+import Hero from '../components/Hero.vue'
+import Gallery from '../components/Gallery.vue'
+import { ref, watch, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
+
+const searchQuery = ref('')
+const userMode = ref(localStorage.getItem('userMode') || 'free')
+
+// Sync local state with URL query
+watch(() => route.query.q, (newQuery) => {
+  searchQuery.value = newQuery || ''
+}, { immediate: true })
+
+const handleSearch = (query) => {
+  searchQuery.value = query
+  // Update URL without reloading
+  router.replace({ query: { ...route.query, q: query || undefined } })
+}
+</script>
+
+<template>
+  <div class="home-view">
+    <Header />
+    <Hero @search="handleSearch" />
+    <main>
+      <Gallery :search-query="searchQuery" :user-mode="userMode" />
+    </main>
+  </div>
+</template>
+
+<style scoped>
+main {
+  margin-top: 2rem;
+}
+</style>

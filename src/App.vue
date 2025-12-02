@@ -1,37 +1,34 @@
 <script setup>
-import Header from './components/Header.vue'
-import Hero from './components/Hero.vue'
-import Gallery from './components/Gallery.vue'
-import ModeSelection from './components/ModeSelection.vue'
-import { ref } from 'vue'
-
-const searchQuery = ref('')
-const userMode = ref(localStorage.getItem('userMode') || null)
-
-const handleSearch = (query) => {
-  searchQuery.value = query
-}
-
-const handleModeSelect = (mode) => {
-  userMode.value = mode
-}
+import Footer from './components/Footer.vue'
+import ToastNotification from './components/ToastNotification.vue'
 </script>
 
 <template>
-  <div>
-    <ModeSelection v-if="!userMode" @select-mode="handleModeSelect" />
-    <div v-else>
-      <Header />
-      <Hero @search="handleSearch" />
-      <main>
-        <Gallery :search-query="searchQuery" :user-mode="userMode" />
-      </main>
-    </div>
+  <div class="app-container">
+    <ToastNotification />
+    <router-view v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
+    <Footer />
   </div>
 </template>
 
 <style scoped lang="scss">
-main {
-  margin-top: 2rem;
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
