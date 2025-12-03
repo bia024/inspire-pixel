@@ -36,24 +36,12 @@ onUnmounted(() => {
 <template>
   <transition name="fade-slide">
     <div v-if="isVisible" class="back-to-actions">
-      <!-- Back to Top (sempre visível quando rolar) -->
-      <button 
-        @click="scrollToTop" 
-        class="action-btn back-to-top"
-        aria-label="Back to top"
-        title="Back to top"
-      >
+      <button @click="scrollToTop" class="action-btn back-to-top" aria-label="Back to top" title="Back to top">
         <Icon icon="material-symbols:arrow-upward" />
       </button>
 
-      <!-- Back to Home (só aparece se não estiver na home) -->
-      <button 
-        v-if="!isHomePage()"
-        @click="goHome" 
-        class="action-btn back-to-home"
-        aria-label="Back to home"
-        title="Back to home"
-      >
+      <button v-if="!isHomePage()" @click="goHome" class="action-btn back-to-home" aria-label="Back to home"
+        title="Back to home">
         <Icon icon="material-symbols:home" />
       </button>
     </div>
@@ -105,7 +93,6 @@ onUnmounted(() => {
   }
 }
 
-/* Transitions */
 .fade-slide-enter-active,
 .fade-slide-leave-active {
   transition: all 0.3s ease;

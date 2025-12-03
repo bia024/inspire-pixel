@@ -52,26 +52,17 @@ const openAuthModal = () => {
       <ul>
         <li><router-link :to="{ name: 'home' }" @click="closeMenu">Home</router-link></li>
         <li>
-          <router-link :to="{ name: 'home', hash: '#gallery' }" @click="closeMenu"
-            >Gallery</router-link
-          >
+          <router-link :to="{ name: 'home', hash: '#gallery' }" @click="closeMenu">Gallery</router-link>
         </li>
-        
-        <!-- Mobile Search Input -->
+
         <li class="mobile-only search-item">
           <div class="search-input-wrapper">
             <Icon icon="material-symbols:search" class="search-icon" />
-            <input 
-              type="text" 
-              placeholder="Search..." 
-              aria-label="Search"
-              v-model="headerSearchTerm"
-              @keyup.enter="handleHeaderSearch"
-            />
+            <input type="text" placeholder="Search..." aria-label="Search" v-model="headerSearchTerm"
+              @keyup.enter="handleHeaderSearch" />
           </div>
         </li>
 
-        <!-- Desktop Search Icon -->
         <li class="desktop-only">
           <button aria-label="Search" class="icon-button">
             <Icon icon="material-symbols:search" />
@@ -85,13 +76,8 @@ const openAuthModal = () => {
               <Icon icon="material-symbols:logout" />
             </button>
           </div>
-          <button 
-            v-else 
-            @click="openAuthModal" 
-            aria-label="User Profile" 
-            class="icon-button profile-btn"
-            :class="{ 'is-pro': isPro }"
-          >
+          <button v-else @click="openAuthModal" aria-label="User Profile" class="icon-button profile-btn"
+            :class="{ 'is-pro': isPro }">
             <Icon :icon="isPro ? 'material-symbols:verified' : 'material-symbols:person-outline'" />
             <span class="mobile-only">{{ isPro ? 'Pro Member' : 'Login / Register' }}</span>
           </button>
@@ -119,7 +105,7 @@ const openAuthModal = () => {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    
+
     img {
       height: 50px;
     }
@@ -175,6 +161,7 @@ const openAuthModal = () => {
       font-weight: 500;
       transition: color 0.3s;
     }
+
     a:hover {
       color: #e74c3c;
     }
@@ -274,7 +261,7 @@ const openAuthModal = () => {
             border-radius: 50px;
             font-size: 1rem;
             background: #f8f9fa;
-            
+
             &:focus {
               outline: none;
               border-color: #e74c3c;
@@ -287,63 +274,3 @@ const openAuthModal = () => {
   }
 }
 </style>
-
-<!-- 
-<script setup>
-import { Icon } from '@iconify/vue';
-
-const scrollToSection = (sectionId) => {
-  const element = document.getElementById(sectionId);
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth' });
-  }
-};
-</script>
-
-<template>
-    <header class="header">
-        <div class="logo">
-            <img src="../assets/logo.svg" alt="Logo InspirePixel" />
-            <!-- <h1>InspirePixel</h1> -->
-<!-- </div>
-        <nav>
-            <ul>
-                <li><a href="#hero" @click="scrollToSection('hero')">Home</a></li>
-                <li><a href="#main" @click="scrollToSection('main')">Gallery</a></li>
-                <li><a href="#favorites" @click="scrollToSection('favorites')">Favorites</a></li>
-                <li><Icon icon="material-symbols:search" /></li>
-                <li><Icon icon="material-symbols:person-outline" /></li>
-            </ul>
-        </nav>
-    </header>
-</template>
-
-<style scoped lang="scss">
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 2rem;
-
-    ul {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        list-style: none;
-
-        li a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            font-size: 1.1rem;
-
-            &:hover {
-                color: #555;
-            }
-        }
-    }
-}
-</style>
- -->
--->

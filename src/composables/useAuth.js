@@ -3,7 +3,6 @@ import { ref, computed } from 'vue'
 const user = ref(JSON.parse(localStorage.getItem('user')) || null)
 const userMode = ref(localStorage.getItem('userMode') || 'free')
 
-// Store registered users in localStorage
 const getRegisteredUsers = () => {
     try {
         const users = localStorage.getItem('registeredUsers')
@@ -29,19 +28,16 @@ export function useAuth() {
     const login = (email, password) => {
         const registeredUsers = getRegisteredUsers()
 
-        // Find user by email
         const foundUser = registeredUsers.find(u => u.email === email)
 
         if (!foundUser) {
             return { success: false, message: 'User not found. Please register first.' }
         }
 
-        // Check password
         if (foundUser.password !== password) {
             return { success: false, message: 'Incorrect password.' }
         }
 
-        // Login successful
         user.value = {
             id: foundUser.id,
             name: foundUser.name,
@@ -59,13 +55,11 @@ export function useAuth() {
     const register = (userData) => {
         const registeredUsers = getRegisteredUsers()
 
-        // Check if email already exists
         const existingUser = registeredUsers.find(u => u.email === userData.email)
         if (existingUser) {
             return { success: false, message: 'Email already registered.' }
         }
 
-        // Create new user
         const newUser = {
             id: Date.now(),
             name: userData.name,
@@ -75,11 +69,9 @@ export function useAuth() {
             createdAt: new Date().toISOString()
         }
 
-        // Save to registered users
         registeredUsers.push(newUser)
         saveRegisteredUsers(registeredUsers)
 
-        // Auto-login after registration
         user.value = {
             id: newUser.id,
             name: newUser.name,
@@ -113,7 +105,6 @@ export function useAuth() {
             user.value.mode = 'pro'
             localStorage.setItem('user', JSON.stringify(user.value))
 
-            // Update in registered users database
             const registeredUsers = getRegisteredUsers()
             const userIndex = registeredUsers.findIndex(u => u.id === user.value.id)
             if (userIndex !== -1) {

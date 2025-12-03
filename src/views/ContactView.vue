@@ -23,7 +23,6 @@ const submitForm = async () => {
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
-    // Check if keys are configured
     if (!serviceId || !templateId || !publicKey) {
       console.warn('EmailJS configuration missing.')
       addToast('System configuration error: Email service not configured.', 'error')
@@ -95,13 +94,7 @@ const submitForm = async () => {
           </div>
           <div class="form-group">
             <label for="message">Message</label>
-            <textarea
-              id="message"
-              v-model="message"
-              rows="5"
-              placeholder="How can we help you?"
-              required
-            ></textarea>
+            <textarea id="message" v-model="message" rows="5" placeholder="How can we help you?" required></textarea>
           </div>
           <button type="submit" class="submit-btn" :disabled="isSubmitting">
             {{ isSubmitting ? 'Sending...' : 'Send Message' }}

@@ -21,13 +21,7 @@ const getIcon = (type) => {
 <template>
   <div class="toast-container">
     <transition-group name="toast">
-      <div
-        v-for="toast in toasts"
-        :key="toast.id"
-        class="toast"
-        :class="toast.type"
-        role="alert"
-      >
+      <div v-for="toast in toasts" :key="toast.id" class="toast" :class="toast.type" role="alert">
         <Icon :icon="getIcon(toast.type)" class="toast-icon" />
         <span class="toast-message">{{ toast.message }}</span>
         <button @click="removeToast(toast.id)" class="close-btn" aria-label="Close notification">
@@ -47,7 +41,7 @@ const getIcon = (type) => {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  pointer-events: none; /* Allow clicking through container */
+  pointer-events: none;
 }
 
 .toast {
@@ -66,17 +60,26 @@ const getIcon = (type) => {
 
   &.success {
     border-left-color: #2ecc71;
-    .toast-icon { color: #2ecc71; }
+
+    .toast-icon {
+      color: #2ecc71;
+    }
   }
 
   &.error {
     border-left-color: #e74c3c;
-    .toast-icon { color: #e74c3c; }
+
+    .toast-icon {
+      color: #e74c3c;
+    }
   }
 
   &.warning {
     border-left-color: #f1c40f;
-    .toast-icon { color: #f1c40f; }
+
+    .toast-icon {
+      color: #f1c40f;
+    }
   }
 
   .toast-icon {
@@ -107,7 +110,6 @@ const getIcon = (type) => {
   }
 }
 
-/* Transitions */
 .toast-enter-active,
 .toast-leave-active {
   transition: all 0.3s ease;
@@ -128,6 +130,7 @@ const getIcon = (type) => {
     opacity: 0;
     transform: translateX(30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -141,7 +144,7 @@ const getIcon = (type) => {
     right: 20px;
     left: 20px;
   }
-  
+
   .toast {
     min-width: auto;
     width: 100%;

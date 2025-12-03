@@ -13,14 +13,14 @@ dist
 dist-ssr
 *.local
 
-# Environment variables (PRIVADO - Credenciais)
+# Environment variables (Private - Credentials in this project)
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# Personal notes and planning (PRIVADO - Suas anotações)
+# Personal notes and planning (Private - My notes in this project)
 TODO.md
 NOTES.md
 notes.txt

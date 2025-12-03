@@ -10,14 +10,12 @@ const router = useRouter()
 
 const searchQuery = ref('')
 
-// Sync local state with URL query
 watch(() => route.query.q, (newQuery) => {
   searchQuery.value = newQuery || ''
 }, { immediate: true })
 
 const handleSearch = (query) => {
   searchQuery.value = query
-  // Update URL without reloading
   router.replace({ query: { ...route.query, q: query || undefined } })
 }
 </script>

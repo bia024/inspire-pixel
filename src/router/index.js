@@ -13,7 +13,6 @@ const router = createRouter({
         const user = localStorage.getItem('user')
         const userMode = localStorage.getItem('userMode')
 
-        // Allow access if user is logged in OR if they selected a mode
         if (user || userMode) {
           next()
         } else {

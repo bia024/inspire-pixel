@@ -1,74 +1,3 @@
-<!-- <script setup>
-import { ref } from "vue";
-
-const searchTerm = ref("");
-
-const emit = defineEmits(["search"]);
-
-const handleSearch = () => {
-  emit("search", searchTerm.value);
-};
-</script>
-
-<template>
-  <section class="hero">
-    <div>
-      <h2>Where landscapes turn into <span>inspiration</span></h2>
-      <p>
-        Discover colors, light, and scenery that spark new stories through the
-        lens.
-      </p>
-      <input
-        v-model="searchTerm"
-        type="text"
-        placeholder="Search images..."
-        @input="handleSearch"
-      />
-    </div>
-    <img src="../assets/fotografo.png" alt="Illustrative image" />
-  </section>
-</template>
-<style scoped lang="scss">
-.hero {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 2rem;
-
-  div {
-    max-width: 50%;
-
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-    span {
-      font-size: 3rem;
-      color: #e1306c;
-    }
-
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
-    }
-
-    input {
-      padding: 0.8rem;
-      width: 100%;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-  }
-
-  img {
-    // max-width: 40%;
-    width: 40vw;
-    // height: auto;
-  }
-}
-</style> -->
-
 <script setup>
 import { ref, watch, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
@@ -78,7 +7,6 @@ const route = useRoute()
 const searchTerm = ref('')
 const emit = defineEmits(['search'])
 
-// Sync with URL query on mount and change
 watch(() => route.query.q, (newQuery) => {
   if (newQuery !== undefined && newQuery !== searchTerm.value) {
     searchTerm.value = newQuery
@@ -96,7 +24,6 @@ const handleSearch = () => {
 
 const executeSearch = () => {
   handleSearch()
-  // Scroll to gallery
   const gallery = document.getElementById('gallery') || document.querySelector('.gallery-section')
   if (gallery) {
     gallery.scrollIntoView({ behavior: 'smooth' })
@@ -127,30 +54,19 @@ const debouncedSearch = () => {
           <button class="search-icon-btn" type="submit" aria-label="Search">
             <Icon icon="material-symbols:search" class="search-icon" />
           </button>
-          <input
-            type="text"
-            v-model="searchTerm"
-            placeholder="Search images..."
-            @input="debouncedSearch"
-            aria-label="Search images"
-          />
-          <button
-            v-if="searchTerm"
-            class="clear-search-btn"
-            @click="clearSearch"
-            aria-label="Clear search"
-            type="button"
-          >
+          <input type="text" v-model="searchTerm" placeholder="Search images..." @input="debouncedSearch"
+            aria-label="Search images" />
+          <button v-if="searchTerm" class="clear-search-btn" @click="clearSearch" aria-label="Clear search"
+            type="button">
             <Icon icon="material-symbols:close" />
           </button>
         </form>
       </div>
 
-      <!-- Pro Showcase Aside -->
       <aside class="hero-showcase" aria-label="Premium Content Preview">
         <figure class="showcase-card">
           <div class="card-image">
-            <img src="../assets/mountain.jpg" alt="Premium Content Preview" />
+            <img src="../assets/mountain.jpg" alt="Premium Image Preview" />
             <div class="premium-overlay">
               <Icon icon="material-symbols:lock" class="lock-icon" />
               <span>Premium Collection</span>
@@ -160,7 +76,8 @@ const debouncedSearch = () => {
             <h3>Unlock the Extraordinary</h3>
             <p>Get unlimited access to 4K downloads and exclusive content.</p>
             <router-link :to="{ name: 'mode-selection' }" class="upgrade-link">
-              Go Pro <Icon icon="material-symbols:arrow-forward" />
+              Go Pro
+              <Icon icon="material-symbols:arrow-forward" />
             </router-link>
           </figcaption>
         </figure>
@@ -289,10 +206,9 @@ const debouncedSearch = () => {
     }
   }
 
-  /* Pro Showcase Styles */
   .hero-showcase {
     flex: 0 0 350px;
-    display: none; // Hidden on mobile by default
+    display: none;
     animation: float 6s ease-in-out infinite;
 
     .showcase-card {
@@ -306,7 +222,7 @@ const debouncedSearch = () => {
       .card-image {
         position: relative;
         height: 200px;
-        
+
         img {
           width: 100%;
           height: 100%;
@@ -379,9 +295,17 @@ const debouncedSearch = () => {
   }
 
   @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
-    100% { transform: translateY(0px); }
+    0% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-15px);
+    }
+
+    100% {
+      transform: translateY(0px);
+    }
   }
 
   @media (min-width: 992px) {
@@ -398,7 +322,7 @@ const debouncedSearch = () => {
 
     .hero-text {
       text-align: center;
-      
+
       .search-container {
         margin: 0 auto;
       }

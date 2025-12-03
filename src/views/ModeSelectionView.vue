@@ -39,7 +39,6 @@ const submitRegistration = async () => {
     return
   }
 
-  // LGPD Check: Email must match logged in user
   if (user.value.email !== email.value) {
     addToast('Security Alert: The email must match your account email.', 'error')
     return
@@ -65,15 +64,13 @@ const submitRegistration = async () => {
     await emailjs.send(serviceId, templateId, templateParams, publicKey)
 
     addToast(`Email sent successfully to ${email.value}! Check your inbox.`, 'success')
-    
-    // Update auth state
+
     authUpgrade()
-    
-    // Redirect home after short delay
+
     setTimeout(() => {
       router.push({ name: 'home' })
     }, 1500)
-    
+
     closeModal()
   } catch (error) {
     console.error('Error sending email:', error)
@@ -84,9 +81,8 @@ const submitRegistration = async () => {
 
 <template>
   <main class="mode-selection">
-    <!-- Logo and Welcome -->
     <div class="welcome-header">
-      <img src="../assets/logo.svg" alt="InspirePixel Logo" class="logo" />
+      <img src="../assets/logo.svg" alt="InspirePixel Logo" class="official-logo" />
       <h1 class="brand-name">InspirePixel</h1>
       <p class="welcome-text">Welcome! Let's get started by choosing your plan.</p>
     </div>
@@ -108,9 +104,15 @@ const submitRegistration = async () => {
           </header>
           <div class="plan-features">
             <ul>
-              <li><Icon icon="material-symbols:check" /> Access to 6 curated images</li>
-              <li><Icon icon="material-symbols:check" /> Basic search functionality</li>
-              <li><Icon icon="material-symbols:check" /> Favorite images</li>
+              <li>
+                <Icon icon="material-symbols:check" /> Access to 6 curated images
+              </li>
+              <li>
+                <Icon icon="material-symbols:check" /> Basic search functionality
+              </li>
+              <li>
+                <Icon icon="material-symbols:check" /> Favorite images
+              </li>
               <li>
                 <Icon icon="material-symbols:close" class="disabled" /> High-resolution downloads
               </li>
@@ -138,12 +140,24 @@ const submitRegistration = async () => {
           </header>
           <div class="plan-features">
             <ul>
-              <li><Icon icon="material-symbols:check" /> Unlimited image access</li>
-              <li><Icon icon="material-symbols:check" /> High-resolution downloads</li>
-              <li><Icon icon="material-symbols:check" /> Commercial use rights</li>
-              <li><Icon icon="material-symbols:check" /> Advanced search & filters</li>
-              <li><Icon icon="material-symbols:check" /> Priority support</li>
-              <li><Icon icon="material-symbols:check" /> Exclusive premium content</li>
+              <li>
+                <Icon icon="material-symbols:check" /> Unlimited image access
+              </li>
+              <li>
+                <Icon icon="material-symbols:check" /> High-resolution downloads
+              </li>
+              <li>
+                <Icon icon="material-symbols:check" /> Commercial use rights
+              </li>
+              <li>
+                <Icon icon="material-symbols:check" /> Advanced search & filters
+              </li>
+              <li>
+                <Icon icon="material-symbols:check" /> Priority support
+              </li>
+              <li>
+                <Icon icon="material-symbols:check" /> Exclusive premium content
+              </li>
             </ul>
           </div>
           <button class="plan-button pro-button" @click="openProModal">Upgrade to Pro</button>
@@ -156,7 +170,6 @@ const submitRegistration = async () => {
       </div>
     </section>
 
-    <!-- Pro Registration Modal -->
     <div v-if="showModal" class="modal-overlay" @click="closeModal">
       <div class="modal-content" @click.stop>
         <header class="modal-header">
@@ -167,14 +180,8 @@ const submitRegistration = async () => {
         </header>
         <div class="modal-body">
           <p>Enter your email to receive Pro mode activation instructions.</p>
-          <input
-            v-model="email"
-            type="email"
-            placeholder="Your email"
-            class="email-input"
-            disabled
-            title="Email must match your account email"
-          />
+          <input v-model="email" type="email" placeholder="Your email" class="email-input" disabled
+            title="Email must match your account email" />
         </div>
         <footer class="modal-footer">
           <button class="cancel-button" @click="closeModal">Cancel</button>
@@ -200,7 +207,7 @@ const submitRegistration = async () => {
     margin-bottom: 3rem;
     animation: fadeInDown 0.6s ease;
 
-    .logo {
+    .official-logo {
       height: 80px;
       margin-bottom: 1rem;
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
@@ -411,7 +418,6 @@ const submitRegistration = async () => {
   }
 }
 
-// Modal Styles
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -537,6 +543,7 @@ const submitRegistration = async () => {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

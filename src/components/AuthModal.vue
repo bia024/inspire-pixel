@@ -16,7 +16,6 @@ const { addToast } = useToast()
 const activeTab = ref('login')
 const isLoading = ref(false)
 
-// Form Data
 const loginForm = ref({ email: '', password: '' })
 const registerForm = ref({ name: '', email: '', password: '' })
 
@@ -31,11 +30,10 @@ const handleLogin = async () => {
   }
 
   isLoading.value = true
-  
-  // Simulate API delay
+
   setTimeout(() => {
     const result = login(loginForm.value.email, loginForm.value.password)
-    
+
     if (result.success) {
       addToast(result.message, 'success')
       emit('close')
@@ -43,7 +41,7 @@ const handleLogin = async () => {
     } else {
       addToast(result.message, 'error')
     }
-    
+
     isLoading.value = false
   }, 800)
 }
@@ -60,15 +58,14 @@ const handleRegister = async () => {
   }
 
   isLoading.value = true
-  
-  // Simulate API delay
+
   setTimeout(() => {
     const result = register({
       name: registerForm.value.name,
       email: registerForm.value.email,
       password: registerForm.value.password
     })
-    
+
     if (result.success) {
       addToast(result.message, 'success')
       emit('close')
@@ -76,7 +73,7 @@ const handleRegister = async () => {
     } else {
       addToast(result.message, 'error')
     }
-    
+
     isLoading.value = false
   }, 800)
 }
@@ -92,46 +89,29 @@ const handleRegister = async () => {
 
         <div class="auth-header">
           <div class="tabs">
-            <button 
-              :class="{ active: activeTab === 'login' }" 
-              @click="switchTab('login')"
-            >
+            <button :class="{ active: activeTab === 'login' }" @click="switchTab('login')">
               Login
             </button>
-            <button 
-              :class="{ active: activeTab === 'register' }" 
-              @click="switchTab('register')"
-            >
+            <button :class="{ active: activeTab === 'register' }" @click="switchTab('register')">
               Register
             </button>
           </div>
         </div>
 
         <div class="auth-body">
-          <!-- Login Form -->
           <form v-if="activeTab === 'login'" @submit.prevent="handleLogin" class="auth-form">
             <div class="form-group">
               <label>Email</label>
               <div class="input-wrapper">
                 <Icon icon="material-symbols:mail-outline" class="input-icon" />
-                <input 
-                  type="email" 
-                  v-model="loginForm.email" 
-                  placeholder="hello@example.com"
-                  required
-                />
+                <input type="email" v-model="loginForm.email" placeholder="hello@example.com" required />
               </div>
             </div>
             <div class="form-group">
               <label>Password</label>
               <div class="input-wrapper">
                 <Icon icon="material-symbols:lock-outline" class="input-icon" />
-                <input 
-                  type="password" 
-                  v-model="loginForm.password" 
-                  placeholder="••••••••"
-                  required
-                />
+                <input type="password" v-model="loginForm.password" placeholder="••••••••" required />
               </div>
             </div>
             <button type="submit" class="submit-btn" :disabled="isLoading">
@@ -139,42 +119,26 @@ const handleRegister = async () => {
             </button>
           </form>
 
-          <!-- Register Form -->
           <form v-else @submit.prevent="handleRegister" class="auth-form">
             <div class="form-group">
               <label>Full Name</label>
               <div class="input-wrapper">
                 <Icon icon="material-symbols:person-outline" class="input-icon" />
-                <input 
-                  type="text" 
-                  v-model="registerForm.name" 
-                  placeholder="John Doe"
-                  required
-                />
+                <input type="text" v-model="registerForm.name" placeholder="John Doe" required />
               </div>
             </div>
             <div class="form-group">
               <label>Email</label>
               <div class="input-wrapper">
                 <Icon icon="material-symbols:mail-outline" class="input-icon" />
-                <input 
-                  type="email" 
-                  v-model="registerForm.email" 
-                  placeholder="hello@example.com"
-                  required
-                />
+                <input type="email" v-model="registerForm.email" placeholder="hello@example.com" required />
               </div>
             </div>
             <div class="form-group">
               <label>Password</label>
               <div class="input-wrapper">
                 <Icon icon="material-symbols:lock-outline" class="input-icon" />
-                <input 
-                  type="password" 
-                  v-model="registerForm.password" 
-                  placeholder="••••••••"
-                  required
-                />
+                <input type="password" v-model="registerForm.password" placeholder="••••••••" required />
               </div>
             </div>
             <button type="submit" class="submit-btn" :disabled="isLoading">
@@ -222,7 +186,7 @@ const handleRegister = async () => {
   color: #9ca3af;
   cursor: pointer;
   z-index: 10;
-  
+
   &:hover {
     color: #374151;
   }
@@ -230,12 +194,12 @@ const handleRegister = async () => {
 
 .auth-header {
   padding: 2rem 2rem 0;
-  
+
   .tabs {
     display: flex;
     gap: 1rem;
     border-bottom: 2px solid #e5e7eb;
-    
+
     button {
       background: none;
       border: none;
@@ -246,10 +210,10 @@ const handleRegister = async () => {
       cursor: pointer;
       position: relative;
       transition: color 0.3s;
-      
+
       &.active {
         color: #e1306c;
-        
+
         &::after {
           content: '';
           position: absolute;
@@ -282,10 +246,10 @@ const handleRegister = async () => {
     color: #374151;
     margin-bottom: 0.5rem;
   }
-  
+
   .input-wrapper {
     position: relative;
-    
+
     .input-icon {
       position: absolute;
       left: 1rem;
@@ -294,7 +258,7 @@ const handleRegister = async () => {
       color: #9ca3af;
       font-size: 1.2rem;
     }
-    
+
     input {
       width: 100%;
       padding: 0.75rem 1rem 0.75rem 2.5rem;
@@ -302,7 +266,7 @@ const handleRegister = async () => {
       border-radius: 8px;
       font-size: 1rem;
       transition: all 0.3s;
-      
+
       &:focus {
         outline: none;
         border-color: #e1306c;
@@ -322,12 +286,12 @@ const handleRegister = async () => {
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  
+
   &:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(225, 48, 108, 0.25);
   }
-  
+
   &:disabled {
     opacity: 0.7;
     cursor: not-allowed;
@@ -335,11 +299,10 @@ const handleRegister = async () => {
   }
 }
 
-/* Modal Transition */
 .modal-enter-active,
 .modal-leave-active {
   transition: opacity 0.3s ease;
-  
+
   .auth-modal {
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
@@ -348,7 +311,7 @@ const handleRegister = async () => {
 .modal-enter-from,
 .modal-leave-to {
   opacity: 0;
-  
+
   .auth-modal {
     transform: scale(0.9) translateY(20px);
   }

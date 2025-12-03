@@ -7,7 +7,6 @@ import BackToActions from './components/BackToActions.vue'
 
 const route = useRoute()
 
-// Hide Footer and BackToActions on mode selection page
 const showGlobalComponents = computed(() => route.name !== 'mode-selection')
 </script>
 
