@@ -1,95 +1,252 @@
-# InspirePixel
+<div align="center">
 
-## Author
+![InspirePixel Hero](./public/hero-screenshot.png)
 
-Bianca Caetano, Software Engineering Student
+# 🎨 InspirePixel
 
-InspiraPixel is a Vue 3 application for visual inspiration, showcasing a gallery of landscape and architecture images. Users can explore images, favorite their preferred ones, and search by title or category.
+### *Where landscapes turn into inspiration*
 
-## Features
+[![Vue 3](https://img.shields.io/badge/Vue-3.x-42b883?style=for-the-badge&logo=vue.js)](https://vuejs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
-- Image gallery with category filters (nature, architecture)
-- Favorites system with local persistence
-- Search images by title or category
-- Responsive and accessible design
-- Intuitive navigation
+**A premium visual inspiration platform** featuring stunning landscapes, exclusive content, and a seamless Pro experience.
 
-## Technologies Used
+[🚀 Live Demo](#) • [📖 Documentation](#features) • [💎 Go Pro](#pro-features)
 
-- Vue 3 (Composition API)
-- Vite
-- Sass/SCSS
-- Iconify (icons)
-- Vue Router
-- Vitest (unit testing)
+</div>
 
-## Installation
+---
 
-1. Clone the repository:
+## ✨ Features
 
-   ```bash
-   git clone https://github.com/your-username/inspirapixel.git
-   cd inspirapixel
+### 🎯 Core Features
+- **🖼️ Curated Gallery** - High-quality landscape photography
+- **🔍 Smart Search** - Find inspiration instantly with debounced search
+- **❤️ Favorites System** - Save and organize your favorite images
+- **📱 Fully Responsive** - Seamless experience across all devices
+- **🌙 Modern UI/UX** - Glassmorphism, gradients, and smooth animations
 
-   ```
+### 💎 Pro Features
+- **🔓 Premium Content** - Access exclusive high-resolution images
+- **⬇️ 4K Downloads** - Download images in full quality
+- **🎨 Pro Gallery** - Exclusive collection from Unsplash API
+- **✉️ Email Validation** - LGPD-compliant Pro activation
+- **🏆 Pro Badge** - Visual distinction with premium branding
 
-2. Install dependencies:
+### 🔐 Authentication System
+- **📧 Email Validation** - Secure user registration
+- **🔒 Password Protection** - Minimum 6 characters
+- **💾 Persistent Sessions** - Stay logged in across sessions
+- **🎫 Pro Upgrade Flow** - Seamless transition to premium
 
+### 📬 Newsletter Integration
+- **✉️ EmailJS Integration** - Automated email confirmations
+- **✅ Email Validation** - Regex-based validation
+- **💾 Fallback Storage** - LocalStorage backup
+- **🎨 Premium Design** - Gradient form with animations
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **Vue 3** - Composition API with `<script setup>`
+- **Vue Router** - SPA navigation with guards
+- **Vite** - Lightning-fast build tool
+- **SCSS** - Advanced styling with variables
+
+### Libraries & APIs
+- **@iconify/vue** - 200,000+ icons
+- **@emailjs/browser** - Email service integration
+- **Unsplash API** - High-quality image source (Pro)
+
+### Code Quality
+- **Semantic HTML** - `<main>`, `<section>`, `<article>`, `<nav>`
+- **Accessibility** - ARIA labels, roles, keyboard navigation
+- **Clean Architecture** - Composables, reusable components
+- **Modern Patterns** - Reactive state, computed properties
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+ and npm
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/bia024/ipx.git
+cd inspirapixel
+
+# Install dependencies
 npm install
 
-3. Run the project in development mode:
+# Set up environment variables
+cp .env.example .env
+# Add your EmailJS credentials to .env
 
+# Start development server
 npm run dev
+```
 
-4. Open http://localhost:5173
-   in your browser.
+### Environment Variables
 
-## Usage
+Create a `.env` file in the root directory:
 
-Browse the image gallery
+```env
+VITE_EMAILJS_SERVICE_ID=your_service_id
+VITE_EMAILJS_TEMPLATE_ID=your_template_id
+VITE_EMAILJS_PUBLIC_KEY=your_public_key
+VITE_UNSPLASH_ACCESS_KEY=your_unsplash_key
+```
 
-Click the heart to favorite/unfavorite images
+---
 
-Use the search bar to filter images by title or category
+## 📂 Project Structure
 
-Switch between "All Images" or "Favorites" tabs to view specific sets
+```
+inspirapixel/
+├── src/
+│   ├── assets/          # Images and static files
+│   ├── components/      # Reusable Vue components
+│   │   ├── Header.vue
+│   │   ├── Hero.vue
+│   │   ├── Gallery.vue
+│   │   ├── Footer.vue
+│   │   ├── AuthModal.vue
+│   │   ├── ToastNotification.vue
+│   │   └── BackToActions.vue
+│   ├── composables/     # Vue composables
+│   │   ├── useAuth.js
+│   │   ├── useToast.js
+│   │   └── useUnsplash.js (planned)
+│   ├── views/           # Page components
+│   │   ├── HomeView.vue
+│   │   ├── ModeSelectionView.vue
+│   │   ├── ContactView.vue
+│   │   ├── InstitutionalView.vue
+│   │   ├── PrivacyPolicyView.vue
+│   │   ├── TermsView.vue
+│   │   └── CopyrightView.vue
+│   ├── router/          # Vue Router config
+│   ├── App.vue          # Root component
+│   └── main.js          # Entry point
+├── public/              # Public assets
+└── index.html           # HTML template
+```
 
-## Available Scripts
+---
 
-npm run dev: Starts the development server
+## 🎨 Key Components
 
-npm run build: Builds the project for production
+### 🏠 Hero Section
+- Split-screen layout with search and Pro showcase
+- Debounced search with URL sync
+- Animated premium card with call-to-action
 
-npm run preview: Preview the production build
+### 🖼️ Gallery
+- Lazy loading with Intersection Observer
+- Premium content locking for Free users
+- Favorites system with localStorage
+- Responsive grid layout
 
-npm run test: Runs unit tests
+### 🔐 Authentication Modal
+- Tab-based UI (Login/Register)
+- Real-time validation
+- Toast notifications
+- Smooth animations
 
-## Project Structure
+### 📧 Newsletter Form
+- Email validation
+- EmailJS integration
+- Loading states
+- Success/error feedback
 
-src/
-├── components/
-│ ├── Header.vue
-│ ├── Hero.vue
-│ └── Gallery.vue
-├── assets/
-│ └── (images and icons)
-├── App.vue
-└── main.js
+---
 
-## Contributing
+## 💎 Pro Mode
 
-Fork the project
+### How It Works
 
-Create a branch for your feature (git checkout -b feature/new-feature)
+1. **Select Pro** - Choose Pro plan on mode selection page
+2. **Login Required** - Must be authenticated to upgrade
+3. **Email Validation** - Email must match account (LGPD compliance)
+4. **Confirmation** - Receive validation email
+5. **Unlock Content** - Access premium features instantly
 
-Commit your changes (git commit -am 'Add new feature')
+### Pro Benefits
 
-Push to the branch (git push origin feature/new-feature)
+| Feature | Free | Pro |
+|---------|------|-----|
+| Gallery Access | ✅ Limited | ✅ Full |
+| Image Quality | Standard | 4K |
+| Downloads | ❌ | ✅ Unlimited |
+| Exclusive Content | ❌ | ✅ |
+| Pro Badge | ❌ | ✅ |
+| Priority Support | ❌ | ✅ |
 
-Open a Pull Request
+---
 
-## License
+## 🎯 Roadmap
 
-This project is licensed under the MIT License.
+- [x] Core gallery functionality
+- [x] Authentication system
+- [x] Pro/Free mode distinction
+- [x] Newsletter integration
+- [x] Semantic HTML refactoring
+- [ ] Unsplash API integration
+- [ ] Image lightbox/modal
+- [ ] Backend API
+- [ ] Payment integration
+- [ ] User dashboard
+- [ ] Social sharing
 
+---
 
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👩‍💻 Author
+
+**Bianca**
+- GitHub: [@bia024](https://github.com/bia024)
+- Project: [InspirePixel](https://github.com/bia024/ipx)
+
+---
+
+## 🙏 Acknowledgments
+
+- Images from [Unsplash](https://unsplash.com)
+- Icons from [Iconify](https://iconify.design)
+- Email service by [EmailJS](https://www.emailjs.com)
+- Built with ❤️ using Vue 3 and Vite
+
+---
+
+<div align="center">
+
+### ⭐ Star this repo if you find it helpful!
+
+**Made with 💜 by Bianca**
+
+[Back to Top ↑](#-inspirepixel)
+
+</div>

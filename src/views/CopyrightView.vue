@@ -6,7 +6,7 @@
       </header>
       <section class="content">
         <p>
-          Inspirapixel respects the intellectual property rights of others. It is our policy to
+          InspirePixel respects the intellectual property rights of others. It is our policy to
           respond to any claim that Content posted on the Service infringes the copyright or other
           intellectual property infringement of any person.
         </p>
@@ -15,7 +15,7 @@
           If you are a copyright owner, or authorized on behalf of one, and you believe that the
           copyrighted work has been copied in a way that constitutes copyright infringement that is
           taking place through the Service, you must submit your notice in writing to the attention
-          of "Copyright Infringement" of dmca@inspirapixel.com and include in your notice a
+          of "Copyright Infringement" of dmca@InspirePixel.com and include in your notice a
           detailed description of the alleged infringement.
         </p>
         <h2>Counter-Notice</h2>

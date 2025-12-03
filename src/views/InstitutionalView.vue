@@ -2,16 +2,16 @@
   <main class="institutional-view">
     <article class="container">
       <header>
-        <h1 class="page-title">About Inspirapixel</h1>
+        <h1 class="page-title">About InspirePixel</h1>
       </header>
       <section class="content">
         <p>
-          Welcome to <strong>Inspirapixel</strong>, your premier destination for high-quality visual
+          Welcome to <strong>InspirePixel</strong>, your premier destination for high-quality visual
           inspiration. Our mission is to empower creators, designers, and dreamers with a curated
           collection of breathtaking imagery.
         </p>
         <p>
-          Founded in 2024, Inspirapixel started as a small project to share the beauty of the world
+          Founded in 2024, InspirePixel started as a small project to share the beauty of the world
           through the lens of talented photographers. Today, we are a growing community dedicated to
           visual excellence.
         </p>

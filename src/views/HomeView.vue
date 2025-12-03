@@ -2,14 +2,13 @@
 import Header from '../components/Header.vue'
 import Hero from '../components/Hero.vue'
 import Gallery from '../components/Gallery.vue'
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
 
 const searchQuery = ref('')
-const userMode = ref(localStorage.getItem('userMode') || 'free')
 
 // Sync local state with URL query
 watch(() => route.query.q, (newQuery) => {
@@ -28,7 +27,7 @@ const handleSearch = (query) => {
     <Header />
     <Hero @search="handleSearch" />
     <main>
-      <Gallery :search-query="searchQuery" :user-mode="userMode" />
+      <Gallery :search-query="searchQuery" />
     </main>
   </div>
 </template>

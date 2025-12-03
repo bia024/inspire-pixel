@@ -27,11 +27,56 @@ const router = useRouter()
 const activeTab = ref('all')
 const isLoading = ref(true)
 
-// ... (keep existing onMounted)
+// Simulate initial loading for skeleton demo (optional, remove in production if not needed)
+onMounted(() => {
+  setTimeout(() => {
+    isLoading.value = false
+  }, 1000)
+})
 
-// ... (keep existing loadFavoritesFromStorage)
+// Safe localStorage operations with comprehensive error handling
+const loadFavoritesFromStorage = () => {
+  try {
+    const stored = localStorage.getItem('favorites')
+    if (!stored) return []
 
-// ... (keep existing saveFavoritesToStorage)
+    const parsed = JSON.parse(stored)
+    // Validate that parsed data is an array of numbers
+    if (!Array.isArray(parsed)) {
+      console.warn('Invalid favorites data format, resetting to empty array')
+      return []
+    }
+
+    // Filter out invalid IDs (non-numbers or invalid ranges)
+    const validIds = parsed.filter(
+      (id) => typeof id === 'number' && id > 0 && id <= 12 && Number.isInteger(id)
+    )
+
+    if (validIds.length !== parsed.length) {
+      console.warn('Some invalid favorite IDs were filtered out')
+    }
+
+    return validIds
+  } catch (error) {
+    console.error('Error loading favorites from localStorage:', error)
+    // Clear corrupted data
+    try {
+      localStorage.removeItem('favorites')
+    } catch (clearError) {
+      console.error('Error clearing corrupted favorites data:', clearError)
+    }
+    return []
+  }
+}
+
+const saveFavoritesToStorage = (favoritesArray) => {
+  try {
+    localStorage.setItem('favorites', JSON.stringify(favoritesArray))
+  } catch (error) {
+    console.error('Error saving favorites to localStorage:', error)
+    // Could implement fallback storage here if needed
+  }
+}
 
 const favorites = ref(loadFavoritesFromStorage())
 
@@ -228,7 +273,7 @@ const getResponsiveSrcset = (src) => {
 // Lifecycle hooks for performance optimizations
 onMounted(() => {
   setupIntersectionObserver()
-  preloadCriticalImages()
+  // preloadCriticalImages() // Commented out to avoid preload warning
 
   // Observe all images after component mount
   nextTick(() => {
@@ -249,7 +294,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="gallery-section" aria-labelledby="gallery-title">
+  <section class="gallery-section" id="gallery" aria-labelledby="gallery-title">
     <div class="container">
       <h2 id="gallery-title" class="section-title">Get Inspired</h2>
 

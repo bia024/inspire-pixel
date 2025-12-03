@@ -84,9 +84,16 @@ const submitRegistration = async () => {
 
 <template>
   <main class="mode-selection">
+    <!-- Logo and Welcome -->
+    <div class="welcome-header">
+      <img src="../assets/logo.svg" alt="InspirePixel Logo" class="logo" />
+      <h1 class="brand-name">InspirePixel</h1>
+      <p class="welcome-text">Welcome! Let's get started by choosing your plan.</p>
+    </div>
+
     <section class="container">
       <header class="page-header">
-        <h1 class="title">Choose Your Plan</h1>
+        <h2 class="title">Choose Your Plan</h2>
         <p class="subtitle">Unlock the power of inspiration with our premium features</p>
       </header>
 
@@ -183,9 +190,36 @@ const submitRegistration = async () => {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+
+  .welcome-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeInDown 0.6s ease;
+
+    .logo {
+      height: 80px;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    }
+
+    .brand-name {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .welcome-text {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 300;
+    }
+  }
 
   .container {
     max-width: 1200px;
@@ -495,6 +529,17 @@ const submitRegistration = async () => {
 
   &:hover {
     transform: translateY(-2px);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>

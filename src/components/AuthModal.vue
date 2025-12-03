@@ -25,40 +25,60 @@ const switchTab = (tab) => {
 }
 
 const handleLogin = async () => {
+  if (!loginForm.value.email || !loginForm.value.password) {
+    addToast('Please fill in all fields.', 'warning')
+    return
+  }
+
   isLoading.value = true
-  // Simulate API call
+  
+  // Simulate API delay
   setTimeout(() => {
-    if (loginForm.value.email && loginForm.value.password) {
-      login({ 
-        name: 'User', // Mock name
-        email: loginForm.value.email,
-        mode: 'free'
-      })
-      addToast('Welcome back!', 'success')
+    const result = login(loginForm.value.email, loginForm.value.password)
+    
+    if (result.success) {
+      addToast(result.message, 'success')
       emit('close')
+      loginForm.value = { email: '', password: '' }
     } else {
-      addToast('Please check your credentials.', 'error')
+      addToast(result.message, 'error')
     }
+    
     isLoading.value = false
-  }, 1000)
+  }, 800)
 }
 
 const handleRegister = async () => {
+  if (!registerForm.value.name || !registerForm.value.email || !registerForm.value.password) {
+    addToast('Please fill in all fields.', 'warning')
+    return
+  }
+
+  if (registerForm.value.password.length < 6) {
+    addToast('Password must be at least 6 characters.', 'warning')
+    return
+  }
+
   isLoading.value = true
-  // Simulate API call
+  
+  // Simulate API delay
   setTimeout(() => {
-    if (registerForm.value.name && registerForm.value.email && registerForm.value.password) {
-      register({
-        name: registerForm.value.name,
-        email: registerForm.value.email
-      })
-      addToast('Account created successfully!', 'success')
+    const result = register({
+      name: registerForm.value.name,
+      email: registerForm.value.email,
+      password: registerForm.value.password
+    })
+    
+    if (result.success) {
+      addToast(result.message, 'success')
       emit('close')
+      registerForm.value = { name: '', email: '', password: '' }
     } else {
-      addToast('Please fill in all fields.', 'warning')
+      addToast(result.message, 'error')
     }
+    
     isLoading.value = false
-  }, 1000)
+  }, 800)
 }
 </script>
 

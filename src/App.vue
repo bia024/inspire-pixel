@@ -1,17 +1,26 @@
 <script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import Footer from './components/Footer.vue'
 import ToastNotification from './components/ToastNotification.vue'
+import BackToActions from './components/BackToActions.vue'
+
+const route = useRoute()
+
+// Hide Footer and BackToActions on mode selection page
+const showGlobalComponents = computed(() => route.name !== 'mode-selection')
 </script>
 
 <template>
   <div class="app-container">
     <ToastNotification />
+    <BackToActions v-if="showGlobalComponents" />
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
         <component :is="Component" />
       </transition>
     </router-view>
-    <Footer />
+    <Footer v-if="showGlobalComponents" />
   </div>
 </template>
 

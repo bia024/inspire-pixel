@@ -38,7 +38,7 @@ const openAuthModal = () => {
   <header class="header">
     <div class="logo">
       <router-link :to="{ name: 'home' }" aria-label="Back to home" @click="closeMenu">
-        <img src="../assets/logo.svg" alt="Inspirapixel Logo" />
+        <img src="../assets/logo.svg" alt="InspirePixel Logo" />
       </router-link>
       <span v-if="isPro" class="pro-badge">PRO</span>
       <span v-else class="free-badge">FREE</span>
@@ -303,8 +303,8 @@ const scrollToSection = (sectionId) => {
 <template>
     <header class="header">
         <div class="logo">
-            <img src="../assets/logo.svg" alt="Logo InspiraPixel" />
-            <!-- <h1>InspiraPixel</h1> -->
+            <img src="../assets/logo.svg" alt="Logo InspirePixel" />
+            <!-- <h1>InspirePixel</h1> -->
 <!-- </div>
         <nav>
             <ul>
