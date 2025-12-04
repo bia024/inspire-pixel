@@ -1,11 +1,80 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
+import { useAuth } from '../composables/useAuth'
+
+import ImgSwans from '../assets/swans.jpg'
+import ImgSunset from '../assets/sunset.jpg'
+import ImgBeach from '../assets/beach.png'
+import ImgSunflowers from '../assets/sunflowers.jpg'
+import ImgNight from '../assets/night.jpg'
 
 const route = useRoute()
+const { isPro } = useAuth()
 const searchTerm = ref('')
 const emit = defineEmits(['search'])
+
+const premiumImages = [
+  { src: ImgSwans, title: 'Graceful Swans' },
+  { src: ImgSunset, title: 'Golden Sunset' },
+  { src: ImgBeach, title: 'Paradise Beach' },
+  { src: ImgSunflowers, title: 'Sunflower Field' },
+  { src: ImgNight, title: 'Starry Night' }
+]
+
+const currentSlide = ref(0)
+let slideInterval = null
+
+const startSlideShow = () => {
+  stopSlideShow()
+  slideInterval = setInterval(() => {
+    currentSlide.value = (currentSlide.value + 1) % premiumImages.length
+  }, 3000)
+}
+
+const stopSlideShow = () => {
+  if (slideInterval) {
+    clearInterval(slideInterval)
+    slideInterval = null
+  }
+}
+
+const nextSlide = () => {
+  currentSlide.value = (currentSlide.value + 1) % premiumImages.length
+}
+
+const prevSlide = () => {
+  currentSlide.value = (currentSlide.value - 1 + premiumImages.length) % premiumImages.length
+}
+
+const pauseSlideShow = () => {
+  stopSlideShow()
+}
+
+const resumeSlideShow = () => {
+  if (isPro.value) {
+    startSlideShow()
+  }
+}
+
+onMounted(() => {
+  if (isPro.value) {
+    startSlideShow()
+  }
+})
+
+onUnmounted(() => {
+  stopSlideShow()
+})
+
+watch(isPro, (newValue) => {
+  if (newValue) {
+    startSlideShow()
+  } else {
+    stopSlideShow()
+  }
+})
 
 watch(() => route.query.q, (newQuery) => {
   if (newQuery !== undefined && newQuery !== searchTerm.value) {
@@ -46,8 +115,8 @@ const debouncedSearch = () => {
 
 <template>
   <section class="hero" id="hero" aria-label="Hero Section">
-    <div class="hero-content">
-      <div class="hero-text">
+    <article class="hero-content">
+      <header class="hero-text">
         <h2>Where landscapes turn into <span>inspiration</span></h2>
         <p>Discover colors, light, and scenery that spark new stories through the lens.</p>
         <form role="search" class="search-container" @submit.prevent="executeSearch">
@@ -61,17 +130,40 @@ const debouncedSearch = () => {
             <Icon icon="material-symbols:close" />
           </button>
         </form>
-      </div>
-
-      <aside class="hero-showcase" aria-label="Premium Content Preview">
+      </header>
+      <aside v-if="isPro" class="hero-showcase pro-carousel" aria-label="Premium Collection">
+        <article class="carousel-container" @mouseenter="pauseSlideShow" @mouseleave="resumeSlideShow">
+          <transition-group name="slide" tag="section" class="carousel-slides">
+            <figure v-for="(image, index) in premiumImages" :key="index" v-show="index === currentSlide"
+              class="carousel-slide">
+              <img :src="image.src" :alt="image.title" />
+              <figcaption class="slide-caption">
+                <Icon icon="material-symbols:workspace-premium" class="premium-badge" />
+                <h3>{{ image.title }}</h3>
+              </figcaption>
+            </figure>
+          </transition-group>
+          <button class="carousel-nav prev" @click="prevSlide" aria-label="Previous slide">
+            <Icon icon="material-symbols:chevron-left" />
+          </button>
+          <button class="carousel-nav next" @click="nextSlide" aria-label="Next slide">
+            <Icon icon="material-symbols:chevron-right" />
+          </button>
+          <nav class="carousel-indicators" aria-label="Carousel navigation">
+            <button v-for="(image, index) in premiumImages" :key="index" :class="{ active: index === currentSlide }"
+              @click="currentSlide = index" :aria-label="'Go to slide ' + (index + 1)"></button>
+          </nav>
+        </article>
+      </aside>
+      <aside v-else class="hero-showcase" aria-label="Premium Content Preview">
         <figure class="showcase-card">
-          <div class="card-image">
+          <picture class="card-image">
             <img src="../assets/mountain.jpg" alt="Premium Image Preview" />
-            <div class="premium-overlay">
+            <figcaption class="premium-overlay">
               <Icon icon="material-symbols:lock" class="lock-icon" />
               <span>Premium Collection</span>
-            </div>
-          </div>
+            </figcaption>
+          </picture>
           <figcaption class="card-content">
             <h3>Unlock the Extraordinary</h3>
             <p>Get unlimited access to 4K downloads and exclusive content.</p>
@@ -82,7 +174,7 @@ const debouncedSearch = () => {
           </figcaption>
         </figure>
       </aside>
-    </div>
+    </article>
   </section>
 </template>
 
@@ -105,7 +197,7 @@ const debouncedSearch = () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--overlay-bg);
   }
 
   .hero-content {
@@ -177,8 +269,10 @@ const debouncedSearch = () => {
         padding: 1rem 3rem;
         font-size: 1.1rem;
         border-radius: 50px;
-        border: none;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--border-color);
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        box-shadow: 0 4px 15px var(--card-shadow);
         transition: all 0.3s ease;
 
         &:focus {
@@ -212,10 +306,10 @@ const debouncedSearch = () => {
     animation: float 6s ease-in-out infinite;
 
     .showcase-card {
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--overlay-light);
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 20px 40px var(--card-shadow);
       backdrop-filter: blur(10px);
       margin: 0;
 
@@ -264,13 +358,13 @@ const debouncedSearch = () => {
 
         h3 {
           font-size: 1.5rem;
-          color: #2c3e50;
+          color: var(--text-primary);
           margin-bottom: 0.5rem;
         }
 
         p {
           font-size: 0.9rem;
-          color: #7f8c8d;
+          color: var(--text-secondary);
           margin-bottom: 1.5rem;
         }
 
@@ -306,6 +400,147 @@ const debouncedSearch = () => {
     100% {
       transform: translateY(0px);
     }
+  }
+
+  .hero-showcase.pro-carousel {
+    .carousel-container {
+      background: var(--overlay-light);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px var(--card-shadow);
+      backdrop-filter: blur(10px);
+      position: relative;
+      height: 350px;
+    }
+
+    .carousel-slides {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .carousel-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .slide-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        padding: 2rem 1.5rem 1.5rem;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .premium-badge {
+          font-size: 1.5rem;
+          color: #f1c40f;
+          flex-shrink: 0;
+        }
+
+        h3 {
+          font-size: 1.3rem;
+          margin: 0;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .carousel-indicators {
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.5rem;
+      z-index: 10;
+
+      button {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: all 0.3s;
+        padding: 0;
+
+        &.active {
+          background: #fff;
+          width: 30px;
+          border-radius: 5px;
+        }
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.8);
+        }
+      }
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 10;
+      opacity: 0;
+      color: #2c3e50;
+      font-size: 1.5rem;
+
+      &:hover {
+        background: #fff;
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      &.prev {
+        left: 1rem;
+      }
+
+      &.next {
+        right: 1rem;
+      }
+    }
+
+    .carousel-container:hover .carousel-nav {
+      opacity: 1;
+    }
+  }
+
+  .slide-enter-active,
+  .slide-leave-active {
+    transition: all 0.6s ease;
+  }
+
+  .slide-enter-from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  .slide-leave-to {
+    opacity: 0;
+    transform: translateX(-100%);
   }
 
   @media (min-width: 992px) {

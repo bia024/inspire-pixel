@@ -1,7 +1,8 @@
 import { ref, computed } from 'vue'
 
-const user = ref(JSON.parse(localStorage.getItem('user')) || null)
-const userMode = ref(localStorage.getItem('userMode') || 'free')
+const storedUser = JSON.parse(localStorage.getItem('user')) || null
+const user = ref(storedUser)
+const userMode = ref(storedUser?.mode || localStorage.getItem('userMode') || 'free')
 
 const getRegisteredUsers = () => {
     try {
@@ -116,6 +117,21 @@ export function useAuth() {
         return { success: true, message: 'Upgraded to Pro!' }
     }
 
+    const updateUser = (updates) => {
+        if (!user.value) return
+
+        user.value = { ...user.value, ...updates }
+        localStorage.setItem('user', JSON.stringify(user.value))
+
+        const registeredUsers = getRegisteredUsers()
+        const userIndex = registeredUsers.findIndex(u => u.id === user.value.id)
+
+        if (userIndex !== -1) {
+            registeredUsers[userIndex] = { ...registeredUsers[userIndex], ...updates }
+            saveRegisteredUsers(registeredUsers)
+        }
+    }
+
     return {
         user,
         userMode,
@@ -124,6 +140,7 @@ export function useAuth() {
         login,
         register,
         logout,
-        upgradeToPro
+        upgradeToPro,
+        updateUser
     }
 }

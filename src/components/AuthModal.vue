@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useAuth } from '../composables/useAuth'
 import { useToast } from '../composables/useToast'
@@ -8,19 +8,56 @@ const props = defineProps({
   isOpen: Boolean
 })
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'register-success'])
 
 const { login, register } = useAuth()
 const { addToast } = useToast()
 
 const activeTab = ref('login')
 const isLoading = ref(false)
+const showPassword = ref(false)
+const showRegisterPassword = ref(false)
 
 const loginForm = ref({ email: '', password: '' })
 const registerForm = ref({ name: '', email: '', password: '' })
 
+const passwordRequirements = computed(() => {
+  const pwd = registerForm.value.password
+  return {
+    minLength: pwd.length >= 8,
+    hasUpperCase: /[A-Z]/.test(pwd),
+    hasLowerCase: /[a-z]/.test(pwd),
+    hasNumber: /[0-9]/.test(pwd),
+    hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(pwd)
+  }
+})
+
+const passwordStrength = computed(() => {
+  const reqs = passwordRequirements.value
+  const metCount = Object.values(reqs).filter(Boolean).length
+  const percentage = (metCount / 5) * 100
+
+  if (percentage === 0) return { label: '', color: '', percentage: 0 }
+  if (percentage <= 40) return { label: 'Weak', color: '#e74c3c', percentage }
+  if (percentage <= 60) return { label: 'Fair', color: '#f39c12', percentage }
+  if (percentage <= 80) return { label: 'Good', color: '#f1c40f', percentage }
+  return { label: 'Strong', color: '#27ae60', percentage }
+})
+
+const isPasswordValid = computed(() => {
+  return Object.values(passwordRequirements.value).every(Boolean)
+})
+
 const switchTab = (tab) => {
   activeTab.value = tab
+}
+
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value
+}
+
+const toggleRegisterPasswordVisibility = () => {
+  showRegisterPassword.value = !showRegisterPassword.value
 }
 
 const handleLogin = async () => {
@@ -52,8 +89,8 @@ const handleRegister = async () => {
     return
   }
 
-  if (registerForm.value.password.length < 6) {
-    addToast('Password must be at least 6 characters.', 'warning')
+  if (!isPasswordValid.value) {
+    addToast('Password does not meet security requirements.', 'warning')
     return
   }
 
@@ -69,6 +106,7 @@ const handleRegister = async () => {
     if (result.success) {
       addToast(result.message, 'success')
       emit('close')
+      emit('register-success')
       registerForm.value = { name: '', email: '', password: '' }
     } else {
       addToast(result.message, 'error')
@@ -82,71 +120,116 @@ const handleRegister = async () => {
 <template>
   <transition name="modal">
     <div v-if="isOpen" class="auth-modal-overlay" @click="$emit('close')">
-      <div class="auth-modal" @click.stop>
+      <dialog open class="auth-modal" @click.stop>
         <button class="close-btn" @click="$emit('close')" aria-label="Close modal">
           <Icon icon="material-symbols:close" />
         </button>
-
-        <div class="auth-header">
-          <div class="tabs">
-            <button :class="{ active: activeTab === 'login' }" @click="switchTab('login')">
+        <header class="auth-header">
+          <nav class="tabs" role="tablist">
+            <button :class="{ active: activeTab === 'login' }" @click="switchTab('login')" role="tab">
               Login
             </button>
-            <button :class="{ active: activeTab === 'register' }" @click="switchTab('register')">
+            <button :class="{ active: activeTab === 'register' }" @click="switchTab('register')" role="tab">
               Register
             </button>
-          </div>
-        </div>
-
-        <div class="auth-body">
+          </nav>
+        </header>
+        <main class="auth-body">
           <form v-if="activeTab === 'login'" @submit.prevent="handleLogin" class="auth-form">
-            <div class="form-group">
+            <fieldset class="form-group">
               <label>Email</label>
               <div class="input-wrapper">
                 <Icon icon="material-symbols:mail-outline" class="input-icon" />
                 <input type="email" v-model="loginForm.email" placeholder="hello@example.com" required />
               </div>
-            </div>
-            <div class="form-group">
+            </fieldset>
+            <fieldset class="form-group">
               <label>Password</label>
               <div class="input-wrapper">
                 <Icon icon="material-symbols:lock-outline" class="input-icon" />
-                <input type="password" v-model="loginForm.password" placeholder="••••••••" required />
+                <input :type="showPassword ? 'text' : 'password'" v-model="loginForm.password" placeholder="••••••••"
+                  required />
+                <button type="button" class="toggle-password" @click="togglePasswordVisibility"
+                  aria-label="Toggle password visibility">
+                  <Icon :icon="showPassword ? 'material-symbols:visibility-off' : 'material-symbols:visibility'" />
+                </button>
               </div>
-            </div>
+            </fieldset>
             <button type="submit" class="submit-btn" :disabled="isLoading">
               {{ isLoading ? 'Logging in...' : 'Login' }}
             </button>
           </form>
-
           <form v-else @submit.prevent="handleRegister" class="auth-form">
-            <div class="form-group">
+            <fieldset class="form-group">
               <label>Full Name</label>
               <div class="input-wrapper">
                 <Icon icon="material-symbols:person-outline" class="input-icon" />
                 <input type="text" v-model="registerForm.name" placeholder="John Doe" required />
               </div>
-            </div>
-            <div class="form-group">
+            </fieldset>
+            <fieldset class="form-group">
               <label>Email</label>
               <div class="input-wrapper">
                 <Icon icon="material-symbols:mail-outline" class="input-icon" />
                 <input type="email" v-model="registerForm.email" placeholder="hello@example.com" required />
               </div>
-            </div>
-            <div class="form-group">
+            </fieldset>
+            <fieldset class="form-group">
               <label>Password</label>
               <div class="input-wrapper">
                 <Icon icon="material-symbols:lock-outline" class="input-icon" />
-                <input type="password" v-model="registerForm.password" placeholder="••••••••" required />
+                <input :type="showRegisterPassword ? 'text' : 'password'" v-model="registerForm.password"
+                  placeholder="••••••••" required />
+                <button type="button" class="toggle-password" @click="toggleRegisterPasswordVisibility"
+                  aria-label="Toggle password visibility">
+                  <Icon
+                    :icon="showRegisterPassword ? 'material-symbols:visibility-off' : 'material-symbols:visibility'" />
+                </button>
               </div>
-            </div>
+              <aside v-if="registerForm.password" class="password-strength">
+                <div class="strength-bar">
+                  <div class="strength-fill"
+                    :style="{ width: passwordStrength.percentage + '%', backgroundColor: passwordStrength.color }">
+                  </div>
+                </div>
+                <span class="strength-label" :style="{ color: passwordStrength.color }">
+                  {{ passwordStrength.label }}
+                </span>
+              </aside>
+              <aside v-if="registerForm.password" class="password-requirements">
+                <div class="requirement" :class="{ met: passwordRequirements.minLength }">
+                  <Icon
+                    :icon="passwordRequirements.minLength ? 'material-symbols:check-circle' : 'material-symbols:circle'" />
+                  <span>At least 8 characters</span>
+                </div>
+                <div class="requirement" :class="{ met: passwordRequirements.hasUpperCase }">
+                  <Icon
+                    :icon="passwordRequirements.hasUpperCase ? 'material-symbols:check-circle' : 'material-symbols:circle'" />
+                  <span>One uppercase letter</span>
+                </div>
+                <div class="requirement" :class="{ met: passwordRequirements.hasLowerCase }">
+                  <Icon
+                    :icon="passwordRequirements.hasLowerCase ? 'material-symbols:check-circle' : 'material-symbols:circle'" />
+                  <span>One lowercase letter</span>
+                </div>
+                <div class="requirement" :class="{ met: passwordRequirements.hasNumber }">
+                  <Icon
+                    :icon="passwordRequirements.hasNumber ? 'material-symbols:check-circle' : 'material-symbols:circle'" />
+                  <span>One number</span>
+                </div>
+                <div class="requirement" :class="{ met: passwordRequirements.hasSpecial }">
+                  <Icon
+                    :icon="passwordRequirements.hasSpecial ? 'material-symbols:check-circle' : 'material-symbols:circle'" />
+                  <span>One special character (!@#$%...)</span>
+                </div>
+              </aside>
+            </fieldset>
             <button type="submit" class="submit-btn" :disabled="isLoading">
               {{ isLoading ? 'Creating Account...' : 'Create Account' }}
             </button>
           </form>
-        </div>
-      </div>
+        </main>
+      </dialog>
     </div>
   </transition>
 </template>
@@ -169,11 +252,15 @@ const handleRegister = async () => {
 .auth-modal {
   background: #fff;
   width: 90%;
-  max-width: 400px;
+  max-width: 380px;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: none;
+  padding: 0;
 }
 
 .close-btn {
@@ -239,6 +326,10 @@ const handleRegister = async () => {
 }
 
 .form-group {
+  border: none;
+  padding: 0;
+  margin: 0;
+
   label {
     display: block;
     font-size: 0.9rem;
@@ -259,9 +350,29 @@ const handleRegister = async () => {
       font-size: 1.2rem;
     }
 
+    .toggle-password {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #9ca3af;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0.25rem;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s;
+
+      &:hover {
+        color: #e1306c;
+      }
+    }
+
     input {
       width: 100%;
-      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      padding: 0.75rem 3rem 0.75rem 2.5rem;
       border: 1px solid #e5e7eb;
       border-radius: 8px;
       font-size: 1rem;
@@ -271,6 +382,62 @@ const handleRegister = async () => {
         outline: none;
         border-color: #e1306c;
         box-shadow: 0 0 0 3px rgba(225, 48, 108, 0.1);
+      }
+    }
+  }
+
+  .password-strength {
+    margin-top: 0.75rem;
+
+    .strength-bar {
+      height: 4px;
+      background: #e5e7eb;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+
+      .strength-fill {
+        height: 100%;
+        transition: all 0.3s ease;
+      }
+    }
+
+    .strength-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+  }
+
+  .password-requirements {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: #f9fafb;
+    border-radius: 8px;
+
+    .requirement {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 0.5rem;
+      transition: color 0.3s;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      &.met {
+        color: #27ae60;
+
+        svg {
+          color: #27ae60;
+        }
+      }
+
+      svg {
+        font-size: 1rem;
+        flex-shrink: 0;
       }
     }
   }

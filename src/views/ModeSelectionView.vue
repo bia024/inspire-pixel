@@ -5,15 +5,21 @@ import emailjs from '@emailjs/browser'
 import { useRouter } from 'vue-router'
 import { useToast } from '../composables/useToast'
 import { useAuth } from '../composables/useAuth'
+import AuthModal from '../components/AuthModal.vue'
 
 const router = useRouter()
 const showModal = ref(false)
 const email = ref('')
+const isAuthModalOpen = ref(false)
 const { addToast } = useToast()
 const { user, isAuthenticated, upgradeToPro: authUpgrade } = useAuth()
 
 const selectMode = (mode) => {
   if (mode === 'free') {
+    if (!isAuthenticated.value) {
+      isAuthModalOpen.value = true
+      return
+    }
     localStorage.setItem('userMode', 'free')
     router.push({ name: 'home' })
   }
@@ -21,7 +27,7 @@ const selectMode = (mode) => {
 
 const openProModal = () => {
   if (!isAuthenticated.value) {
-    addToast('You must be logged in to upgrade to Pro.', 'warning')
+    isAuthModalOpen.value = true
     return
   }
   email.value = user.value.email
@@ -86,13 +92,11 @@ const submitRegistration = async () => {
       <h1 class="brand-name">InspirePixel</h1>
       <p class="welcome-text">Welcome! Let's get started by choosing your plan.</p>
     </div>
-
     <section class="container">
       <header class="page-header">
         <h2 class="title">Choose Your Plan</h2>
         <p class="subtitle">Unlock the power of inspiration with our premium features</p>
       </header>
-
       <div class="plans">
         <article class="plan-card free-plan">
           <header class="plan-header">
@@ -128,7 +132,6 @@ const submitRegistration = async () => {
             Start for Free
           </button>
         </article>
-
         <article class="plan-card pro-plan">
           <div class="plan-badge">Most Popular</div>
           <header class="plan-header">
@@ -163,13 +166,11 @@ const submitRegistration = async () => {
           <button class="plan-button pro-button" @click="openProModal">Upgrade to Pro</button>
         </article>
       </div>
-
       <div class="guarantee">
         <Icon icon="material-symbols:verified" />
         <span>30-day money-back guarantee</span>
       </div>
     </section>
-
     <div v-if="showModal" class="modal-overlay" @click="closeModal">
       <div class="modal-content" @click.stop>
         <header class="modal-header">
@@ -189,6 +190,7 @@ const submitRegistration = async () => {
         </footer>
       </div>
     </div>
+    <AuthModal :is-open="isAuthModalOpen" @close="isAuthModalOpen = false" />
   </main>
 </template>
 
@@ -548,5 +550,21 @@ const submitRegistration = async () => {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(100vh);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mode-selection {
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 </style>

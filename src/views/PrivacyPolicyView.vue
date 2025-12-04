@@ -6,13 +6,11 @@
             </header>
             <section class="content">
                 <p><strong>Last updated:</strong> December 2024</p>
-
                 <h2>Introduction</h2>
                 <p>
                     At InspirePixel, we take your privacy seriously. This Privacy Policy explains how we collect,
                     use, disclose, and safeguard your information when you visit our website.
                 </p>
-
                 <h2>Information We Collect</h2>
                 <p>We may collect information about you in a variety of ways, including:</p>
                 <ul>
@@ -23,7 +21,6 @@
                     <li><strong>Cookies:</strong> We use cookies to enhance your experience and analyze site traffic.
                     </li>
                 </ul>
-
                 <h2>How We Use Your Information</h2>
                 <p>We use the information we collect to:</p>
                 <ul>
@@ -32,13 +29,11 @@
                     <li>Improve our website and user experience</li>
                     <li>Respond to your inquiries and support requests</li>
                 </ul>
-
                 <h2>Data Security</h2>
                 <p>
                     We implement appropriate security measures to protect your personal information. However, no
                     method of transmission over the internet is 100% secure.
                 </p>
-
                 <h2>Your Rights</h2>
                 <p>You have the right to:</p>
                 <ul>
@@ -47,7 +42,6 @@
                     <li>Request deletion of your data</li>
                     <li>Opt-out of marketing communications</li>
                 </ul>
-
                 <h2>Contact Us</h2>
                 <p>
                     If you have questions about this Privacy Policy, please contact us at

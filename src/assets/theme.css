@@ -1,0 +1,62 @@
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f7fa;
+  --bg-tertiary: #ecf0f1;
+
+  --text-primary: #2c3e50;
+  --text-secondary: #7f8c8d;
+  --text-muted: #95a5a6;
+
+  --border-color: #e5e7eb;
+  --border-light: #f0f0f0;
+
+  --card-bg: #ffffff;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-light: rgba(255, 255, 255, 0.9);
+
+  --gradient-primary: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
+  --gradient-secondary: linear-gradient(135deg, #e1306c 0%, #c13584 100%);
+  --gradient-hero: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+
+  --accent-red: #e74c3c;
+  --accent-orange: #f39c12;
+  --accent-pink: #e1306c;
+  --accent-blue: #3498db;
+  --accent-green: #27ae60;
+
+  --theme-transition: all 0.3s ease;
+}
+
+.dark-mode {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-tertiary: #0f3460;
+
+  --text-primary: #eaeaea;
+  --text-secondary: #a0a0a0;
+  --text-muted: #6b7280;
+
+  --border-color: #2d3748;
+  --border-light: #374151;
+
+  --card-bg: #0f3460;
+  --card-shadow: rgba(0, 0, 0, 0.3);
+
+  --overlay-bg: rgba(0, 0, 0, 0.7);
+  --overlay-light: rgba(15, 52, 96, 0.95);
+
+  --gradient-hero: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+}
+
+* {
+  transition: background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.no-transition * {
+  transition: none !important;
+}

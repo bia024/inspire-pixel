@@ -39,7 +39,6 @@ onUnmounted(() => {
       <button @click="scrollToTop" class="action-btn back-to-top" aria-label="Back to top" title="Back to top">
         <Icon icon="material-symbols:arrow-upward" />
       </button>
-
       <button v-if="!isHomePage()" @click="goHome" class="action-btn back-to-home" aria-label="Back to home"
         title="Back to home">
         <Icon icon="material-symbols:home" />

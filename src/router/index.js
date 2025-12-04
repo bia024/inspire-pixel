@@ -8,17 +8,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
-      beforeEnter: (to, from, next) => {
-        const user = localStorage.getItem('user')
-        const userMode = localStorage.getItem('userMode')
-
-        if (user || userMode) {
-          next()
-        } else {
-          next({ name: 'mode-selection' })
-        }
-      }
+      component: HomeView
     },
     {
       path: '/mode-selection',

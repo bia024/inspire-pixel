@@ -57,7 +57,6 @@ const submitForm = async () => {
         <h1 class="page-title">Contact & Support</h1>
         <p class="page-subtitle">We'd love to hear from you. Send us a message!</p>
       </header>
-
       <div class="contact-content">
         <address class="contact-info">
           <article class="info-item">
@@ -71,7 +70,10 @@ const submitForm = async () => {
             <Icon icon="material-symbols:location-on-outline" class="icon" />
             <div>
               <h3>Location</h3>
-              <p>123 Creative Ave, Design City, DC 10101</p>
+              <p>1425 University Avenue SE</p>
+              <p>Room 255</p>
+              <p>Minneapolis, MN 55455</p>
+              <p>612-625-9000</p>
             </div>
           </article>
           <article class="info-item">
@@ -82,7 +84,6 @@ const submitForm = async () => {
             </div>
           </article>
         </address>
-
         <form @submit.prevent="submitForm" class="contact-form">
           <div class="form-group">
             <label for="name">Name</label>

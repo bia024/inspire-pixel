@@ -90,7 +90,6 @@ const subscribeNewsletter = async () => {
                     </ul>
                 </nav>
             </section>
-
             <nav class="footer-section" aria-label="Footer Navigation">
                 <h4>Quick Links</h4>
                 <ul>
@@ -100,7 +99,6 @@ const subscribeNewsletter = async () => {
                     <li><router-link :to="{ name: 'mode-selection' }">Go Pro</router-link></li>
                 </ul>
             </nav>
-
             <nav class="footer-section" aria-label="Legal Navigation">
                 <h4>Legal</h4>
                 <ul>
@@ -110,7 +108,6 @@ const subscribeNewsletter = async () => {
                 </ul>
             </nav>
         </section>
-
         <section class="newsletter-section">
             <div class="newsletter-content">
                 <div class="newsletter-text">
@@ -135,7 +132,6 @@ const subscribeNewsletter = async () => {
                 </form>
             </div>
         </section>
-
         <section class="footer-bottom">
             <p>&copy; {{ new Date().getFullYear() }} <span class="highlight">InspirePixel</span>. All rights reserved.
             </p>

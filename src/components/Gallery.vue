@@ -1,4 +1,7 @@
 <script setup>
+// defineProps({
+//   searchQuery: String,
+// })
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { Icon } from '@iconify/vue'
 
@@ -14,15 +17,20 @@ import ImgMountain from '../assets/mountain.jpg'
 import ImgRocks from '../assets/rocks.png'
 import ImgWaterfall from '../assets/waterfall.png'
 import ImgNight from '../assets/night.jpg'
+// import ImgRocky from '../assets/rocky-ocean.jpg'
+// import ImgKayak from '../assets/kayak-lagoon.jpg'
 
 import { useAuth } from '../composables/useAuth'
 import { useToast } from '../composables/useToast'
 import { useRouter } from 'vue-router'
+import AuthModal from './AuthModal.vue'
 
 const props = defineProps({ searchQuery: String })
-const { isPro } = useAuth()
+const { isPro, isAuthenticated } = useAuth()
 const { addToast } = useToast()
 const router = useRouter()
+
+const isAuthModalOpen = ref(false)
 
 const activeTab = ref('all')
 const isLoading = ref(true)
@@ -85,14 +93,10 @@ const images = ref([
   { id: 8, src: ImgSunflowers, title: 'Sunflower Field', category: 'nature', premium: true },
   { id: 9, src: ImgMountain, title: 'Majestic Mountain', category: 'nature', premium: false },
   { id: 10, src: ImgRocks, title: 'Sea Rocks', category: 'nature', premium: true },
-  {
-    id: 11,
-    src: ImgWaterfall,
-    title: 'Powerful Waterfall',
-    category: 'nature',
-    premium: false,
-  },
+  { id: 11, src: ImgWaterfall, title: 'Powerful Waterfall', category: 'nature', premium: false },
   { id: 12, src: ImgNight, title: 'Starry Night', category: 'nature', premium: true },
+  // { id: 13, src: ImgKayak, title: 'Kayaking in River', category: 'nature', premium: false },
+  // { id: 14, src: ImgRocky, title: 'Rocky Ocean', category: 'nature', premium: true },
 ])
 
 const filteredImages = computed(() => {
@@ -111,6 +115,10 @@ const filteredImages = computed(() => {
 
 const handlePremiumClick = (img) => {
   if (img.premium && !isPro.value) {
+    if (!isAuthenticated.value) {
+      isAuthModalOpen.value = true
+      return
+    }
     addToast('This is a Premium image. Upgrade to Pro to access!', 'warning')
     router.push({ name: 'mode-selection' })
     return
@@ -130,6 +138,11 @@ const toggleFavorite = (imageId) => {
     return
   }
 
+  if (!isAuthenticated.value) {
+    isAuthModalOpen.value = true
+    return
+  }
+
   try {
     const index = favorites.value.indexOf(imageId)
     if (index > -1) {
@@ -141,6 +154,30 @@ const toggleFavorite = (imageId) => {
   } catch (error) {
     console.error('Error toggling favorite:', error)
   }
+}
+
+const handleRegisterSuccess = () => {
+  isAuthModalOpen.value = false
+  setTimeout(() => {
+    router.push({ name: 'mode-selection' })
+  }, 300)
+}
+
+const handleDownload = (img) => {
+  if (img.premium && !isPro.value) {
+    addToast('This is a Premium image. Upgrade to Pro to download!', 'warning')
+    router.push({ name: 'mode-selection' })
+    return
+  }
+
+  const link = document.createElement('a')
+  link.href = img.src
+  link.download = `${img.title.toLowerCase().replace(/\s+/g, '-')}.jpg`
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+
+  addToast(`Downloading "${img.title}"...`, 'success')
 }
 
 const isFavorite = (imageId) => {
@@ -270,7 +307,6 @@ onUnmounted(() => {
   <section class="gallery-section" id="gallery" aria-labelledby="gallery-title">
     <div class="container">
       <h2 id="gallery-title" class="section-title">Get Inspired</h2>
-
       <nav class="tabs" role="tablist" aria-label="Gallery navigation">
         <button :class="{ active: activeTab === 'all' }" @click="setActiveTab('all')"
           @keydown="handleTabKeydown($event, 'all')" role="tab" :aria-selected="activeTab === 'all'"
@@ -285,12 +321,12 @@ onUnmounted(() => {
           Favorites ({{ favorites.length }})
         </button>
       </nav>
-
       <section class="gallery" :id="'tabpanel-' + activeTab" role="tabpanel" :aria-labelledby="'tab-' + activeTab"
         aria-live="polite">
         <article v-for="img in filteredImages" :key="img.id" class="image-card" role="article"
           :aria-label="'Image: ' + img.title + ', Category: ' + img.category">
-          <div class="image-container" :class="{ 'is-locked': img.premium && !isPro }" @click="handlePremiumClick(img)">
+          <figure class="image-container" :class="{ 'is-locked': img.premium && !isPro }"
+            @click="handlePremiumClick(img)">
             <picture>
               <source :data-srcset="getWebpSrc(img.src)" type="image/webp" :media="webpMedia" />
               <img :data-src="img.src" :data-srcset="getResponsiveSrcset(img.src)"
@@ -299,34 +335,35 @@ onUnmounted(() => {
                 @error="handleImageError(img.id)" :class="{ loaded: imageLoadStates.get(img.id) === 'loaded' }"
                 loading="lazy" />
             </picture>
-
-            <div v-if="img.premium && !isPro" class="lock-overlay">
+            <figcaption v-if="img.premium && !isPro" class="lock-overlay">
               <Icon icon="material-symbols:lock" class="lock-icon" />
               <span>Premium</span>
-            </div>
-
-            <div class="overlay" v-else>
+            </figcaption>
+            <aside class="overlay" v-else>
               <button class="favorite-btn" :class="{ favorited: isFavorite(img.id) }"
                 @click.stop="toggleFavorite(img.id)" @keydown.stop="handleFavoriteKeydown($event, img.id)" :aria-label="isFavorite(img.id)
-                    ? 'Remove ' + img.title + ' from favorites'
-                    : 'Add ' + img.title + ' to favorites'
+                  ? 'Remove ' + img.title + ' from favorites'
+                  : 'Add ' + img.title + ' to favorites'
                   " :aria-pressed="isFavorite(img.id)" role="button" tabindex="0">
                 <Icon :icon="isFavorite(img.id)
-                    ? 'material-symbols:favorite'
-                    : 'material-symbols:favorite-outline'
+                  ? 'material-symbols:favorite'
+                  : 'material-symbols:favorite-outline'
                   " aria-hidden="true" />
               </button>
-            </div>
-          </div>
-          <div class="image-info">
+              <button class="download-btn" @click.stop="handleDownload(img)" :aria-label="'Download ' + img.title"
+                role="button" tabindex="0">
+                <Icon icon="material-symbols:download" aria-hidden="true" />
+              </button>
+            </aside>
+          </figure>
+          <figcaption class="image-info">
             <h3>{{ img.title }}</h3>
             <span class="category" role="text" :aria-label="'Category: ' + img.category">{{
               img.category
               }}</span>
-          </div>
+          </figcaption>
         </article>
       </section>
-
       <aside v-if="activeTab === 'favorites' && favorites.length === 0" class="empty-state" role="status"
         aria-live="polite" aria-label="No favorite images">
         <Icon icon="material-symbols:favorite-outline" aria-hidden="true" />
@@ -334,13 +371,14 @@ onUnmounted(() => {
         <p>Explore the gallery and click the heart to add to favorites!</p>
       </aside>
     </div>
+    <AuthModal :is-open="isAuthModalOpen" @close="isAuthModalOpen = false" @register-success="handleRegisterSuccess" />
   </section>
 </template>
 
 <style scoped lang="scss">
 .gallery-section {
   padding: 4rem 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: var(--gradient-hero);
   min-height: 100vh;
 
   .container {
@@ -352,7 +390,7 @@ onUnmounted(() => {
     text-align: center;
     font-size: 2.5rem;
     font-weight: 700;
-    color: #2c3e50;
+    color: var(--text-primary);
     margin-bottom: 3rem;
     position: relative;
 
@@ -381,8 +419,8 @@ onUnmounted(() => {
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    background: #fff;
-    color: #7f8c8d;
+    background: var(--card-bg);
+    color: var(--text-secondary);
     font-weight: 600;
     transition: all 0.3s;
     display: flex;
@@ -406,10 +444,10 @@ onUnmounted(() => {
   }
 
   .image-card {
-    background: #fff;
+    background: var(--card-bg);
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px var(--card-shadow);
     position: relative;
   }
 
@@ -471,13 +509,16 @@ onUnmounted(() => {
     padding: 1rem;
     opacity: 0;
     transition: opacity 0.3s;
+    display: flex;
+    gap: 0.5rem;
   }
 
   .image-card:hover .overlay {
     opacity: 1;
   }
 
-  .favorite-btn {
+  .favorite-btn,
+  .download-btn {
     background: rgba(255, 255, 255, 0.9);
     border: none;
     border-radius: 50%;
@@ -489,11 +530,23 @@ onUnmounted(() => {
     cursor: pointer;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     transition: all 0.3s;
+    font-size: 1.5rem;
   }
 
   .favorite-btn.favorited {
     background: #e74c3c;
     color: #fff;
+  }
+
+  .download-btn {
+    background: rgba(255, 255, 255, 0.9);
+    color: #2c3e50;
+
+    &:hover {
+      background: #3498db;
+      color: #fff;
+      transform: scale(1.1);
+    }
   }
 
   .favorite-btn:hover {
@@ -507,15 +560,15 @@ onUnmounted(() => {
   .image-info h3 {
     font-size: 1.2rem;
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
   }
 
   .image-info .category {
     font-size: 0.9rem;
-    color: #7f8c8d;
+    color: var(--text-secondary);
     text-transform: capitalize;
-    background: #ecf0f1;
+    background: var(--bg-tertiary);
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
     display: inline-block;
@@ -524,7 +577,7 @@ onUnmounted(() => {
   .empty-state {
     text-align: center;
     padding: 4rem 2rem;
-    color: #7f8c8d;
+    color: var(--text-secondary);
 
     p {
       font-size: 1.2rem;
