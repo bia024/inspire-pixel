@@ -87,14 +87,12 @@
   0% {
     transform: translateX(-100%);
   }
-
   100% {
     transform: translateX(100%);
   }
 }
 
 :global(.dark-mode) {
-
   .skeleton-image,
   .skeleton-title,
   .skeleton-category {

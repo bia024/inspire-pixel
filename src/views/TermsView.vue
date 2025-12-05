@@ -68,7 +68,7 @@
     flex: 1;
 
     .container {
-        max-width: 800px;
+        max-width: 50rem;
         margin: 0 auto;
     }
 

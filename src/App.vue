@@ -7,7 +7,7 @@ import BackToActions from './components/BackToActions.vue'
 
 const route = useRoute()
 
-const showGlobalComponents = computed(() => !['mode-selection', 'stories', 'callback'].includes(route.name))
+const showGlobalComponents = computed(() => route.name !== 'mode-selection')
 
 const transitionName = computed(() => {
   return route.name === 'mode-selection' ? 'slide-up' : 'fade'

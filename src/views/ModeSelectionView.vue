@@ -8,10 +8,13 @@ import AuthModal from '../components/AuthModal.vue'
 
 const router = useRouter()
 const route = useRoute()
-const showModal = ref(false)
-const isAuthModalOpen = ref(false)
 const { addToast } = useToast()
 const { user, isAuthenticated, upgradeToPro } = useFirebaseAuth()
+
+const showUpgradeModal = ref(false)
+const isAuthModalOpen = ref(false)
+const showCongrats = ref(false)
+const isProcessingUpgrade = ref(false)
 
 onMounted(() => {
   if (route.query.redirect) {
@@ -19,6 +22,7 @@ onMounted(() => {
   }
 })
 
+/* * obs.: @param param o {string} mode */
 const selectMode = (mode) => {
   if (mode === 'free') {
     if (!isAuthenticated.value) {
@@ -34,11 +38,11 @@ const openProModal = () => {
     isAuthModalOpen.value = true
     return
   }
-  showModal.value = true
+  showUpgradeModal.value = true
 }
 
-const closeModal = () => {
-  showModal.value = false
+const closeUpgradeModal = () => {
+  showUpgradeModal.value = false
 }
 
 const handleAuthSuccess = () => {
@@ -49,15 +53,18 @@ const handleAuthSuccess = () => {
   }, 300)
 }
 
-const showCongrats = ref(false)
-
 const handleUpgrade = async () => {
+  if (isProcessingUpgrade.value) return
+
+  isProcessingUpgrade.value = true
+
   const result = await upgradeToPro()
-  
+
   if (result.success) {
-    closeModal()
+    closeUpgradeModal()
     showCongrats.value = true
-    
+    addToast('Upgrade successful! Welcome to Pro.', 'success')
+
     setTimeout(() => {
       showCongrats.value = false
       setTimeout(() => {
@@ -65,137 +72,140 @@ const handleUpgrade = async () => {
       }, 300)
     }, 3000)
   } else {
-    addToast(result.message, 'error')
+    const errorMessage = result.message || 'Upgrade failed. Please try again.'
+    addToast(errorMessage, 'error')
   }
+
+  isProcessingUpgrade.value = false
 }
 </script>
 
 <template>
   <main class="mode-selection">
-    <div class="welcome-header">
-      <img src="../assets/logo.svg" alt="InspirePixel Logo" class="official-logo" />
-      <h1 class="brand-name">InspirePixel</h1>
+    <header class="welcome-header">
+      <figure class="brand-identity">
+        <img src="../assets/logo.svg" alt="InspirePixel Logo" class="official-logo"
+          aria-label="InspirePixel Official Logo" />
+        <figcaption class="brand-name">InspirePixel</figcaption>
+      </figure>
       <p class="welcome-text">Welcome! Let's get started by choosing your plan.</p>
-    </div>
-    <section class="container">
+    </header>
+    <section class="container" aria-labelledby="choose-plan-title">
       <header class="page-header">
-        <h2 class="title">Choose Your Plan</h2>
+        <h2 id="choose-plan-title" class="title">Choose Your Plan</h2>
         <p class="subtitle">Unlock the power of inspiration with our premium features</p>
       </header>
-      <div class="plans">
-        <article class="plan-card free-plan">
+      <div class="plans" role="radiogroup" aria-label="Subscription Plans">
+        <article class="plan-card free-plan" role="radio" aria-checked="false" tabindex="0" @click="selectMode('free')">
           <header class="plan-header">
             <h2>Free</h2>
-            <div class="price">
+            <p class="price">
               <span class="amount">$0</span>
               <span class="period">/month</span>
-            </div>
+            </p>
           </header>
-          <div class="plan-features">
-            <ul>
-              <li>
-                <Icon icon="material-symbols:check" /> Access to 6 curated images
-              </li>
-              <li>
-                <Icon icon="material-symbols:check" /> Basic search functionality
-              </li>
-              <li>
-                <Icon icon="material-symbols:check" /> Favorite images
-              </li>
-              <li>
-                <Icon icon="material-symbols:close" class="disabled" /> High-resolution downloads
-              </li>
-              <li>
-                <Icon icon="material-symbols:close" class="disabled" /> Unlimited image access
-              </li>
-              <li>
-                <Icon icon="material-symbols:close" class="disabled" /> Commercial use rights
-              </li>
-            </ul>
-          </div>
-          <button class="plan-button free-button" @click="selectMode('free')">
+          <ul class="plan-features-list" role="list">
+            <li role="listitem">
+              <Icon icon="material-symbols:check" aria-hidden="true" /> Access to 6 curated images
+            </li>
+            <li role="listitem">
+              <Icon icon="material-symbols:check" aria-hidden="true" /> Basic search functionality
+            </li>
+            <li role="listitem">
+              <Icon icon="material-symbols:check" aria-hidden="true" /> Favorite images
+            </li>
+            <li role="listitem" class="feature-disabled">
+              <Icon icon="material-symbols:close" class="disabled" aria-hidden="true" /> High-resolution downloads
+            </li>
+            <li role="listitem" class="feature-disabled">
+              <Icon icon="material-symbols:close" class="disabled" aria-hidden="true" /> Unlimited image access
+            </li>
+            <li role="listitem" class="feature-disabled">
+              <Icon icon="material-symbols:close" class="disabled" aria-hidden="true" /> Commercial use rights
+            </li>
+          </ul>
+          <button class="plan-button free-button" @click.stop="selectMode('free')" aria-label="Select Free Plan">
             Start for Free
           </button>
         </article>
-        <article class="plan-card pro-plan">
-          <div class="plan-badge">Most Popular</div>
+        <article class="plan-card pro-plan" role="radio" aria-checked="false" tabindex="0" @click="openProModal">
+          <span class="plan-badge">Most Popular</span>
           <header class="plan-header">
             <h2>Pro</h2>
-            <div class="price">
+            <p class="price">
               <span class="amount">$9.99</span>
               <span class="period">/month</span>
-            </div>
+            </p>
           </header>
-          <div class="plan-features">
-            <ul>
-              <li>
-                <Icon icon="material-symbols:check" /> Unlimited image access
-              </li>
-              <li>
-                <Icon icon="material-symbols:check" /> High-resolution downloads
-              </li>
-              <li>
-                <Icon icon="material-symbols:check" /> Commercial use rights
-              </li>
-              <li>
-                <Icon icon="material-symbols:check" /> Advanced search & filters
-              </li>
-              <li>
-                <Icon icon="material-symbols:check" /> Priority support
-              </li>
-              <li>
-                <Icon icon="material-symbols:check" /> Exclusive premium content
-              </li>
-            </ul>
-          </div>
-          <button class="plan-button pro-button" @click="openProModal">Upgrade to Pro</button>
+          <ul class="plan-features-list" role="list">
+            <li role="listitem">
+              <Icon icon="material-symbols:check" aria-hidden="true" /> Unlimited image access
+            </li>
+            <li role="listitem">
+              <Icon icon="material-symbols:check" aria-hidden="true" /> High-resolution downloads
+            </li>
+            <li role="listitem">
+              <Icon icon="material-symbols:check" aria-hidden="true" /> Commercial use rights
+            </li>
+            <li role="listitem">
+              <Icon icon="material-symbols:check" aria-hidden="true" /> Advanced search & filters
+            </li>
+            <li role="listitem">
+              <Icon icon="material-symbols:check" aria-hidden="true" /> Priority support
+            </li>
+            <li role="listitem">
+              <Icon icon="material-symbols:check" aria-hidden="true" /> Exclusive premium content
+            </li>
+          </ul>
+          <button class="plan-button pro-button" @click.stop="openProModal" aria-label="Upgrade to Pro Plan">
+            Upgrade to Pro
+          </button>
         </article>
       </div>
-      <div class="guarantee">
-        <Icon icon="material-symbols:verified" />
+      <footer class="guarantee">
+        <Icon icon="material-symbols:verified" aria-hidden="true" />
         <span>30-day money-back guarantee</span>
-      </div>
+      </footer>
     </section>
-    <div v-if="showModal" class="modal-overlay" @click="closeModal">
-      <div class="modal-content" @click.stop>
+    <div v-if="showUpgradeModal" class="modal-overlay" @click="closeUpgradeModal" role="dialog" aria-modal="true"
+      aria-labelledby="modal-upgrade-title">
+      <section class="modal-content" @click.stop>
         <header class="modal-header">
-          <h2>Activate Pro Mode</h2>
-          <button class="close-button" @click="closeModal">
-            <Icon icon="material-symbols:close" />
+          <h2 id="modal-upgrade-title">Activate Pro Mode</h2>
+          <button class="close-button" @click="closeUpgradeModal" aria-label="Close upgrade modal">
+            <Icon icon="material-symbols:close" aria-hidden="true" />
           </button>
         </header>
-        <div class="modal-body">
+        <div class="modal-padding-content">
           <p>Confirm your upgrade to Pro Mode? You will get unlimited access to all premium features.</p>
           <div class="email-input-wrapper">
             <label for="user-email">Account Email</label>
             <div class="input-with-icon">
-              <input 
-                id="user-email"
-                type="email" 
-                :value="user?.email" 
-                readonly 
-                class="email-input"
-              />
-              <span class="lock-emoji" title="This field is read-only">🔒</span>
+              <input id="user-email" type="email" :value="user?.email" readonly class="email-input"
+                aria-describedby="email-readonly-info" />
+              <span class="lock-emoji" title="This field is read-only" id="email-readonly-info"
+                aria-hidden="true">🔒</span>
             </div>
           </div>
         </div>
         <footer class="modal-footer">
-          <button class="cancel-button" @click="closeModal">Cancel</button>
-          <button class="submit-button" @click="handleUpgrade">Confirm Upgrade</button>
+          <button class="cancel-button" @click="closeUpgradeModal">Cancel</button>
+          <button class="submit-button" @click="handleUpgrade" :disabled="isProcessingUpgrade">
+            {{ isProcessingUpgrade ? 'Processing...' : 'Confirm Upgrade' }}
+          </button>
         </footer>
-      </div>
+      </section>
     </div>
     <AuthModal :is-open="isAuthModalOpen" @close="isAuthModalOpen = false" @register-success="handleAuthSuccess" />
     <transition name="congrats-fade">
-      <div v-if="showCongrats" class="congrats-overlay">
-        <div class="congrats-modal">
+      <div v-if="showCongrats" class="congrats-overlay" role="alert" aria-live="assertive">
+        <section class="congrats-modal">
           <div class="confetti-container">
             <div class="confetti" v-for="n in 50" :key="n"></div>
           </div>
-          <div class="congrats-content">
+          <div class="congrats-content-inner">
             <div class="success-icon">
-              <Icon icon="material-symbols:check-circle" />
+              <Icon icon="material-symbols:check-circle" aria-hidden="true" />
             </div>
             <h2 class="congrats-title">Congratulations! 🎉</h2>
             <p class="congrats-message">
@@ -206,7 +216,7 @@ const handleUpgrade = async () => {
               Enjoy unlimited access to all premium features
             </p>
           </div>
-        </div>
+        </section>
       </div>
     </transition>
   </main>
@@ -227,18 +237,22 @@ const handleUpgrade = async () => {
     margin-bottom: 3rem;
     animation: fadeInDown 0.6s ease;
 
-    .official-logo {
-      height: 80px;
-      margin-bottom: 1rem;
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-    }
+    .brand-identity {
+      margin: 0;
 
-    .brand-name {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      .official-logo {
+        height: 5rem;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0.25rem 0.5rem rgba(0, 0, 0, 0.2));
+      }
+
+      .brand-name {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.2);
+      }
     }
 
     .welcome-text {
@@ -249,7 +263,7 @@ const handleUpgrade = async () => {
   }
 
   .container {
-    max-width: 1200px;
+    max-width: 75rem;
     width: 100%;
   }
 
@@ -259,7 +273,7 @@ const handleUpgrade = async () => {
     color: #fff;
     text-align: center;
     margin-bottom: 1rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
   }
 
   .subtitle {
@@ -267,35 +281,36 @@ const handleUpgrade = async () => {
     color: rgba(255, 255, 255, 0.9);
     text-align: center;
     margin-bottom: 4rem;
-    max-width: 600px;
+    max-width: 37.5rem;
     margin-left: auto;
     margin-right: auto;
   }
 
   .plans {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(21.875rem, 1fr));
     gap: 2rem;
     margin-bottom: 3rem;
   }
 
   .plan-card {
     background: #fff;
-    border-radius: 20px;
+    border-radius: 1.25rem;
     padding: 2.5rem;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.1);
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
+    cursor: pointer;
 
     &:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+      transform: translateY(-0.625rem);
+      box-shadow: 0 1.875rem 3.75rem rgba(0, 0, 0, 0.2);
     }
   }
 
   .free-plan {
-    border: 2px solid #e1e8ed;
+    border: 0.125rem solid #e1e8ed;
   }
 
   .pro-plan {
@@ -309,23 +324,23 @@ const handleUpgrade = async () => {
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
+      height: 0.25rem;
       background: linear-gradient(90deg, #e74c3c, #f39c12);
     }
   }
 
   .plan-badge {
     position: absolute;
-    top: -12px;
+    top: -0.75rem;
     left: 50%;
     transform: translateX(-50%);
     background: linear-gradient(90deg, #e74c3c, #f39c12);
     color: #fff;
     padding: 0.5rem 1.5rem;
-    border-radius: 20px;
+    border-radius: 1.25rem;
     font-size: 0.9rem;
     font-weight: 600;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
   }
 
   .plan-header {
@@ -336,6 +351,10 @@ const handleUpgrade = async () => {
       font-size: 2rem;
       font-weight: 700;
       margin-bottom: 1rem;
+
+      .pro-plan & {
+        color: #fff;
+      }
     }
   }
 
@@ -351,24 +370,26 @@ const handleUpgrade = async () => {
     }
   }
 
-  .plan-features {
+  .plan-features-list {
+    list-style: none;
+    padding: 0;
     margin-bottom: 2rem;
 
-    ul {
-      list-style: none;
-      padding: 0;
+    li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
 
-      li {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-bottom: 1rem;
-        font-size: 1rem;
-
-        .disabled {
-          color: #e74c3c;
-        }
+      .disabled {
+        color: #e74c3c;
       }
+    }
+
+    .feature-disabled {
+      color: #7f8c8d;
+      opacity: 0.8;
     }
   }
 
@@ -376,35 +397,40 @@ const handleUpgrade = async () => {
     width: 100%;
     padding: 1rem 2rem;
     border: none;
-    border-radius: 50px;
+    border-radius: 3.125rem;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.03125rem;
   }
 
   .free-button {
     background: #fff;
     color: #667eea;
-    border: 2px solid #667eea;
+    border: 0.125rem solid #667eea;
 
     &:hover {
       background: #667eea;
       color: #fff;
-      transform: translateY(-2px);
+      transform: translateY(-0.125rem);
     }
   }
 
   .pro-button {
     background: linear-gradient(90deg, #e74c3c, #f39c12);
     color: #fff;
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    box-shadow: 0 0.25rem 0.9375rem rgba(231, 76, 60, 0.3);
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+      transform: translateY(-0.125rem);
+      box-shadow: 0 0.375rem 1.25rem rgba(231, 76, 60, 0.4);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
   }
 
@@ -416,10 +442,11 @@ const handleUpgrade = async () => {
     color: rgba(255, 255, 255, 0.9);
     font-size: 1rem;
     font-weight: 500;
+    margin-top: 3rem;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
   .mode-selection {
     padding: 1rem;
 
@@ -453,10 +480,10 @@ const handleUpgrade = async () => {
 
 .modal-content {
   background: #fff;
-  border-radius: 20px;
+  border-radius: 1.25rem;
   width: 90%;
-  max-width: 500px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  max-width: 31.25rem;
+  box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.2);
   overflow: hidden;
 }
 
@@ -490,7 +517,7 @@ const handleUpgrade = async () => {
   }
 }
 
-.modal-body {
+.modal-padding-content {
   padding: 2rem;
 
   p {
@@ -503,8 +530,8 @@ const handleUpgrade = async () => {
 .email-input {
   width: 100%;
   padding: 1rem;
-  border: 2px solid #e1e8ed;
-  border-radius: 10px;
+  border: 0.125rem solid #e1e8ed;
+  border-radius: 0.625rem;
   font-size: 1rem;
   transition: border-color 0.3s;
 
@@ -526,6 +553,11 @@ const handleUpgrade = async () => {
   gap: 1rem;
   padding: 1.5rem 2rem;
   background: #f8f9fa;
+
+  .submit-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 }
 
 .cancel-button {
@@ -533,7 +565,7 @@ const handleUpgrade = async () => {
   color: #fff;
   border: none;
   padding: 0.75rem 1.5rem;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s;
@@ -548,20 +580,20 @@ const handleUpgrade = async () => {
   color: #fff;
   border: none;
   padding: 0.75rem 1.5rem;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   font-size: 1rem;
   cursor: pointer;
   transition: transform 0.3s;
 
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-0.125rem);
   }
 }
 
 @keyframes fadeInDown {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-1.25rem);
   }
 
   to {
@@ -602,8 +634,8 @@ const handleUpgrade = async () => {
     .email-input {
       width: 100%;
       padding: 0.875rem 3rem 0.875rem 1rem;
-      border: 2px solid var(--border-color);
-      border-radius: 12px;
+      border: 0.125rem solid var(--border-color);
+      border-radius: 0.75rem;
       font-size: 1rem;
       background: var(--bg-secondary);
       color: #999;
@@ -618,7 +650,7 @@ const handleUpgrade = async () => {
       &:focus {
         outline: none;
         border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        box-shadow: 0 0 0 0.1875rem rgba(102, 126, 234, 0.1);
       }
     }
 
@@ -658,62 +690,27 @@ const handleUpgrade = async () => {
 .congrats-modal {
   position: relative;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 24px;
+  border-radius: 1.5rem;
   padding: 3rem;
-  max-width: 500px;
+  max-width: 31.25rem;
   text-align: center;
   animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   overflow: hidden;
 }
 
-.confetti-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-}
-
 .confetti {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 0.625rem;
+  height: 0.625rem;
   background: #f39c12;
   top: -10%;
   animation: confettiFall 3s linear infinite;
-  
-  &:nth-child(odd) {
-    background: #e74c3c;
-  }
-  
-  &:nth-child(3n) {
-    background: #3498db;
-  }
-  
-  &:nth-child(4n) {
-    background: #2ecc71;
-  }
-  
-  @for $i from 1 through 50 {
-    &:nth-child(#{$i}) {
-      left: random(100) * 1%;
-      animation-delay: random(3000) * 0.001s;
-      animation-duration: (2 + random(2)) * 1s;
-    }
-  }
 }
 
 @keyframes confettiFall {
   to {
     transform: translateY(100vh) rotate(360deg);
   }
-}
-
-.congrats-content {
-  position: relative;
-  z-index: 1;
 }
 
 .success-icon {
@@ -736,7 +733,7 @@ const handleUpgrade = async () => {
   color: rgba(255, 255, 255, 0.95);
   margin-bottom: 1.5rem;
   animation: slideDown 0.6s ease 0.5s both;
-  
+
   strong {
     color: #f39c12;
     font-weight: 700;
@@ -748,13 +745,13 @@ const handleUpgrade = async () => {
   background: linear-gradient(90deg, #e74c3c, #f39c12);
   color: #fff;
   padding: 0.75rem 2rem;
-  border-radius: 50px;
+  border-radius: 3.125rem;
   font-size: 1.5rem;
   font-weight: 800;
-  letter-spacing: 2px;
+  letter-spacing: 0.125rem;
   margin-bottom: 1rem;
   animation: scaleIn 0.6s ease 0.6s both;
-  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
+  box-shadow: 0 0.25rem 1.25rem rgba(231, 76, 60, 0.4);
 }
 
 .congrats-subtitle {
@@ -768,6 +765,7 @@ const handleUpgrade = async () => {
     transform: scale(0);
     opacity: 0;
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
@@ -779,6 +777,7 @@ const handleUpgrade = async () => {
     transform: scale(0);
     opacity: 0;
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
@@ -787,9 +786,10 @@ const handleUpgrade = async () => {
 
 @keyframes slideDown {
   0% {
-    transform: translateY(-20px);
+    transform: translateY(-1.25rem);
     opacity: 0;
   }
+
   100% {
     transform: translateY(0);
     opacity: 1;
