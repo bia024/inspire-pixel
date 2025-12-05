@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useToast } from '../composables/useToast'
@@ -15,18 +15,6 @@ const showUpgradeModal = ref(false)
 const isAuthModalOpen = ref(false)
 const showCongrats = ref(false)
 const isProcessingUpgrade = ref(false)
-
-const confettiStyles = computed(() => {
-  const styles = []
-  for (let i = 0; i < 50; i++) {
-    styles.push({
-      '--delay': `${Math.random() * 2}s`,
-      '--left': `${Math.random() * 100}%`,
-      '--duration': `${2 + Math.random() * 3}s`
-    })
-  }
-  return styles
-})
 
 onMounted(() => {
   if (route.query.redirect) {
@@ -213,7 +201,7 @@ const handleUpgrade = async () => {
       <div v-if="showCongrats" class="congrats-overlay" role="alert" aria-live="assertive">
         <section class="congrats-modal">
           <div class="confetti-container">
-            <div class="confetti" v-for="(style, n) in confettiStyles" :key="n" :style="style"></div>
+            <div class="confetti" v-for="n in 50" :key="n"></div>
           </div>
           <div class="congrats-content-inner">
             <div class="success-icon">
@@ -243,219 +231,219 @@ const handleUpgrade = async () => {
   align-items: center;
   justify-content: center;
   padding: 2rem;
-}
 
-.welcome-header {
-  text-align: center;
-  margin-bottom: 3rem;
-  animation: fadeInDown 0.6s ease;
+  .welcome-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeInDown 0.6s ease;
 
-  .brand-identity {
-    margin: 0;
+    .brand-identity {
+      margin: 0;
 
-    .official-logo {
-      height: 5rem;
-      margin-bottom: 1rem;
-      filter: drop-shadow(0 0.25rem 0.5rem rgba(0, 0, 0, 0.2));
+      .official-logo {
+        height: 5rem;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0.25rem 0.5rem rgba(0, 0, 0, 0.2));
+      }
+
+      .brand-name {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.2);
+      }
     }
 
-    .brand-name {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.2);
+    .welcome-text {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 300;
     }
   }
 
-  .welcome-text {
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 300;
+  .container {
+    max-width: 75rem;
+    width: 100%;
   }
-}
 
-.container {
-  max-width: 75rem;
-  width: 100%;
-}
-
-.title {
-  font-size: 3rem;
-  font-weight: 800;
-  color: #fff;
-  text-align: center;
-  margin-bottom: 1rem;
-  text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
-}
-
-.subtitle {
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.9);
-  text-align: center;
-  margin-bottom: 4rem;
-  max-width: 37.5rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.plans {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(21.875rem, 1fr));
-  gap: 2rem;
-  margin-bottom: 3rem;
-}
-
-.plan-card {
-  background: #fff;
-  border-radius: 1.25rem;
-  padding: 2.5rem;
-  box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  cursor: pointer;
-
-  &:hover {
-    transform: translateY(-0.625rem);
-    box-shadow: 0 1.875rem 3.75rem rgba(0, 0, 0, 0.2);
-  }
-}
-
-.free-plan {
-  border: 0.125rem solid #e1e8ed;
-}
-
-.pro-plan {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #fff;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 0.25rem;
-    background: linear-gradient(90deg, #e74c3c, #f39c12);
-  }
-}
-
-.plan-badge {
-  position: absolute;
-  top: -0.75rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(90deg, #e74c3c, #f39c12);
-  color: #fff;
-  padding: 0.5rem 1.5rem;
-  border-radius: 1.25rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
-}
-
-.plan-header {
-  text-align: center;
-  margin-bottom: 2rem;
-
-  h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-
-    .pro-plan & {
-      color: #fff;
-    }
-  }
-}
-
-.price {
-  .amount {
+  .title {
     font-size: 3rem;
     font-weight: 800;
-  }
-
-  .period {
-    font-size: 1rem;
-    opacity: 0.8;
-  }
-}
-
-.plan-features-list {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 2rem;
-
-  li {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+    color: #fff;
+    text-align: center;
     margin-bottom: 1rem;
-    font-size: 1rem;
+    text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
+  }
 
-    .disabled {
-      color: #e74c3c;
+  .subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    margin-bottom: 4rem;
+    max-width: 37.5rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .plans {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(21.875rem, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .plan-card {
+    background: #fff;
+    border-radius: 1.25rem;
+    padding: 2.5rem;
+    box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-0.625rem);
+      box-shadow: 0 1.875rem 3.75rem rgba(0, 0, 0, 0.2);
     }
   }
 
-  .feature-disabled {
-    color: #7f8c8d;
-    opacity: 0.8;
+  .free-plan {
+    border: 0.125rem solid #e1e8ed;
   }
-}
 
-.plan-button {
-  width: 100%;
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 3.125rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.03125rem;
-}
-
-.free-button {
-  background: #fff;
-  color: #667eea;
-  border: 0.125rem solid #667eea;
-
-  &:hover {
-    background: #667eea;
+  .pro-plan {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: #fff;
-    transform: translateY(-0.125rem);
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 0.25rem;
+      background: linear-gradient(90deg, #e74c3c, #f39c12);
+    }
   }
-}
 
-.pro-button {
-  background: linear-gradient(90deg, #e74c3c, #f39c12);
-  color: #fff;
-  box-shadow: 0 0.25rem 0.9375rem rgba(231, 76, 60, 0.3);
-
-  &:hover {
-    transform: translateY(-0.125rem);
-    box-shadow: 0 0.375rem 1.25rem rgba(231, 76, 60, 0.4);
+  .plan-badge {
+    position: absolute;
+    top: -0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, #e74c3c, #f39c12);
+    color: #fff;
+    padding: 0.5rem 1.5rem;
+    border-radius: 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
   }
 
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-}
+  .plan-header {
+    text-align: center;
+    margin-bottom: 2rem;
 
-.guarantee {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 1rem;
-  font-weight: 500;
-  margin-top: 3rem;
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+
+      .pro-plan & {
+        color: #fff;
+      }
+    }
+  }
+
+  .price {
+    .amount {
+      font-size: 3rem;
+      font-weight: 800;
+    }
+
+    .period {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+  }
+
+  .plan-features-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+
+      .disabled {
+        color: #e74c3c;
+      }
+    }
+
+    .feature-disabled {
+      color: #7f8c8d;
+      opacity: 0.8;
+    }
+  }
+
+  .plan-button {
+    width: 100%;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 3.125rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.03125rem;
+  }
+
+  .free-button {
+    background: #fff;
+    color: #667eea;
+    border: 0.125rem solid #667eea;
+
+    &:hover {
+      background: #667eea;
+      color: #fff;
+      transform: translateY(-0.125rem);
+    }
+  }
+
+  .pro-button {
+    background: linear-gradient(90deg, #e74c3c, #f39c12);
+    color: #fff;
+    box-shadow: 0 0.25rem 0.9375rem rgba(231, 76, 60, 0.3);
+
+    &:hover {
+      transform: translateY(-0.125rem);
+      box-shadow: 0 0.375rem 1.25rem rgba(231, 76, 60, 0.4);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  .guarantee {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    font-weight: 500;
+    margin-top: 3rem;
+  }
 }
 
 @media (max-width: 48rem) {
@@ -682,6 +670,10 @@ const handleUpgrade = async () => {
   }
 }
 
+.mode-selection {
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 .congrats-overlay {
   position: fixed;
   top: 0;
@@ -706,23 +698,13 @@ const handleUpgrade = async () => {
   overflow: hidden;
 }
 
-.confetti-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-}
-
 .confetti {
   position: absolute;
   width: 0.625rem;
   height: 0.625rem;
   background: #f39c12;
-  top: -0.625rem;
-  animation: confettiFall var(--duration) linear infinite var(--delay);
+  top: -10%;
+  animation: confettiFall 3s linear infinite;
 }
 
 @keyframes confettiFall {

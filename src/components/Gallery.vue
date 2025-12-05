@@ -23,6 +23,7 @@ const selectedCategory = ref('all')
 onMounted(async () => {
   await fetchCuratedImages(1)
 })
+
 watch(selectedCategory, async (newCategory) => {
   if (newCategory === 'all') {
     await fetchCuratedImages(1)
@@ -70,9 +71,7 @@ const toggleFavorite = async (imageId) => {
   }
 
   const result = await authToggleFavorite(imageId)
-  if (!result.success) {
-    addToast(result.message, 'error')
-  }
+  if (!result.success) addToast(result.message, 'error')
 }
 
 const handleRegisterSuccess = () => {
@@ -96,27 +95,33 @@ const handleDownload = async (img) => {
   }
 
   try {
-    let downloadSrc = img.src
+    let downloadUrl = img.src
     let fileName = `${img.title.toLowerCase().replace(/\s+/g, '-')}`
 
-    if (!isPro.value) {
+    if (isPro.value) {
+      const response = await fetch(img.srcOriginal)
+      if (!response.ok) throw new Error('Failed to fetch image')
+      const blob = await response.blob()
+      downloadUrl = URL.createObjectURL(blob)
+    } else {
       addToast('Adding watermark (Free Plan)...', 'info')
-      downloadSrc = await addWatermark(img.src)
+      downloadUrl = await addWatermark(img.src)
       fileName += '-watermarked'
     }
 
     const link = document.createElement('a')
-    link.href = downloadSrc
+    link.href = downloadUrl
     link.download = `${fileName}.jpg`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
 
-    if (isPro.value) {
-      addToast(`Downloading "${img.title}"...`, 'success')
-    } else {
-      addToast('Download started! Upgrade to Pro to remove watermark.', 'success')
-    }
+    if (isPro.value) URL.revokeObjectURL(downloadUrl)
+
+    addToast(isPro.value
+      ? `Downloading "${img.title}"...`
+      : 'Download started! Upgrade to Pro to remove watermark.', 'success'
+    )
   } catch (error) {
     console.error('Download error:', error)
     addToast('Error preparing download.', 'error')
@@ -124,19 +129,13 @@ const handleDownload = async (img) => {
 }
 
 const isFavorite = (imageId) => {
-  if (typeof imageId !== 'number' || !Number.isInteger(imageId)) {
-    console.warn(`Invalid imageId for isFavorite check: ${imageId}`)
-    return false
-  }
+  if (typeof imageId !== 'number' || !Number.isInteger(imageId)) return false
   return favorites.value.includes(imageId)
 }
 
 const setActiveTab = (tab) => {
   const validTabs = ['all', 'favorites']
-  if (!validTabs.includes(tab)) {
-    console.error(`Invalid tab: ${tab}. Must be one of: ${validTabs.join(', ')}`)
-    return
-  }
+  if (!validTabs.includes(tab)) return
   activeTab.value = tab
 }
 
@@ -153,7 +152,6 @@ const handleFavoriteKeydown = (event, imageId) => {
     toggleFavorite(imageId)
   }
 }
-
 </script>
 
 <template>
@@ -178,24 +176,19 @@ const handleFavoriteKeydown = (event, imageId) => {
         <button :class="{ active: selectedCategory === 'all' }" @click="selectedCategory = 'all'" class="category-btn">
           All
         </button>
-        <button :class="{ active: selectedCategory === 'nature' }" @click="selectedCategory = 'nature'"
-          class="category-btn">
+        <button :class="{ active: selectedCategory === 'nature' }" @click="selectedCategory = 'nature'" class="category-btn">
           🌿 Nature
         </button>
-        <button :class="{ active: selectedCategory === 'architecture' }" @click="selectedCategory = 'architecture'"
-          class="category-btn">
+        <button :class="{ active: selectedCategory === 'architecture' }" @click="selectedCategory = 'architecture'" class="category-btn">
           🏛️ Architecture
         </button>
-        <button :class="{ active: selectedCategory === 'people' }" @click="selectedCategory = 'people'"
-          class="category-btn">
+        <button :class="{ active: selectedCategory === 'people' }" @click="selectedCategory = 'people'" class="category-btn">
           👥 People
         </button>
-        <button :class="{ active: selectedCategory === 'abstract' }" @click="selectedCategory = 'abstract'"
-          class="category-btn">
+        <button :class="{ active: selectedCategory === 'abstract' }" @click="selectedCategory = 'abstract'" class="category-btn">
           🎨 Abstract
         </button>
-        <button :class="{ active: selectedCategory === 'city' }" @click="selectedCategory = 'city'"
-          class="category-btn">
+        <button :class="{ active: selectedCategory === 'city' }" @click="selectedCategory = 'city'" class="category-btn">
           🌆 City
         </button>
       </div>
@@ -219,12 +212,11 @@ const handleFavoriteKeydown = (event, imageId) => {
                   @click.stop="toggleFavorite(img.id)" @keydown.stop="handleFavoriteKeydown($event, img.id)"
                   :aria-label="isFavorite(img.id)
                     ? 'Remove ' + img.title + ' from favorites'
-                    : 'Add ' + img.title + ' to favorites'
-                    " :aria-pressed="isFavorite(img.id)" role="button" tabindex="0">
+                    : 'Add ' + img.title + ' to favorites'"
+                  :aria-pressed="isFavorite(img.id)" role="button" tabindex="0">
                   <Icon :icon="isFavorite(img.id)
                     ? 'material-symbols:favorite'
-                    : 'material-symbols:favorite-outline'
-                    " aria-hidden="true" />
+                    : 'material-symbols:favorite-outline'" aria-hidden="true" />
                 </button>
                 <button class="download-btn" @click.stop="handleDownload(img)" :aria-label="'Download ' + img.title"
                   role="button" tabindex="0">
@@ -233,9 +225,7 @@ const handleFavoriteKeydown = (event, imageId) => {
               </aside>
               <figcaption class="image-info">
                 <h3>{{ img.title }}</h3>
-                <span class="category" role="text" :aria-label="'Category: ' + img.category">{{
-                  img.category
-                }}</span>
+                <span class="category" role="text" :aria-label="'Category: ' + img.category">{{ img.category }}</span>
               </figcaption>
             </figure>
           </article>
@@ -289,28 +279,28 @@ const handleFavoriteKeydown = (event, imageId) => {
     justify-content: center;
     gap: 1rem;
     margin-bottom: 3rem;
-  }
 
-  .tabs button {
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    background: var(--card-bg);
-    color: var(--text-secondary);
-    font-weight: 600;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    button {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      background: var(--card-bg);
+      color: var(--text-secondary);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s;
 
-    &.active {
-      background: linear-gradient(135deg, #e74c3c, #f39c12);
-      color: #fff;
-    }
+      &.active {
+        background: linear-gradient(135deg, #e74c3c, #f39c12);
+        color: #fff;
+      }
 
-    &:hover {
-      transform: translateY(-2px);
+      &:hover {
+        transform: translateY(-2px);
+      }
     }
   }
 
@@ -320,31 +310,31 @@ const handleFavoriteKeydown = (event, imageId) => {
     gap: 0.75rem;
     margin-bottom: 2rem;
     flex-wrap: wrap;
-  }
 
-  .category-btn {
-    padding: 0.6rem 1.5rem;
-    border: 2px solid var(--border-color);
-    border-radius: 50px;
-    cursor: pointer;
-    background: var(--card-bg);
-    color: var(--text-secondary);
-    font-weight: 500;
-    font-size: 0.9rem;
-    transition: all 0.3s;
+    .category-btn {
+      padding: 0.6rem 1.5rem;
+      border: 2px solid var(--border-color);
+      border-radius: 50px;
+      cursor: pointer;
+      background: var(--card-bg);
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.3s;
 
-    &.active {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #fff;
-      border-color: transparent;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-    }
+      &.active {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #fff;
+        border-color: transparent;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      }
 
-    &:hover:not(.active) {
-      border-color: #667eea;
-      transform: translateY(-2px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      &:hover:not(.active) {
+        border-color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
     }
   }
 
@@ -352,152 +342,146 @@ const handleFavoriteKeydown = (event, imageId) => {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem;
-  }
 
-  .image-card {
-    background: var(--card-bg);
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px var(--card-shadow);
-    position: relative;
-  }
+    .image-card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px var(--card-shadow);
+      position: relative;
 
-  .image-container {
-    position: relative;
-    overflow: hidden;
-    height: 250px;
-    cursor: pointer;
+      .image-container {
+        position: relative;
+        overflow: hidden;
+        height: 250px;
+        cursor: pointer;
 
-    &.is-locked img {
-      filter: blur(4px) grayscale(50%);
+        &.is-locked img {
+          filter: blur(4px) grayscale(50%);
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.3s, filter 0.3s;
+        }
+
+        &:hover img {
+          transform: scale(1.1);
+        }
+
+        .lock-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background: rgba(0, 0, 0, 0.3);
+          color: #fff;
+          z-index: 2;
+
+          .lock-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: #f1c40f;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+          }
+
+          span {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+          }
+        }
+
+        .overlay {
+          position: absolute;
+          top: 0;
+          right: 0;
+          padding: 1rem;
+          opacity: 0;
+          display: flex;
+          gap: 0.5rem;
+          transition: opacity 0.3s;
+
+          .favorite-btn,
+          .download-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            border: none;
+            transition: all 0.3s;
+          }
+
+          .favorite-btn.favorited {
+            background: #e74c3c;
+            color: #fff;
+          }
+
+          .download-btn {
+            color: #2c3e50;
+
+            &:hover {
+              background: #3498db;
+              color: #fff;
+              transform: scale(1.1);
+            }
+          }
+        }
+
+        &:hover .overlay {
+          opacity: 1;
+        }
+
+        .image-info {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          padding: 1.5rem;
+          background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7), transparent);
+          transform: translateY(100%);
+          opacity: 0;
+          transition: all 0.3s ease;
+          z-index: 3;
+
+          h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.5rem;
+          }
+
+          .category {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: capitalize;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+          }
+        }
+
+        &:hover .image-info {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
     }
-  }
-
-  .image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s, filter 0.3s;
-  }
-
-  .image-container:hover img {
-    transform: scale(1.1);
-  }
-
-  .lock-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.3);
-    color: #fff;
-    z-index: 2;
-
-    .lock-icon {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-      color: #f1c40f;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-    }
-
-    span {
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
-  }
-
-  .overlay {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 1rem;
-    opacity: 0;
-    transition: opacity 0.3s;
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .image-card:hover .overlay {
-    opacity: 1;
-  }
-
-  .favorite-btn,
-  .download-btn {
-    background: rgba(255, 255, 255, 0.9);
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s;
-    font-size: 1.5rem;
-  }
-
-  .favorite-btn.favorited {
-    background: #e74c3c;
-    color: #fff;
-  }
-
-  .download-btn {
-    background: rgba(255, 255, 255, 0.9);
-    color: #2c3e50;
-
-    &:hover {
-      background: #3498db;
-      color: #fff;
-      transform: scale(1.1);
-    }
-  }
-
-  .favorite-btn:hover {
-    transform: scale(1.1);
-  }
-
-  .image-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 1.5rem;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7), transparent);
-    transform: translateY(100%);
-    opacity: 0;
-    transition: all 0.3s ease;
-    z-index: 3;
-  }
-
-  .image-card:hover .image-info {
-    transform: translateY(0);
-    opacity: 1;
-  }
-
-  .image-info h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 0.5rem;
-  }
-
-  .image-info .category {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.9);
-    text-transform: capitalize;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    display: inline-block;
-    backdrop-filter: blur(10px);
   }
 
   .empty-state {
@@ -515,19 +499,19 @@ const handleFavoriteKeydown = (event, imageId) => {
 @media (max-width: 768px) {
   .gallery-section {
     padding: 2rem 1rem;
-  }
 
-  .section-title {
-    font-size: 2rem;
-  }
+    .section-title {
+      font-size: 2rem;
+    }
 
-  .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-  }
+    .gallery {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
 
-  .tabs {
-    flex-direction: column;
+    .tabs {
+      flex-direction: column;
+    }
   }
 }
 
@@ -539,89 +523,5 @@ const handleFavoriteKeydown = (event, imageId) => {
   .image-container {
     height: 200px;
   }
-}
-
-.skeleton-card {
-  pointer-events: none;
-}
-
-.skeleton-image {
-  width: 100%;
-  height: 100%;
-  background: #eee;
-  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
-  background-size: 200% 100%;
-  animation: 1.5s shine linear infinite;
-}
-
-.absolute-skeleton {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-}
-
-.skeleton-text {
-  background: #eee;
-  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
-  background-size: 200% 100%;
-  animation: 1.5s shine linear infinite;
-  border-radius: 4px;
-}
-
-.skeleton-text.title {
-  height: 24px;
-  width: 70%;
-  margin-bottom: 0.5rem;
-}
-
-.skeleton-text.category {
-  height: 20px;
-  width: 40%;
-  border-radius: 20px;
-}
-
-@keyframes shine {
-  to {
-    background-position-x: -200%;
-  }
-}
-
-.load-more-container {
-  display: flex;
-  justify-content: center;
-  margin: 3rem 0;
-}
-
-.load-more-btn {
-  padding: 1rem 3rem;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: #fff;
-  border: none;
-  border-radius: 50px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-  }
-
-  &:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-}
-
-.loading-more {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
 }
 </style>
