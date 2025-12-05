@@ -8,10 +8,11 @@ import ImgSunset from '../assets/sunset.jpg'
 import ImgBeach from '../assets/beach.png'
 import ImgSunflowers from '../assets/sunflowers.jpg'
 import ImgNight from '../assets/night.jpg'
-import ImgMountain from '../assets/mountain.jpg' 
+import ImgMountain from '../assets/mountain.jpg'
+// atualizei
 
 const route = useRoute()
-const { isPro } = useFirebaseAuth() 
+const { isPro } = useFirebaseAuth()
 const searchTerm = ref('')
 const emit = defineEmits(['search'])
 
@@ -85,11 +86,9 @@ watch(() => route.query.q, (newQuery) => {
 
 const handleSearch = () => {
   const term = searchTerm.value?.trim()
-  
   if (term && term.length > 100) {
     searchTerm.value = term.substring(0, 100)
   }
-  
   emit('search', searchTerm.value)
 }
 
@@ -132,7 +131,8 @@ const debouncedSearch = () => {
             <Icon icon="material-symbols:close" />
           </button>
         </form>
-      </header>      
+      </header>
+
       <aside v-if="isPro" class="hero-showcase pro-carousel" aria-label="Premium Collection Carousel">
         <article class="carousel-container" @mouseenter="pauseSlideShow" @mouseleave="resumeSlideShow">
           <transition-group name="slide" tag="section" class="carousel-slides">
@@ -157,15 +157,14 @@ const debouncedSearch = () => {
           </nav>
         </article>
       </aside>
+
       <aside v-else class="hero-showcase" aria-label="Premium Content Preview">
         <figure class="showcase-card">
-          <picture class="card-image">
-            <img :src="ImgMountain" alt="Premium Image Preview" loading="lazy" />
-            <figcaption class="premium-overlay">
-              <Icon icon="material-symbols:lock" class="lock-icon" />
-              <span>Premium Collection</span>
-            </figcaption>
-          </picture>
+          <img :src="ImgMountain" alt="Premium Image Preview" loading="lazy" />
+          <figcaption class="premium-overlay">
+            <Icon icon="material-symbols:lock" class="lock-icon" />
+            <span>Premium Collection</span>
+          </figcaption>
           <figcaption class="card-content">
             <h3>Unlock the Extraordinary</h3>
             <p>Get unlimited access to 4K downloads and exclusive content.</p>
@@ -203,7 +202,7 @@ const debouncedSearch = () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0,0,0,0.5);
     z-index: 0;
   }
 
@@ -222,17 +221,16 @@ const debouncedSearch = () => {
     flex: 1;
     color: #fff;
     text-align: left;
-    
+
     h2 {
       font-size: clamp(2.5rem, 4vw, 3.5rem);
       font-weight: 800;
       margin-bottom: 1rem;
       line-height: 1.2;
-
       span {
         color: #e1306c;
         font-style: italic;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
       }
     }
 
@@ -278,15 +276,15 @@ const debouncedSearch = () => {
         font-size: 1.1rem;
         border-radius: 50px;
         border: 2px solid #fff;
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(255,255,255,0.95);
         color: #333;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.2);
         transition: all 0.3s ease;
 
         &:focus {
           outline: none;
           border-color: #e1306c;
-          box-shadow: 0 0 0 3px rgba(225, 48, 108, 0.5);
+          box-shadow: 0 0 0 3px rgba(225,48,108,0.5);
         }
       }
 
@@ -316,59 +314,53 @@ const debouncedSearch = () => {
     animation: float 6s ease-in-out infinite;
 
     .showcase-card {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255,255,255,0.15);
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255,255,255,0.2);
       margin: 0;
 
-      .card-image {
-        position: relative;
+      img {
+        width: 100%;
         height: 200px;
-        
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
+        object-fit: cover;
+        display: block;
+      }
+
+      .premium-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 200px;
+        background: rgba(0,0,0,0.6);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        gap: 0.5rem;
+
+        .lock-icon {
+          font-size: 2.5rem;
+          color: #f1c40f;
         }
 
-        .premium-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0, 0, 0, 0.6);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          color: #fff;
-          gap: 0.5rem;
-
-          .lock-icon {
-            font-size: 2.5rem;
-            color: #f1c40f;
-            filter: drop-shadow(0 0 5px rgba(241, 196, 15, 0.8));
-          }
-
-          span {
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-          }
+        span {
+          font-weight: 600;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          font-size: 0.9rem;
         }
       }
 
       .card-content {
         padding: 1.5rem;
         text-align: center;
-        background: rgba(255, 255, 255, 0.9);
-        
+        background: rgba(255,255,255,0.9);
+
         h3 {
           font-size: 1.5rem;
           color: #333;
@@ -385,7 +377,7 @@ const debouncedSearch = () => {
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
-          background: linear-gradient(90deg, #e1306c, #f77737);
+          background: linear-gradient(90deg,#e1306c,#f77737);
           color: #fff;
           padding: 0.8rem 2rem;
           border-radius: 50px;
@@ -395,7 +387,7 @@ const debouncedSearch = () => {
 
           &:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(225, 48, 108, 0.4);
+            box-shadow: 0 10px 20px rgba(225,48,108,0.4);
           }
         }
       }
@@ -403,167 +395,9 @@ const debouncedSearch = () => {
   }
 
   @keyframes float {
-    0% {
-      transform: translateY(0px);
-    }
-
-    50% {
-      transform: translateY(-15px);
-    }
-
-    100% {
-      transform: translateY(0px);
-    }
-  }
-
-  .hero-showcase.pro-carousel {
-    .carousel-container {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(10px);
-      position: relative;
-      height: 350px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .carousel-slides {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-
-    .carousel-slide {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      }
-
-      .slide-caption {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-        padding: 2rem 1.5rem 1.5rem;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-
-        .premium-badge {
-          font-size: 1.5rem;
-          color: #f1c40f;
-          flex-shrink: 0;
-        }
-
-        h3 {
-          font-size: 1.3rem;
-          margin: 0;
-          font-weight: 600;
-        }
-      }
-    }
-
-    .carousel-indicators {
-      position: absolute;
-      bottom: 1rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 0.5rem;
-      z-index: 10;
-
-      button {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        border: 2px solid #fff;
-        background: rgba(255, 255, 255, 0.5);
-        cursor: pointer;
-        transition: all 0.3s;
-        padding: 0;
-
-        &.active {
-          background: #fff;
-          width: 30px;
-          border-radius: 5px;
-          border-color: #e1306c;
-        }
-
-        &:hover {
-          background: rgba(255, 255, 255, 0.8);
-        }
-      }
-    }
-
-    .carousel-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255, 255, 255, 0.7);
-      border: none;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s;
-      z-index: 10;
-      opacity: 0;
-      color: #333;
-      font-size: 1.5rem;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-
-      &:hover {
-        background: #fff;
-        transform: translateY(-50%) scale(1.1);
-        opacity: 1;
-      }
-
-      &.prev {
-        left: 1rem;
-      }
-
-      &.next {
-        right: 1rem;
-      }
-    }
-
-    .carousel-container:hover .carousel-nav {
-      opacity: 1;
-    }
-  }
-
-  .slide-enter-active,
-  .slide-leave-active {
-    transition: all 0.6s ease;
-  }
-
-  .slide-enter-from {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-
-  .slide-leave-to {
-    opacity: 0;
-    transform: translateX(-100%); 
-  }
-  
-  .slide-enter-active {
-    position: absolute;
-    width: 100%;
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
   }
 
   @media (min-width: 992px) {
