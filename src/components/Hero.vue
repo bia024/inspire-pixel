@@ -4,17 +4,20 @@ import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
 import { useFirebaseAuth } from '../composables/useFirebaseAuth'
 
+// Importações de Imagens
 import ImgSwans from '../assets/swans.jpg'
 import ImgSunset from '../assets/sunset.jpg'
 import ImgBeach from '../assets/beach.png'
 import ImgSunflowers from '../assets/sunflowers.jpg'
 import ImgNight from '../assets/night.jpg'
+import ImgMountain from '../assets/mountain.jpg' // Importa a imagem de preview para o modo não-pro
 
 const route = useRoute()
-const { isPro } = useFirebaseAuth()
+const { isPro } = useFirebaseAuth() // Estado reativo se o usuário é Pro
 const searchTerm = ref('')
 const emit = defineEmits(['search'])
 
+// Imagens Exclusivas para Usuários Pro
 const premiumImages = [
   { src: ImgSwans, title: 'Graceful Swans' },
   { src: ImgSunset, title: 'Golden Sunset' },
@@ -23,11 +26,14 @@ const premiumImages = [
   { src: ImgNight, title: 'Starry Night' }
 ]
 
+// Estado do Carrossel
 const currentSlide = ref(0)
 let slideInterval = null
 
+// --- Lógica do Carrossel ---
 const startSlideShow = () => {
   stopSlideShow()
+  // Avança a cada 3 segundos (3000ms)
   slideInterval = setInterval(() => {
     currentSlide.value = (currentSlide.value + 1) % premiumImages.length
   }, 3000)
@@ -45,6 +51,7 @@ const nextSlide = () => {
 }
 
 const prevSlide = () => {
+  // Garante que o índice não seja negativo
   currentSlide.value = (currentSlide.value - 1 + premiumImages.length) % premiumImages.length
 }
 
@@ -53,21 +60,27 @@ const pauseSlideShow = () => {
 }
 
 const resumeSlideShow = () => {
+  // Retorna o carrossel automático apenas se o usuário for Pro
   if (isPro.value) {
     startSlideShow()
   }
 }
 
+// --- Hooks de Ciclo de Vida ---
 onMounted(() => {
+  // Inicia o carrossel se o usuário for Pro ao montar o componente
   if (isPro.value) {
     startSlideShow()
   }
 })
 
 onUnmounted(() => {
+  // Limpa o intervalo ao desmontar o componente
   stopSlideShow()
 })
 
+// --- Watchers ---
+// Reage à mudança de status Pro (e.g., após um login)
 watch(isPro, (newValue) => {
   if (newValue) {
     startSlideShow()
@@ -76,23 +89,31 @@ watch(isPro, (newValue) => {
   }
 })
 
+// Observa a query string 'q' da rota e atualiza o estado local e dispara a pesquisa
 watch(() => route.query.q, (newQuery) => {
   if (newQuery !== undefined && newQuery !== searchTerm.value) {
     searchTerm.value = newQuery
     emit('search', newQuery)
   }
-}, { immediate: true })
+}, { immediate: true }) // Roda imediatamente para pegar o valor inicial da URL
 
+// --- Lógica de Pesquisa ---
 const handleSearch = () => {
   const term = searchTerm.value?.trim()
+  
+  // Limitação de comprimento (máximo 100 caracteres)
   if (term && term.length > 100) {
     searchTerm.value = term.substring(0, 100)
   }
+  
+  // Emite o evento de pesquisa para o componente pai
   emit('search', searchTerm.value)
 }
 
 const executeSearch = () => {
   handleSearch()
+  
+  // Role para a seção de galeria após a pesquisa
   const gallery = document.getElementById('gallery') || document.querySelector('.gallery-section')
   if (gallery) {
     gallery.scrollIntoView({ behavior: 'smooth' })
@@ -105,6 +126,7 @@ const clearSearch = () => {
 }
 
 let searchTimeout = null
+// Função de debounce para evitar múltiplas pesquisas enquanto o usuário digita
 const debouncedSearch = () => {
   clearTimeout(searchTimeout)
   searchTimeout = setTimeout(() => {
@@ -131,34 +153,42 @@ const debouncedSearch = () => {
           </button>
         </form>
       </header>
-      <aside v-if="isPro" class="hero-showcase pro-carousel" aria-label="Premium Collection">
+      
+      <!-- Carrossel para Usuários PRO -->
+      <aside v-if="isPro" class="hero-showcase pro-carousel" aria-label="Premium Collection Carousel">
         <article class="carousel-container" @mouseenter="pauseSlideShow" @mouseleave="resumeSlideShow">
           <transition-group name="slide" tag="section" class="carousel-slides">
             <figure v-for="(image, index) in premiumImages" :key="index" v-show="index === currentSlide"
-              class="carousel-slide">
-              <img :src="image.src" :alt="image.title" />
+              class="carousel-slide" role="img" :aria-label="image.title">
+              <img :src="image.src" :alt="image.title" loading="lazy" />
               <figcaption class="slide-caption">
                 <Icon icon="material-symbols:workspace-premium" class="premium-badge" />
                 <h3>{{ image.title }}</h3>
               </figcaption>
             </figure>
           </transition-group>
+          
+          <!-- Botões de Navegação -->
           <button class="carousel-nav prev" @click="prevSlide" aria-label="Previous slide">
             <Icon icon="material-symbols:chevron-left" />
           </button>
           <button class="carousel-nav next" @click="nextSlide" aria-label="Next slide">
             <Icon icon="material-symbols:chevron-right" />
           </button>
+          
+          <!-- Indicadores de Slide -->
           <nav class="carousel-indicators" aria-label="Carousel navigation">
             <button v-for="(image, index) in premiumImages" :key="index" :class="{ active: index === currentSlide }"
               @click="currentSlide = index" :aria-label="'Go to slide ' + (index + 1)"></button>
           </nav>
         </article>
       </aside>
+      
+      <!-- Preview para Não-Usuários PRO -->
       <aside v-else class="hero-showcase" aria-label="Premium Content Preview">
         <figure class="showcase-card">
           <picture class="card-image">
-            <img src="../assets/mountain.jpg" alt="Premium Image Preview" />
+            <img :src="ImgMountain" alt="Premium Image Preview" loading="lazy" />
             <figcaption class="premium-overlay">
               <Icon icon="material-symbols:lock" class="lock-icon" />
               <span>Premium Collection</span>
@@ -174,12 +204,26 @@ const debouncedSearch = () => {
           </figcaption>
         </figure>
       </aside>
+      
     </article>
   </section>
 </template>
 
 <style scoped lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+// Variáveis de Tema (Adaptadas para usar no SCSS)
+// Note: Em um ambiente Vue real, é melhor definir estas em um arquivo global ou usar Tailwind.
+// Para este exemplo, assumimos que :root (ou body) define:
+// --overlay-bg: rgba(0, 0, 0, 0.5);
+// --overlay-light: rgba(255, 255, 255, 0.15);
+// --card-shadow: rgba(0, 0, 0, 0.5);
+// --bg-primary: #fff;
+// --text-primary: #333;
+// --text-secondary: #666;
+
 .hero {
+  // Garante que a imagem de fundo seja carregada
   background-image: url('../assets/beach.png');
   background-size: cover;
   background-position: center;
@@ -189,6 +233,8 @@ const debouncedSearch = () => {
   justify-content: center;
   position: relative;
   padding: 0 2rem;
+  font-family: 'Inter', sans-serif;
+  z-index: 1; // Garante que a seção hero esteja acima de qualquer elemento de fundo fora dela
 
   &::before {
     content: '';
@@ -197,12 +243,13 @@ const debouncedSearch = () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--overlay-bg);
+    background: rgba(0, 0, 0, 0.5); // Usando um valor padrão para overlay
+    z-index: 0; // O overlay está no fundo, mas acima da imagem de fundo
   }
 
   .hero-content {
     position: relative;
-    z-index: 1;
+    z-index: 2; // Conteúdo acima do overlay
     max-width: 1200px;
     width: 100%;
     display: flex;
@@ -215,16 +262,17 @@ const debouncedSearch = () => {
     flex: 1;
     color: #fff;
     text-align: left;
-
+    
     h2 {
-      font-size: 3.5rem;
-      font-weight: 700;
+      font-size: clamp(2.5rem, 4vw, 3.5rem); // Font size responsivo
+      font-weight: 800;
       margin-bottom: 1rem;
       line-height: 1.2;
 
       span {
         color: #e1306c;
         font-style: italic;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
       }
     }
 
@@ -260,7 +308,7 @@ const debouncedSearch = () => {
         }
 
         .search-icon {
-          font-size: 1.2rem;
+          font-size: 1.5rem;
         }
       }
 
@@ -269,14 +317,15 @@ const debouncedSearch = () => {
         padding: 1rem 3rem;
         font-size: 1.1rem;
         border-radius: 50px;
-        border: 1px solid var(--border-color);
-        background: var(--bg-primary);
-        color: var(--text-primary);
-        box-shadow: 0 4px 15px var(--card-shadow);
+        border: 2px solid #fff;
+        background: rgba(255, 255, 255, 0.95);
+        color: #333;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
 
         &:focus {
           outline: none;
+          border-color: #e1306c;
           box-shadow: 0 0 0 3px rgba(225, 48, 108, 0.5);
         }
       }
@@ -288,13 +337,14 @@ const debouncedSearch = () => {
         transform: translateY(-50%);
         background: none;
         border: none;
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         color: #999;
         cursor: pointer;
         transition: color 0.3s;
+        z-index: 2;
 
         &:hover {
-          color: #333;
+          color: #e1306c;
         }
       }
     }
@@ -302,21 +352,22 @@ const debouncedSearch = () => {
 
   .hero-showcase {
     flex: 0 0 350px;
-    display: none;
+    display: none; /* Escondido por padrão em mobile */
     animation: float 6s ease-in-out infinite;
 
     .showcase-card {
-      background: var(--overlay-light);
+      background: rgba(255, 255, 255, 0.15);
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 20px 40px var(--card-shadow);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       margin: 0;
 
       .card-image {
         position: relative;
         height: 200px;
-
+        
         img {
           width: 100%;
           height: 100%;
@@ -330,7 +381,7 @@ const debouncedSearch = () => {
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(0, 0, 0, 0.4);
+          background: rgba(0, 0, 0, 0.6);
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -339,15 +390,16 @@ const debouncedSearch = () => {
           gap: 0.5rem;
 
           .lock-icon {
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: #f1c40f;
+            filter: drop-shadow(0 0 5px rgba(241, 196, 15, 0.8));
           }
 
           span {
             font-weight: 600;
             letter-spacing: 1px;
             text-transform: uppercase;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
           }
         }
       }
@@ -355,16 +407,17 @@ const debouncedSearch = () => {
       .card-content {
         padding: 1.5rem;
         text-align: center;
-
+        background: rgba(255, 255, 255, 0.9);
+        
         h3 {
           font-size: 1.5rem;
-          color: var(--text-primary);
+          color: #333;
           margin-bottom: 0.5rem;
         }
 
         p {
           font-size: 0.9rem;
-          color: var(--text-secondary);
+          color: #666;
           margin-bottom: 1.5rem;
         }
 
@@ -372,16 +425,17 @@ const debouncedSearch = () => {
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
-          background: linear-gradient(90deg, #e74c3c, #f39c12);
+          background: linear-gradient(90deg, #e1306c, #f77737); // Cor mais Instagram/Vibrante
           color: #fff;
           padding: 0.8rem 2rem;
           border-radius: 50px;
           text-decoration: none;
-          font-weight: 600;
-          transition: transform 0.3s;
+          font-weight: 700;
+          transition: transform 0.3s, box-shadow 0.3s;
 
           &:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(225, 48, 108, 0.4);
           }
         }
       }
@@ -402,15 +456,17 @@ const debouncedSearch = () => {
     }
   }
 
+  // --- Estilos Específicos do Carrossel PRO ---
   .hero-showcase.pro-carousel {
     .carousel-container {
-      background: var(--overlay-light);
+      background: rgba(255, 255, 255, 0.15);
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 20px 40px var(--card-shadow);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(10px);
       position: relative;
       height: 350px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .carousel-slides {
@@ -482,6 +538,7 @@ const debouncedSearch = () => {
           background: #fff;
           width: 30px;
           border-radius: 5px;
+          border-color: #e1306c;
         }
 
         &:hover {
@@ -494,7 +551,7 @@ const debouncedSearch = () => {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.7); // Levemente mais transparente
       border: none;
       width: 40px;
       height: 40px;
@@ -506,12 +563,14 @@ const debouncedSearch = () => {
       transition: all 0.3s;
       z-index: 10;
       opacity: 0;
-      color: #2c3e50;
+      color: #333;
       font-size: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 
       &:hover {
         background: #fff;
         transform: translateY(-50%) scale(1.1);
+        opacity: 1;
       }
 
       &.prev {
@@ -528,6 +587,7 @@ const debouncedSearch = () => {
     }
   }
 
+  // --- Transições ---
   .slide-enter-active,
   .slide-leave-active {
     transition: all 0.6s ease;
@@ -540,12 +600,20 @@ const debouncedSearch = () => {
 
   .slide-leave-to {
     opacity: 0;
-    transform: translateX(-100%);
+    // O slide sai para a esquerda, mas mantém-se à frente do slide que entra
+    transform: translateX(-100%); 
+  }
+  
+  // Evita que o slide de saída e entrada colidam completamente
+  .slide-enter-active {
+    position: absolute;
+    width: 100%;
   }
 
+  // --- Responsividade ---
   @media (min-width: 992px) {
     .hero-showcase {
-      display: block;
+      display: block; // Mostra o carrossel/preview em desktop
     }
   }
 
@@ -553,6 +621,7 @@ const debouncedSearch = () => {
     .hero-content {
       flex-direction: column;
       text-align: center;
+      gap: 2rem;
     }
 
     .hero-text {
