@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { Icon } from '@iconify/vue'
-import { useAuth } from '../composables/useAuth'
+import { useFirebaseAuth } from '../composables/useFirebaseAuth'
 import { useToast } from '../composables/useToast'
 
 const props = defineProps({
@@ -10,13 +10,15 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'register-success'])
 
-const { login, register } = useAuth()
+const { login, register, resetPassword } = useFirebaseAuth()
 const { addToast } = useToast()
 
 const activeTab = ref('login')
 const isLoading = ref(false)
 const showPassword = ref(false)
 const showRegisterPassword = ref(false)
+const showForgotPassword = ref(false)
+const forgotPasswordEmail = ref('')
 
 const loginForm = ref({ email: '', password: '' })
 const registerForm = ref({ name: '', email: '', password: '' })
@@ -68,8 +70,8 @@ const handleLogin = async () => {
 
   isLoading.value = true
 
-  setTimeout(() => {
-    const result = login(loginForm.value.email, loginForm.value.password)
+  try {
+    const result = await login(loginForm.value.email, loginForm.value.password)
 
     if (result.success) {
       addToast(result.message, 'success')
@@ -78,9 +80,12 @@ const handleLogin = async () => {
     } else {
       addToast(result.message, 'error')
     }
-
+  } catch (error) {
+    console.error('Login error:', error)
+    addToast('An error occurred during login.', 'error')
+  } finally {
     isLoading.value = false
-  }, 800)
+  }
 }
 
 const handleRegister = async () => {
@@ -96,8 +101,8 @@ const handleRegister = async () => {
 
   isLoading.value = true
 
-  setTimeout(() => {
-    const result = register({
+  try {
+    const result = await register({
       name: registerForm.value.name,
       email: registerForm.value.email,
       password: registerForm.value.password
@@ -111,16 +116,45 @@ const handleRegister = async () => {
     } else {
       addToast(result.message, 'error')
     }
-
+  } catch (error) {
+    console.error('Registration error:', error)
+    addToast('An error occurred during registration.', 'error')
+  } finally {
     isLoading.value = false
-  }, 800)
+  }
+}
+
+const handleForgotPassword = async () => {
+  if (!forgotPasswordEmail.value) {
+    addToast('Please enter your email address.', 'warning')
+    return
+  }
+
+  isLoading.value = true
+
+  try {
+    const result = await resetPassword(forgotPasswordEmail.value)
+
+    if (result.success) {
+      addToast(result.message, 'success')
+      showForgotPassword.value = false
+      forgotPasswordEmail.value = ''
+    } else {
+      addToast(result.message, 'error')
+    }
+  } catch (error) {
+    console.error('Password reset error:', error)
+    addToast('An error occurred. Please try again.', 'error')
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
 
 <template>
   <transition name="modal">
     <div v-if="isOpen" class="auth-modal-overlay" @click="$emit('close')">
-      <dialog open class="auth-modal" @click.stop>
+      <div class="auth-modal" role="dialog" aria-modal="true" @click.stop>
         <button class="close-btn" @click="$emit('close')" aria-label="Close modal">
           <Icon icon="material-symbols:close" />
         </button>
@@ -155,7 +189,24 @@ const handleRegister = async () => {
                 </button>
               </div>
             </fieldset>
-            <button type="submit" class="submit-btn" :disabled="isLoading">
+            <div class="forgot-password-link">
+              <button type="button" @click="showForgotPassword = !showForgotPassword" class="link-button">
+                {{ showForgotPassword ? 'Back to Login' : 'Forgot Password?' }}
+              </button>
+            </div>
+            <div v-if="showForgotPassword" class="forgot-password-form">
+              <fieldset class="form-group">
+                <label>Email for Password Reset</label>
+                <div class="input-wrapper">
+                  <Icon icon="material-symbols:mail-outline" class="input-icon" />
+                  <input type="email" v-model="forgotPasswordEmail" placeholder="hello@example.com" />
+                </div>
+              </fieldset>
+              <button type="button" @click="handleForgotPassword" class="submit-btn" :disabled="isLoading">
+                {{ isLoading ? 'Sending...' : 'Send Reset Link' }}
+              </button>
+            </div>
+            <button v-else type="submit" class="submit-btn" :disabled="isLoading">
               {{ isLoading ? 'Logging in...' : 'Login' }}
             </button>
           </form>
@@ -229,7 +280,7 @@ const handleRegister = async () => {
             </button>
           </form>
         </main>
-      </dialog>
+      </div>
     </div>
   </transition>
 </template>
@@ -440,6 +491,44 @@ const handleRegister = async () => {
         flex-shrink: 0;
       }
     }
+  }
+}
+
+.forgot-password-link {
+  text-align: right;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+
+  .link-button {
+    background: none;
+    border: none;
+    color: #e1306c;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s;
+    padding: 0;
+
+    &:hover {
+      color: #c13584;
+      text-decoration: underline;
+    }
+  }
+}
+
+.forgot-password-form {
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

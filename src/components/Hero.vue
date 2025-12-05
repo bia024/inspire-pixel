@@ -2,7 +2,7 @@
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
-import { useAuth } from '../composables/useAuth'
+import { useFirebaseAuth } from '../composables/useFirebaseAuth'
 
 import ImgSwans from '../assets/swans.jpg'
 import ImgSunset from '../assets/sunset.jpg'
@@ -11,7 +11,7 @@ import ImgSunflowers from '../assets/sunflowers.jpg'
 import ImgNight from '../assets/night.jpg'
 
 const route = useRoute()
-const { isPro } = useAuth()
+const { isPro } = useFirebaseAuth()
 const searchTerm = ref('')
 const emit = defineEmits(['search'])
 

@@ -55,7 +55,7 @@
 <style scoped lang="scss">
 .legal-view {
     padding: 4rem 2rem;
-    background-color: #fff;
+    background-color: var(--bg-primary);
     flex: 1;
 
     .container {
@@ -65,16 +65,16 @@
 
     .page-title {
         font-size: 2.5rem;
-        color: #2c3e50;
+        color: var(--text-primary);
         margin-bottom: 2rem;
     }
 
     .content {
-        color: #555;
+        color: var(--text-secondary);
         line-height: 1.8;
 
         h2 {
-            color: #2c3e50;
+            color: var(--text-primary);
             margin-top: 2rem;
             margin-bottom: 1rem;
         }

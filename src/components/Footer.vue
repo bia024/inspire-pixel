@@ -94,6 +94,8 @@ const subscribeNewsletter = async () => {
                 <h4>Quick Links</h4>
                 <ul>
                     <li><router-link :to="{ name: 'home' }">Home</router-link></li>
+                    <li><router-link :to="{ name: 'stories' }">Music Stories <span
+                                class="new-badge">New</span></router-link></li>
                     <li><router-link :to="{ name: 'about' }">About Us</router-link></li>
                     <li><router-link :to="{ name: 'contact' }">Contact</router-link></li>
                     <li><router-link :to="{ name: 'mode-selection' }">Go Pro</router-link></li>
@@ -233,6 +235,16 @@ const subscribeNewsletter = async () => {
                     &:hover {
                         color: #f39c12;
                         transform: translateX(5px);
+                    }
+
+                    .new-badge {
+                        background: linear-gradient(135deg, #e1306c, #c13584);
+                        color: white;
+                        font-size: 0.7rem;
+                        padding: 2px 6px;
+                        border-radius: 4px;
+                        margin-left: 5px;
+                        vertical-align: middle;
                     }
                 }
             }
@@ -443,7 +455,7 @@ const subscribeNewsletter = async () => {
 @media (max-width: 640px) {
     .footer {
         padding: 3rem 1.5rem 1.5rem;
-
+        
         .footer-content {
             grid-template-columns: 1fr;
             gap: 2rem;

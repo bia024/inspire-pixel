@@ -46,10 +46,10 @@ const getIcon = (type) => {
 
 .toast {
   pointer-events: auto;
-  background: #fff;
+  background: var(--card-bg);
   padding: 1rem 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px var(--card-shadow);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -90,7 +90,7 @@ const getIcon = (type) => {
   .toast-message {
     flex-grow: 1;
     font-size: 0.95rem;
-    color: #2c3e50;
+    color: var(--text-primary);
     line-height: 1.4;
   }
 
@@ -98,14 +98,14 @@ const getIcon = (type) => {
     background: none;
     border: none;
     cursor: pointer;
-    color: #95a5a6;
+    color: var(--text-secondary);
     padding: 4px;
     display: flex;
     align-items: center;
     transition: color 0.2s;
 
     &:hover {
-      color: #2c3e50;
+      color: var(--text-primary);
     }
   }
 }

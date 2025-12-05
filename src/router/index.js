@@ -39,6 +39,21 @@ const router = createRouter({
       path: '/dmca',
       name: 'dmca',
       component: () => import('../views/CopyrightView.vue')
+    },
+    {
+      path: '/stories',
+      name: 'stories',
+      component: () => import('../views/StoriesView.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/callback',
+      name: 'callback',
+      component: () => import('../views/StoriesView.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: { name: 'home' }
     }
   ],
   scrollBehavior(to, from, savedPosition) {
@@ -47,6 +62,36 @@ const router = createRouter({
     } else {
       return { top: 0 }
     }
+  }
+})
+
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+
+router.beforeEach(async (to, from, next) => {
+  const auth = getAuth()
+
+  const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+      const unsubscribe = onAuthStateChanged(auth, user => {
+        unsubscribe()
+        resolve(user)
+      }, reject)
+    })
+  }
+
+  const user = await getCurrentUser()
+
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!user) {
+      next({
+        path: '/mode-selection',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
   }
 })
 

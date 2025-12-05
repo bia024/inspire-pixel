@@ -35,7 +35,7 @@
 <style scoped lang="scss">
 .institutional-view {
   padding: 4rem 2rem;
-  background-color: #fff;
+  background-color: var(--bg-primary);
   flex: 1;
 
   .container {
@@ -45,13 +45,13 @@
 
   .page-title {
     font-size: 2.5rem;
-    color: #2c3e50;
+    color: var(--text-primary);
     margin-bottom: 2rem;
     text-align: center;
   }
 
   .content {
-    color: #555;
+    color: var(--text-secondary);
     line-height: 1.8;
     font-size: 1.1rem;
 
@@ -60,7 +60,7 @@
     }
 
     h2 {
-      color: #2c3e50;
+      color: var(--text-primary);
       margin-top: 2.5rem;
       margin-bottom: 1rem;
       font-size: 1.8rem;

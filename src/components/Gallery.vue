@@ -1,115 +1,53 @@
 <script setup>
-// defineProps({
-//   searchQuery: String,
-// })
-import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
 
-import ImgSki from '../assets/ski.jpg'
-import ImgSwans from '../assets/swans.jpg'
-import ImgBridge from '../assets/bridge.jpg'
-import ImgSunset from '../assets/sunset.jpg'
-import ImgSeascape from '../assets/sunset-seascape.jpg'
-import ImgBeach from '../assets/beach.png'
-import ImgCanoe from '../assets/canoe.png'
-import ImgSunflowers from '../assets/sunflowers.jpg'
-import ImgMountain from '../assets/mountain.jpg'
-import ImgRocks from '../assets/rocks.png'
-import ImgWaterfall from '../assets/waterfall.png'
-import ImgNight from '../assets/night.jpg'
-// import ImgRocky from '../assets/rocky-ocean.jpg'
-// import ImgKayak from '../assets/kayak-lagoon.jpg'
-
-import { useAuth } from '../composables/useAuth'
+import { useFirebaseAuth } from '../composables/useFirebaseAuth'
+import { usePexels } from '../composables/usePexels'
 import { useToast } from '../composables/useToast'
 import { useRouter } from 'vue-router'
 import AuthModal from './AuthModal.vue'
+import SkeletonCard from './SkeletonCard.vue'
+import { addWatermark } from '../utils/watermark'
 
 const props = defineProps({ searchQuery: String })
-const { isPro, isAuthenticated } = useAuth()
+const { isPro, isAuthenticated, favorites, toggleFavorite: authToggleFavorite } = useFirebaseAuth()
+const { images, loading, error, hasMore, fetchCuratedImages, searchImages, loadMore } = usePexels()
 const { addToast } = useToast()
 const router = useRouter()
 
 const isAuthModalOpen = ref(false)
-
 const activeTab = ref('all')
-const isLoading = ref(true)
+const selectedCategory = ref('all')
 
-onMounted(() => {
-  setTimeout(() => {
-    isLoading.value = false
-  }, 1000)
+onMounted(async () => {
+  await fetchCuratedImages(1)
+})
+watch(selectedCategory, async (newCategory) => {
+  if (newCategory === 'all') {
+    await fetchCuratedImages(1)
+  } else {
+    await searchImages(newCategory, 1)
+  }
 })
 
-const loadFavoritesFromStorage = () => {
-  try {
-    const stored = localStorage.getItem('favorites')
-    if (!stored) return []
-
-    const parsed = JSON.parse(stored)
-    if (!Array.isArray(parsed)) {
-      console.warn('Invalid favorites data format, resetting to empty array')
-      return []
-    }
-
-    const validIds = parsed.filter(
-      (id) => typeof id === 'number' && id > 0 && id <= 12 && Number.isInteger(id)
-    )
-
-    if (validIds.length !== parsed.length) {
-      console.warn('Some invalid favorite IDs were filtered out')
-    }
-
-    return validIds
-  } catch (error) {
-    console.error('Error loading favorites from localStorage:', error)
-    try {
-      localStorage.removeItem('favorites')
-    } catch (clearError) {
-      console.error('Error clearing corrupted favorites data:', clearError)
-    }
-    return []
+watch(() => props.searchQuery, async (newQuery) => {
+  if (newQuery && newQuery.trim() !== '') {
+    await searchImages(newQuery, 1)
+  } else if (selectedCategory.value === 'all') {
+    await fetchCuratedImages(1)
+  } else {
+    await searchImages(selectedCategory.value, 1)
   }
-}
-
-const saveFavoritesToStorage = (favoritesArray) => {
-  try {
-    localStorage.setItem('favorites', JSON.stringify(favoritesArray))
-  } catch (error) {
-    console.error('Error saving favorites to localStorage:', error)
-  }
-}
-
-const favorites = ref(loadFavoritesFromStorage())
-
-const images = ref([
-  { id: 1, src: ImgSki, title: 'Skiing in Mountains', category: 'nature', premium: false },
-  { id: 2, src: ImgSwans, title: 'Swans', category: 'nature', premium: true },
-  { id: 3, src: ImgBridge, title: 'Old Bridge', category: 'architecture', premium: false },
-  { id: 4, src: ImgSunset, title: 'Sunset', category: 'nature', premium: true },
-  { id: 5, src: ImgSeascape, title: 'Seascape Sunset', category: 'nature', premium: false },
-  { id: 6, src: ImgBeach, title: 'Paradise Beach', category: 'nature', premium: true },
-  { id: 7, src: ImgCanoe, title: 'Canoe on Lake', category: 'nature', premium: false },
-  { id: 8, src: ImgSunflowers, title: 'Sunflower Field', category: 'nature', premium: true },
-  { id: 9, src: ImgMountain, title: 'Majestic Mountain', category: 'nature', premium: false },
-  { id: 10, src: ImgRocks, title: 'Sea Rocks', category: 'nature', premium: true },
-  { id: 11, src: ImgWaterfall, title: 'Powerful Waterfall', category: 'nature', premium: false },
-  { id: 12, src: ImgNight, title: 'Starry Night', category: 'nature', premium: true },
-  // { id: 13, src: ImgKayak, title: 'Kayaking in River', category: 'nature', premium: false },
-  // { id: 14, src: ImgRocky, title: 'Rocky Ocean', category: 'nature', premium: true },
-])
+})
 
 const filteredImages = computed(() => {
   let result = images.value
 
-  if (activeTab.value === 'favorites')
+  if (activeTab.value === 'favorites') {
     result = images.value.filter((img) => favorites.value.includes(img.id))
-  if (props.searchQuery)
-    result = result.filter(
-      (img) =>
-        img.title.toLowerCase().includes(props.searchQuery.toLowerCase()) ||
-        img.category.toLowerCase().includes(props.searchQuery.toLowerCase())
-    )
+  }
+
   return result
 })
 
@@ -125,34 +63,15 @@ const handlePremiumClick = (img) => {
   }
 }
 
-const toggleFavorite = (imageId) => {
-  if (
-    typeof imageId !== 'number' ||
-    !Number.isInteger(imageId) ||
-    imageId < 1 ||
-    imageId > images.value.length
-  ) {
-    console.error(
-      `Invalid imageId: ${imageId}. Must be an integer between 1 and ${images.value.length}`
-    )
-    return
-  }
-
+const toggleFavorite = async (imageId) => {
   if (!isAuthenticated.value) {
     isAuthModalOpen.value = true
     return
   }
 
-  try {
-    const index = favorites.value.indexOf(imageId)
-    if (index > -1) {
-      favorites.value.splice(index, 1)
-    } else {
-      favorites.value.push(imageId)
-    }
-    saveFavoritesToStorage(favorites.value)
-  } catch (error) {
-    console.error('Error toggling favorite:', error)
+  const result = await authToggleFavorite(imageId)
+  if (!result.success) {
+    addToast(result.message, 'error')
   }
 }
 
@@ -163,21 +82,45 @@ const handleRegisterSuccess = () => {
   }, 300)
 }
 
-const handleDownload = (img) => {
+const handleDownload = async (img) => {
+  if (!isAuthenticated.value) {
+    isAuthModalOpen.value = true
+    addToast('Please login to download images.', 'warning')
+    return
+  }
+
   if (img.premium && !isPro.value) {
     addToast('This is a Premium image. Upgrade to Pro to download!', 'warning')
     router.push({ name: 'mode-selection' })
     return
   }
 
-  const link = document.createElement('a')
-  link.href = img.src
-  link.download = `${img.title.toLowerCase().replace(/\s+/g, '-')}.jpg`
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
+  try {
+    let downloadSrc = img.src
+    let fileName = `${img.title.toLowerCase().replace(/\s+/g, '-')}`
 
-  addToast(`Downloading "${img.title}"...`, 'success')
+    if (!isPro.value) {
+      addToast('Adding watermark (Free Plan)...', 'info')
+      downloadSrc = await addWatermark(img.src)
+      fileName += '-watermarked'
+    }
+
+    const link = document.createElement('a')
+    link.href = downloadSrc
+    link.download = `${fileName}.jpg`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+
+    if (isPro.value) {
+      addToast(`Downloading "${img.title}"...`, 'success')
+    } else {
+      addToast('Download started! Upgrade to Pro to remove watermark.', 'success')
+    }
+  } catch (error) {
+    console.error('Download error:', error)
+    addToast('Error preparing download.', 'error')
+  }
 }
 
 const isFavorite = (imageId) => {
@@ -187,11 +130,6 @@ const isFavorite = (imageId) => {
   }
   return favorites.value.includes(imageId)
 }
-
-const webpMedia = computed(() => {
-  if (typeof window === 'undefined') return '(min-width: 769px)'
-  return window.innerWidth > 768 ? '(min-width: 769px)' : '(max-width: 768px)'
-})
 
 const setActiveTab = (tab) => {
   const validTabs = ['all', 'favorites']
@@ -216,91 +154,6 @@ const handleFavoriteKeydown = (event, imageId) => {
   }
 }
 
-const imageObserver = ref(null)
-const loadedImages = ref(new Set())
-
-const setupIntersectionObserver = () => {
-  if (!('IntersectionObserver' in window)) return
-
-  imageObserver.value = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const img = entry.target
-          const src = img.dataset.src
-          if (src && !loadedImages.value.has(src)) {
-            img.src = src
-            img.classList.add('loaded')
-            loadedImages.value.add(src)
-            imageObserver.value.unobserve(img)
-          }
-        }
-      })
-    },
-    {
-      rootMargin: '50px 0px',
-      threshold: 0.1,
-    }
-  )
-}
-
-const preloadCriticalImages = () => {
-  const criticalImages = images.value.slice(0, 3)
-  criticalImages.forEach((img) => {
-    const link = document.createElement('link')
-    link.rel = 'preload'
-    link.as = 'image'
-    link.href = img.src
-    document.head.appendChild(link)
-  })
-}
-
-const imageLoadStates = ref(new Map())
-
-const handleImageLoad = (imageId) => {
-  imageLoadStates.value.set(imageId, 'loaded')
-}
-
-const handleImageError = (imageId) => {
-  imageLoadStates.value.set(imageId, 'error')
-  console.warn(`Failed to load image with ID: ${imageId}`)
-}
-
-const getWebpSrc = (src) => {
-  return src.replace(/\.(jpg|jpeg|png)$/i, '.webp')
-}
-
-const getResponsiveSrcset = (src) => {
-  const baseSrc = src.replace(/\.(jpg|jpeg|png)$/i, '')
-  const extension = src.split('.').pop().toLowerCase()
-
-  const sizes = [
-    { width: 400, descriptor: '400w' },
-    { width: 800, descriptor: '800w' },
-    { width: 1200, descriptor: '1200w' },
-  ]
-
-  return sizes.map((size) => `${baseSrc}-${size.width}.${extension} ${size.descriptor}`).join(', ')
-}
-
-onMounted(() => {
-  setupIntersectionObserver()
-
-  nextTick(() => {
-    const imageElements = document.querySelectorAll('.gallery img[data-src]')
-    imageElements.forEach((img) => {
-      if (imageObserver.value) {
-        imageObserver.value.observe(img)
-      }
-    })
-  })
-})
-
-onUnmounted(() => {
-  if (imageObserver.value) {
-    imageObserver.value.disconnect()
-  }
-})
 </script>
 
 <template>
@@ -321,48 +174,72 @@ onUnmounted(() => {
           Favorites ({{ favorites.length }})
         </button>
       </nav>
+      <div class="category-filters" role="group" aria-label="Category filters">
+        <button :class="{ active: selectedCategory === 'all' }" @click="selectedCategory = 'all'" class="category-btn">
+          All
+        </button>
+        <button :class="{ active: selectedCategory === 'nature' }" @click="selectedCategory = 'nature'"
+          class="category-btn">
+          🌿 Nature
+        </button>
+        <button :class="{ active: selectedCategory === 'architecture' }" @click="selectedCategory = 'architecture'"
+          class="category-btn">
+          🏛️ Architecture
+        </button>
+        <button :class="{ active: selectedCategory === 'people' }" @click="selectedCategory = 'people'"
+          class="category-btn">
+          👥 People
+        </button>
+        <button :class="{ active: selectedCategory === 'abstract' }" @click="selectedCategory = 'abstract'"
+          class="category-btn">
+          🎨 Abstract
+        </button>
+        <button :class="{ active: selectedCategory === 'city' }" @click="selectedCategory = 'city'"
+          class="category-btn">
+          🌆 City
+        </button>
+      </div>
       <section class="gallery" :id="'tabpanel-' + activeTab" role="tabpanel" :aria-labelledby="'tab-' + activeTab"
         aria-live="polite">
-        <article v-for="img in filteredImages" :key="img.id" class="image-card" role="article"
-          :aria-label="'Image: ' + img.title + ', Category: ' + img.category">
-          <figure class="image-container" :class="{ 'is-locked': img.premium && !isPro }"
-            @click="handlePremiumClick(img)">
-            <picture>
-              <source :data-srcset="getWebpSrc(img.src)" type="image/webp" :media="webpMedia" />
-              <img :data-src="img.src" :data-srcset="getResponsiveSrcset(img.src)"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                :alt="img.title + ' - ' + img.category + ' image'" @load="handleImageLoad(img.id)"
-                @error="handleImageError(img.id)" :class="{ loaded: imageLoadStates.get(img.id) === 'loaded' }"
-                loading="lazy" />
-            </picture>
-            <figcaption v-if="img.premium && !isPro" class="lock-overlay">
-              <Icon icon="material-symbols:lock" class="lock-icon" />
-              <span>Premium</span>
-            </figcaption>
-            <aside class="overlay" v-else>
-              <button class="favorite-btn" :class="{ favorited: isFavorite(img.id) }"
-                @click.stop="toggleFavorite(img.id)" @keydown.stop="handleFavoriteKeydown($event, img.id)" :aria-label="isFavorite(img.id)
-                  ? 'Remove ' + img.title + ' from favorites'
-                  : 'Add ' + img.title + ' to favorites'
-                  " :aria-pressed="isFavorite(img.id)" role="button" tabindex="0">
-                <Icon :icon="isFavorite(img.id)
-                  ? 'material-symbols:favorite'
-                  : 'material-symbols:favorite-outline'
-                  " aria-hidden="true" />
-              </button>
-              <button class="download-btn" @click.stop="handleDownload(img)" :aria-label="'Download ' + img.title"
-                role="button" tabindex="0">
-                <Icon icon="material-symbols:download" aria-hidden="true" />
-              </button>
-            </aside>
-          </figure>
-          <figcaption class="image-info">
-            <h3>{{ img.title }}</h3>
-            <span class="category" role="text" :aria-label="'Category: ' + img.category">{{
-              img.category
-              }}</span>
-          </figcaption>
-        </article>
+        <template v-if="loading && images.length === 0">
+          <SkeletonCard v-for="n in 6" :key="n" />
+        </template>
+        <template v-else>
+          <article v-for="img in filteredImages" :key="img.id" class="image-card" role="article"
+            :aria-label="'Image: ' + img.title + ', Category: ' + img.category">
+            <figure class="image-container" :class="{ 'is-locked': img.premium && !isPro }"
+              @click="handlePremiumClick(img)">
+              <img :src="img.src" :alt="img.title + ' - ' + img.category + ' image'" loading="lazy" />
+              <figcaption v-if="img.premium && !isPro" class="lock-overlay">
+                <Icon icon="material-symbols:lock" class="lock-icon" />
+                <span>Premium</span>
+              </figcaption>
+              <aside class="overlay" v-else>
+                <button class="favorite-btn" :class="{ favorited: isFavorite(img.id) }"
+                  @click.stop="toggleFavorite(img.id)" @keydown.stop="handleFavoriteKeydown($event, img.id)"
+                  :aria-label="isFavorite(img.id)
+                    ? 'Remove ' + img.title + ' from favorites'
+                    : 'Add ' + img.title + ' to favorites'
+                    " :aria-pressed="isFavorite(img.id)" role="button" tabindex="0">
+                  <Icon :icon="isFavorite(img.id)
+                    ? 'material-symbols:favorite'
+                    : 'material-symbols:favorite-outline'
+                    " aria-hidden="true" />
+                </button>
+                <button class="download-btn" @click.stop="handleDownload(img)" :aria-label="'Download ' + img.title"
+                  role="button" tabindex="0">
+                  <Icon icon="material-symbols:download" aria-hidden="true" />
+                </button>
+              </aside>
+              <figcaption class="image-info">
+                <h3>{{ img.title }}</h3>
+                <span class="category" role="text" :aria-label="'Category: ' + img.category">{{
+                  img.category
+                }}</span>
+              </figcaption>
+            </figure>
+          </article>
+        </template>
       </section>
       <aside v-if="activeTab === 'favorites' && favorites.length === 0" class="empty-state" role="status"
         aria-live="polite" aria-label="No favorite images">
@@ -434,6 +311,40 @@ onUnmounted(() => {
 
     &:hover {
       transform: translateY(-2px);
+    }
+  }
+
+  .category-filters {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .category-btn {
+    padding: 0.6rem 1.5rem;
+    border: 2px solid var(--border-color);
+    border-radius: 50px;
+    cursor: pointer;
+    background: var(--card-bg);
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+
+    &.active {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      border-color: transparent;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    &:hover:not(.active) {
+      border-color: #667eea;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
   }
 
@@ -554,24 +465,39 @@ onUnmounted(() => {
   }
 
   .image-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7), transparent);
+    transform: translateY(100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 3;
+  }
+
+  .image-card:hover .image-info {
+    transform: translateY(0);
+    opacity: 1;
   }
 
   .image-info h3 {
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: #fff;
     margin-bottom: 0.5rem;
   }
 
   .image-info .category {
     font-size: 0.9rem;
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.9);
     text-transform: capitalize;
-    background: var(--bg-tertiary);
+    background: rgba(255, 255, 255, 0.2);
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
     display: inline-block;
+    backdrop-filter: blur(10px);
   }
 
   .empty-state {
@@ -659,5 +585,43 @@ onUnmounted(() => {
   to {
     background-position-x: -200%;
   }
+}
+
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  margin: 3rem 0;
+}
+
+.load-more-btn {
+  padding: 1rem 3rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.loading-more {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
 }
 </style>

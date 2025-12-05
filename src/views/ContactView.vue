@@ -109,7 +109,7 @@ const submitForm = async () => {
 <style scoped lang="scss">
 .contact-view {
   padding: 4rem 2rem;
-  background-color: #f8f9fa;
+  background-color: var(--bg-secondary);
   flex: 1;
 
   .container {
@@ -120,13 +120,13 @@ const submitForm = async () => {
   .page-title {
     text-align: center;
     font-size: 2.5rem;
-    color: #2c3e50;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
   }
 
   .page-subtitle {
     text-align: center;
-    color: #7f8c8d;
+    color: var(--text-secondary);
     margin-bottom: 4rem;
     font-size: 1.1rem;
   }
@@ -135,10 +135,10 @@ const submitForm = async () => {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
     gap: 4rem;
-    background: #fff;
+    background: var(--card-bg);
     padding: 3rem;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px var(--card-shadow);
   }
 
   .contact-info {
@@ -159,11 +159,11 @@ const submitForm = async () => {
       h3 {
         font-size: 1.1rem;
         margin-bottom: 0.2rem;
-        color: #2c3e50;
+        color: var(--text-primary);
       }
 
       p {
-        color: #7f8c8d;
+        color: var(--text-secondary);
       }
     }
   }
@@ -175,7 +175,7 @@ const submitForm = async () => {
       label {
         display: block;
         margin-bottom: 0.5rem;
-        color: #2c3e50;
+        color: var(--text-primary);
         font-weight: 600;
       }
 
@@ -183,10 +183,12 @@ const submitForm = async () => {
       textarea {
         width: 100%;
         padding: 0.8rem;
-        border: 1px solid #e1e8ed;
+        border: 1px solid var(--border-color);
         border-radius: 8px;
         font-size: 1rem;
         transition: border-color 0.3s;
+        background: var(--bg-primary);
+        color: var(--text-primary);
 
         &:focus {
           outline: none;

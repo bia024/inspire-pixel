@@ -1,13 +1,13 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useRouter } from 'vue-router'
-import { useAuth } from '../composables/useAuth'
+import { useFirebaseAuth } from '../composables/useFirebaseAuth'
 import { useDarkMode } from '../composables/useDarkMode'
 import AuthModal from './AuthModal.vue'
 
 const router = useRouter()
-const { user, isPro, logout, updateUser } = useAuth()
+const { user, isPro, logout, updateUserData } = useFirebaseAuth()
 const { isDark, toggleDarkMode } = useDarkMode()
 
 const isMenuOpen = ref(false)
@@ -49,8 +49,6 @@ const startTypeWriterLoop = async () => {
   }
 }
 
-import { onMounted, onUnmounted, nextTick } from 'vue'
-
 onMounted(() => {
   isMounted = true
   startTypeWriterLoop()
@@ -70,7 +68,7 @@ const startEditingName = async () => {
 const finishEditingName = () => {
   isEditingName.value = false
   if (displayedName.value.trim() !== '') {
-    updateUser({ name: displayedName.value.trim() })
+    updateUserData({ name: displayedName.value.trim() })
   } else {
     displayedName.value = user.value.name
   }
