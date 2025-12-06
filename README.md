@@ -238,7 +238,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👩‍💻 Author
 
-**Bianca**
+**Bianca Caetano - Software Engineer Student**
+
+Passionate about crafting immersive digital experiences that inspire creativity and innovation using Vue.js, Vite, and modern web technologies.
 
 - GitHub: [@bia024](https://github.com/bia024)
 - Project: [InspirePixel](inspire-pixel-kcho.vercel.app/)
