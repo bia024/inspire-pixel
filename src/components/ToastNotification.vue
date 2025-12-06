@@ -35,12 +35,12 @@ const getIcon = (type) => {
 <style scoped lang="scss">
 .toast-container {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 1.25rem;
+  right: 1.25rem;
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.625rem;
   pointer-events: none;
 }
 
@@ -48,14 +48,14 @@ const getIcon = (type) => {
   pointer-events: auto;
   background: var(--card-bg);
   padding: 1rem 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px var(--card-shadow);
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.75rem var(--card-shadow);
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-width: 300px;
-  max-width: 400px;
-  border-left: 4px solid #3498db;
+  gap: 0.75rem;
+  min-width: 18.75rem;
+  max-width: 25rem;
+  border-left: 0.25rem solid #3498db;
   animation: slideIn 0.3s ease;
 
   &.success {
@@ -99,7 +99,7 @@ const getIcon = (type) => {
     border: none;
     cursor: pointer;
     color: var(--text-secondary);
-    padding: 4px;
+    padding: 0.25rem;
     display: flex;
     align-items: center;
     transition: color 0.2s;
@@ -117,18 +117,18 @@ const getIcon = (type) => {
 
 .toast-enter-from {
   opacity: 0;
-  transform: translateX(30px);
+  transform: translateX(1.875rem);
 }
 
 .toast-leave-to {
   opacity: 0;
-  transform: translateX(30px);
+  transform: translateX(1.875rem);
 }
 
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateX(30px);
+    transform: translateX(1.875rem);
   }
 
   to {
@@ -137,12 +137,12 @@ const getIcon = (type) => {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
   .toast-container {
     top: auto;
-    bottom: 20px;
-    right: 20px;
-    left: 20px;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    left: 1.25rem;
   }
 
   .toast {

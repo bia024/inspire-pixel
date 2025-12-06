@@ -22,7 +22,8 @@ import InstagramStories from '../components/InstagramStories.vue'
 <style scoped>
 .main-content {
   padding-top: 2rem;
-  max-width: 975px;
+  max-width: 60.9375rem;
+  /* revisando. passível de alteração */
   margin: 0 auto;
 }
 </style>

@@ -200,11 +200,11 @@ const handleLogout = () => {
   align-items: center;
   padding: 1.5rem 2rem;
   background-color: var(--bg-primary);
-  box-shadow: 0 2px 10px var(--card-shadow);
+  box-shadow: 0 0.125rem 0.625rem var(--card-shadow);
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 0.0625rem solid var(--border-color);
 
   .logo {
     display: flex;
@@ -212,7 +212,7 @@ const handleLogout = () => {
     gap: 0.5rem;
 
     img {
-      height: 50px;
+      height: 3.125rem;
     }
   }
 
@@ -221,10 +221,10 @@ const handleLogout = () => {
     color: #fff;
     font-size: 0.7rem;
     font-weight: 800;
-    padding: 2px 6px;
-    border-radius: 4px;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 5px rgba(243, 156, 18, 0.3);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    letter-spacing: 0.03125rem;
+    box-shadow: 0 0.125rem 0.3125rem rgba(243, 156, 18, 0.3);
   }
 
   .free-badge {
@@ -232,10 +232,10 @@ const handleLogout = () => {
     color: #fff;
     font-size: 0.7rem;
     font-weight: 800;
-    padding: 2px 6px;
-    border-radius: 4px;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 5px rgba(108, 92, 231, 0.3);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    letter-spacing: 0.03125rem;
+    box-shadow: 0 0.125rem 0.3125rem rgba(108, 92, 231, 0.3);
   }
 
   .theme-toggle {
@@ -258,8 +258,8 @@ const handleLogout = () => {
     z-index: 1001;
 
     img {
-      width: 40px;
-      height: 40px;
+      width: 2.5rem;
+      height: 2.5rem;
       display: block;
     }
 
@@ -303,15 +303,15 @@ const handleLogout = () => {
       gap: 1.2rem;
       padding: 0.6rem 1.5rem;
       background-color: #f8f9fa;
-      border: 1px solid #e1e8ed;
-      border-radius: 50px;
-      min-width: 200px;
+      border: 0.0625rem solid #e1e8ed;
+      border-radius: 3.125rem;
+      min-width: 12.5rem;
       justify-content: space-between;
       transition: all 0.3s ease;
 
       &:hover {
         background-color: #fff;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 0.25rem 0.9375rem rgba(0, 0, 0, 0.05);
         border-color: #d1d8dd;
       }
 
@@ -332,7 +332,7 @@ const handleLogout = () => {
 
       .greeting-text {
         color: #2c3e50;
-        margin-right: 4px;
+        margin-right: 0.25rem;
         font-weight: 500;
       }
 
@@ -340,7 +340,7 @@ const handleLogout = () => {
         font-family: 'Courier New', Courier, monospace;
         color: #7f8c8d;
         font-weight: 600;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.03125rem;
       }
 
       .name-input {
@@ -350,9 +350,9 @@ const handleLogout = () => {
         color: #7f8c8d;
         font-weight: 600;
         font-size: 1rem;
-        width: 120px;
+        width: 7.5rem;
         outline: none;
-        border-bottom: 1px solid #e1e8ed;
+        border-bottom: 0.0625rem solid #e1e8ed;
         padding: 0;
       }
 
@@ -360,14 +360,14 @@ const handleLogout = () => {
         display: inline-block;
         color: #e1306c;
         animation: blink 1s infinite;
-        margin-left: 1px;
+        margin-left: 0.0625rem;
         font-weight: 700;
       }
 
       .edit-icon {
         font-size: 0.9rem;
         color: #bdc3c7;
-        margin-left: 8px;
+        margin-left: 0.5rem;
         opacity: 0;
         transition: opacity 0.3s;
       }
@@ -385,7 +385,7 @@ const handleLogout = () => {
 
       .logout-btn {
         color: #95a5a6;
-        padding: 4px;
+        padding: 0.25rem;
         border-radius: 50%;
         transition: all 0.2s;
 
@@ -437,11 +437,11 @@ const handleLogout = () => {
       top: 0;
       right: -100%;
       width: 85%;
-      max-width: 400px;
+      max-width: 25rem;
       height: 100vh;
       background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(10px);
-      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(0.625rem);
+      box-shadow: -0.3125rem 0 1.5625rem rgba(0, 0, 0, 0.15);
       padding: 6rem 2rem 2rem;
       transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       overflow-y: auto;
@@ -457,7 +457,7 @@ const handleLogout = () => {
 
         li {
           width: 100%;
-          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+          border-bottom: 0.0625rem solid rgba(0, 0, 0, 0.05);
           padding-bottom: 1rem;
 
           &:last-child {
@@ -475,7 +475,7 @@ const handleLogout = () => {
           &:hover,
           &.router-link-active {
             color: #e1306c;
-            padding-left: 10px;
+            padding-left: 0.625rem;
           }
         }
 
@@ -503,7 +503,7 @@ const handleLogout = () => {
 
           .search-icon {
             position: absolute;
-            left: 15px;
+            left: 0.9375rem;
             top: 50%;
             transform: translateY(-50%);
             color: #e1306c;
@@ -513,8 +513,8 @@ const handleLogout = () => {
           input {
             width: 100%;
             padding: 1rem 1rem 1rem 3rem;
-            border: 2px solid transparent;
-            border-radius: 12px;
+            border: 0.125rem solid transparent;
+            border-radius: 0.75rem;
             font-size: 1rem;
             background: #f0f2f5;
             transition: all 0.3s ease;
@@ -523,7 +523,7 @@ const handleLogout = () => {
               outline: none;
               border-color: #e1306c;
               background: #fff;
-              box-shadow: 0 4px 15px rgba(225, 48, 108, 0.1);
+              box-shadow: 0 0.25rem 0.9375rem rgba(225, 48, 108, 0.1);
             }
 
             &::placeholder {

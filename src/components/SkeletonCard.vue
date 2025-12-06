@@ -11,16 +11,16 @@
 <style scoped lang="scss">
 .skeleton-card {
   background: var(--card-bg);
-  border-radius: 15px;
+  border-radius: 0.9375rem;
   overflow: hidden;
-  box-shadow: 0 10px 30px var(--card-shadow);
+  box-shadow: 0 0.625rem 1.875rem var(--card-shadow);
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .skeleton-image {
-  height: 250px;
+  height: 15.625rem;
   width: 100%;
   background: #e0e0e0;
   position: relative;
@@ -43,11 +43,11 @@
 }
 
 .skeleton-title {
-  height: 24px;
+  height: 1.5rem;
   width: 70%;
   background: #e0e0e0;
   margin-bottom: 0.5rem;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   position: relative;
   overflow: hidden;
 
@@ -64,10 +64,10 @@
 }
 
 .skeleton-category {
-  height: 16px;
+  height: 1rem;
   width: 40%;
   background: #e0e0e0;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   position: relative;
   overflow: hidden;
 

@@ -45,15 +45,8 @@ function viewStory(story) {
   <section class="stories-section" aria-label="Stories de usuários">
     <div class="container">
       <ul class="stories-list">
-        <li
-          class="story"
-          v-for="story in stories"
-          :key="story.id"
-          @click="viewStory(story)"
-          tabindex="0"
-          @keydown.enter="viewStory(story)"
-          @keydown.space.prevent="viewStory(story)"
-        >
+        <li class="story" v-for="story in stories" :key="story.id" @click="viewStory(story)" tabindex="0"
+          @keydown.enter="viewStory(story)" @keydown.space.prevent="viewStory(story)">
           <div class="story-avatar" :class="{ 'is-viewed': story.isViewed }">
             <img :src="story.avatar" :alt="`Story de ${story.user}`" />
           </div>
@@ -68,8 +61,8 @@ function viewStory(story) {
 .stories-section {
   padding: 1.5rem 0;
   background-color: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  border-top: 0.0625rem solid var(--border-color);
+  border-bottom: 0.0625rem solid var(--border-color);
   overflow-x: auto;
   scrollbar-width: none;
 
@@ -78,7 +71,7 @@ function viewStory(story) {
   }
 
   .container {
-    max-width: 1200px;
+    max-width: 75rem;
     margin: 0 auto;
     padding: 0 2rem;
   }
@@ -103,16 +96,16 @@ function viewStory(story) {
       outline: none;
 
       .story-avatar {
-        box-shadow: 0 0 0 3px var(--primary-color-light);
+        box-shadow: 0 0 0 0.1875rem var(--primary-color-light);
       }
     }
   }
 
   .story-avatar {
-    width: 68px;
-    height: 68px;
+    width: 4.25rem;
+    height: 4.25rem;
     border-radius: 50%;
-    padding: 3px;
+    padding: 0.1875rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -128,14 +121,14 @@ function viewStory(story) {
       height: 100%;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid var(--bg-primary);
+      border: 0.125rem solid var(--bg-primary);
     }
   }
 
   .story-user {
     font-size: 0.75rem;
     color: var(--text-secondary);
-    max-width: 70px;
+    max-width: 4.375rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

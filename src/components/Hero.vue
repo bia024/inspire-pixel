@@ -216,7 +216,7 @@ const debouncedSearch = () => {
   background-image: url('../assets/beach.png');
   background-size: cover;
   background-position: center;
-  height: 600px;
+  height: 37.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -239,7 +239,7 @@ const debouncedSearch = () => {
   .hero-content {
     position: relative;
     z-index: 2;
-    max-width: 1200px;
+    max-width: 75rem;
     width: 100%;
     display: flex;
     align-items: center;
@@ -268,7 +268,7 @@ const debouncedSearch = () => {
     p {
       font-size: 1.2rem;
       margin-bottom: 2rem;
-      max-width: 500px;
+      max-width: 31.25rem;
       opacity: 0.9;
     }
 
@@ -305,8 +305,8 @@ const debouncedSearch = () => {
         width: 100%;
         padding: 1rem 3rem;
         font-size: 1.1rem;
-        border-radius: 50px;
-        border: 2px solid transparent;
+        border-radius: 3.125rem;
+        border: 0.125rem solid transparent;
         background: #fff;
         color: #333;
 
@@ -316,13 +316,13 @@ const debouncedSearch = () => {
           border-color: #3498db;
         }
 
-        box-shadow: 0 8px 30px var(--card-shadow);
+        box-shadow: 0 0.5rem 1.875rem var(--card-shadow);
         transition: all 0.3s ease;
 
         &:focus {
           outline: none;
           border-color: #e1306c;
-          box-shadow: 0 0 0 3px rgba(225, 48, 108, 0.5);
+          box-shadow: 0 0 0 0.1875rem rgba(225, 48, 108, 0.5);
         }
       }
 
@@ -347,7 +347,7 @@ const debouncedSearch = () => {
   }
 
   .hero-showcase {
-    flex: 0 0 350px;
+    flex: 0 0 21.875rem;
     display: none;
     animation: float 6s ease-in-out infinite;
 
@@ -362,7 +362,7 @@ const debouncedSearch = () => {
 
       img {
         width: 100%;
-        height: 200px;
+        height: 12.5rem;
         object-fit: cover;
         display: block;
       }
@@ -372,7 +372,7 @@ const debouncedSearch = () => {
         top: 0;
         left: 0;
         width: 100%;
-        height: 200px;
+        height: 12.5rem;
         background: rgba(0, 0, 0, 0.6);
         display: flex;
         flex-direction: column;
@@ -388,14 +388,14 @@ const debouncedSearch = () => {
 
         span {
           font-weight: 600;
-          letter-spacing: 1px;
+          letter-spacing: 0.0625rem;
           text-transform: uppercase;
           font-size: 0.9rem;
         }
       }
 
       .card-content {
-        min-height: 180px;
+        min-height: 11.25rem;
         width: 100%;
         padding: 1.5rem;
         text-align: center;
@@ -428,8 +428,8 @@ const debouncedSearch = () => {
             box-shadow 0.3s;
 
           &:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(225, 48, 108, 0.4);
+            transform: translateY(-0.1875rem);
+            box-shadow: 0 0.625rem 1.25rem rgba(225, 48, 108, 0.4);
           }
         }
       }
@@ -439,12 +439,12 @@ const debouncedSearch = () => {
   .carousel-container {
     position: relative;
     width: 100%;
-    aspect-ratio: 350 / 380;
-    border-radius: 20px;
+    aspect-ratio: 21.875 / 23.75;
+    border-radius: 1.25rem;
     overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(0.625rem);
+    border: 0.0625rem solid rgba(255, 255, 255, 0.2);
   }
 
   .carousel-slides {
@@ -498,8 +498,8 @@ const debouncedSearch = () => {
     background: rgba(255, 255, 255, 0.7);
     border: none;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 2.5rem;
+    height: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -512,11 +512,11 @@ const debouncedSearch = () => {
       transform 0.3s;
 
     &.prev {
-      left: 10px;
+      left: 0.625rem;
     }
 
     &.next {
-      right: 10px;
+      right: 0.625rem;
     }
 
     &:hover {
@@ -531,15 +531,15 @@ const debouncedSearch = () => {
 
   .carousel-indicators {
     position: absolute;
-    bottom: 10px;
+    bottom: 0.625rem;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 8px;
+    gap: 0.5rem;
 
     button {
-      width: 10px;
-      height: 10px;
+      width: 0.625rem;
+      height: 0.625rem;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.5);
       border: none;
@@ -554,15 +554,15 @@ const debouncedSearch = () => {
 
   @keyframes float {
     0% {
-      transform: translateY(0px);
+      transform: translateY(0rem);
     }
 
     50% {
-      transform: translateY(-15px);
+      transform: translateY(-0.9375rem);
     }
 
     100% {
-      transform: translateY(0px);
+      transform: translateY(0rem);
     }
   }
 

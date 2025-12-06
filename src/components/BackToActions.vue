@@ -69,8 +69,8 @@ onUnmounted(() => {
 }
 
 .action-btn {
-  width: 50px;
-  height: 50px;
+  width: 3.125rem;
+  height: 3.125rem;
   border-radius: 50%;
   border: none;
   background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
@@ -80,24 +80,24 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+  box-shadow: 0 0.25rem 0.9375rem rgba(231, 76, 60, 0.4);
   transition: all 0.3s ease;
 
   &:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.5);
+    transform: translateY(-0.1875rem) scale(1.05);
+    box-shadow: 0 0.375rem 1.25rem rgba(231, 76, 60, 0.5);
   }
 
   &:active {
-    transform: translateY(-1px) scale(1.02);
+    transform: translateY(-0.0625rem) scale(1.02);
   }
 
   &.back-to-home {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 0.25rem 0.9375rem rgba(102, 126, 234, 0.4);
 
     &:hover {
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+      box-shadow: 0 0.375rem 1.25rem rgba(102, 126, 234, 0.5);
     }
   }
 }
@@ -110,7 +110,7 @@ onUnmounted(() => {
 .fade-slide-enter-from,
 .fade-slide-leave-to {
   opacity: 0;
-  transform: translateX(20px);
+  transform: translateX(1.25rem);
 }
 
 @media (max-width: 768px) {
@@ -120,8 +120,8 @@ onUnmounted(() => {
   }
 
   .action-btn {
-    width: 45px;
-    height: 45px;
+    width: 2.8125rem;
+    height: 2.8125rem;
     font-size: 1.3rem;
   }
 }

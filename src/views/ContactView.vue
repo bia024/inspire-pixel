@@ -24,6 +24,7 @@ const submitForm = async () => {
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
     if (!serviceId || !templateId || !publicKey) {
+      // alterar isso. EmailJS já está em desuso neste app
       console.warn('EmailJS configuration missing.')
       addToast('System configuration error: Email service not configured.', 'error')
       return
@@ -119,7 +120,7 @@ const submitForm = async () => {
   flex: 1;
 
   .container {
-    max-width: 1000px;
+    max-width: 62.5rem;
     margin: 0 auto;
   }
 
@@ -143,8 +144,8 @@ const submitForm = async () => {
     gap: 4rem;
     background: var(--card-bg);
     padding: 3rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px var(--card-shadow);
+    border-radius: 1.25rem;
+    box-shadow: 0 0.625rem 1.875rem var(--card-shadow);
   }
 
   .contact-info {
@@ -209,7 +210,7 @@ const submitForm = async () => {
       background: linear-gradient(90deg, #e74c3c, #f39c12);
       color: #fff;
       border: none;
-      border-radius: 8px;
+      border-radius: 0.5rem;
       font-size: 1.1rem;
       font-weight: 600;
       cursor: pointer;

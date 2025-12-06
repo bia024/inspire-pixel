@@ -167,7 +167,7 @@ const subscribeNewsletter = async () => {
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
+    height: 0.25rem;
     background: linear-gradient(90deg, #e74c3c 0%, #f39c12 50%, #e74c3c 100%);
     background-size: 200% 100%;
     animation: gradientShift 3s ease infinite;
@@ -223,8 +223,8 @@ const subscribeNewsletter = async () => {
         position: absolute;
         bottom: 0;
         left: 0;
-        width: 30px;
-        height: 2px;
+        width: 1.875rem;
+        height: 0.125rem;
         background: linear-gradient(90deg, #e74c3c, #f39c12);
       }
     }
@@ -245,16 +245,16 @@ const subscribeNewsletter = async () => {
 
           &:hover {
             color: #f39c12;
-            transform: translateX(5px);
+            transform: translateX(0.3125rem);
           }
 
           .new-badge {
             background: linear-gradient(135deg, #e1306c, #c13584);
             color: white;
             font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 5px;
+            padding: 0.125rem 0.375rem;
+            border-radius: 0.25rem;
+            margin-left: 0.3125rem;
             vertical-align: middle;
           }
         }
@@ -277,8 +277,8 @@ const subscribeNewsletter = async () => {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 42px;
-      height: 42px;
+      width: 2.625rem;
+      height: 2.625rem;
       background: rgba(255, 255, 255, 0.05);
       border-radius: 50%;
       color: #cbd5e1;
@@ -289,19 +289,19 @@ const subscribeNewsletter = async () => {
       &:hover {
         background: linear-gradient(135deg, #e74c3c, #f39c12);
         color: #fff;
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        transform: translateY(-0.1875rem);
+        box-shadow: 0 0.3125rem 0.9375rem rgba(231, 76, 60, 0.3);
         border-color: transparent;
       }
     }
   }
 
   .newsletter-section {
-    max-width: 1200px;
+    max-width: 75rem;
     margin: 0 auto 3rem;
     padding: 3rem;
     background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(243, 156, 18, 0.1) 100%);
-    border-radius: 16px;
+    border-radius: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
 
     .newsletter-content {
@@ -318,7 +318,7 @@ const subscribeNewsletter = async () => {
 
     .newsletter-text {
       flex: 1;
-      min-width: 250px;
+      min-width: 15.625rem;
 
       h3 {
         font-size: 1.5rem;
@@ -347,20 +347,20 @@ const subscribeNewsletter = async () => {
 
     .newsletter-form {
       flex: 1;
-      min-width: 300px;
+      min-width: 18.75rem;
 
       .input-group {
         display: flex;
         position: relative;
         background: rgba(255, 255, 255, 0.1);
-        border-radius: 50px;
-        padding: 4px;
+        border-radius: 3.125rem;
+        padding: 0.25rem;
         border: 1px solid rgba(255, 255, 255, 0.2);
         transition: all 0.3s;
 
         &:focus-within {
           border-color: #f39c12;
-          box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
+          box-shadow: 0 0 0 0.1875rem rgba(243, 156, 18, 0.2);
         }
 
         .input-icon {
@@ -397,7 +397,7 @@ const subscribeNewsletter = async () => {
           background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
           color: #fff;
           border: none;
-          border-radius: 50px;
+          border-radius: 3.125rem;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.3s;
@@ -405,11 +405,11 @@ const subscribeNewsletter = async () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          min-width: 120px;
+          min-width: 7.5rem;
 
           &:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+            transform: translateY(-0.125rem);
+            box-shadow: 0 0.3125rem 0.9375rem rgba(231, 76, 60, 0.4);
           }
 
           &:disabled {

@@ -380,7 +380,7 @@ const handleForgotPassword = async () => {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(0.3125rem);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -390,10 +390,10 @@ const handleForgotPassword = async () => {
 .auth-modal {
   background: #fff;
   width: 90%;
-  max-width: 380px;
-  border-radius: 20px;
+  max-width: 23.75rem;
+  border-radius: 1.25rem;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1.5625rem 3.125rem -0.75rem rgba(0, 0, 0, 0.25);
   position: relative;
   max-height: 90vh;
   overflow-y: auto;
@@ -423,7 +423,7 @@ const handleForgotPassword = async () => {
   .tabs {
     display: flex;
     gap: 1rem;
-    border-bottom: 2px solid #e5e7eb;
+    border-bottom: 0.125rem solid #e5e7eb;
 
     button {
       background: none;
@@ -442,10 +442,10 @@ const handleForgotPassword = async () => {
         &::after {
           content: '';
           position: absolute;
-          bottom: -2px;
+          bottom: -0.125rem;
           left: 0;
           width: 100%;
-          height: 2px;
+          height: 0.125rem;
           background: #e1306c;
         }
       }
@@ -511,15 +511,15 @@ const handleForgotPassword = async () => {
     input {
       width: 100%;
       padding: 0.75rem 3rem 0.75rem 2.5rem;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
+      border: 0.0625rem solid #e5e7eb;
+      border-radius: 0.5rem;
       font-size: 1rem;
       transition: all 0.3s;
 
       &:focus {
         outline: none;
         border-color: #e1306c;
-        box-shadow: 0 0 0 3px rgba(225, 48, 108, 0.1);
+        box-shadow: 0 0 0 0.1875rem rgba(225, 48, 108, 0.1);
       }
     }
   }
@@ -528,9 +528,9 @@ const handleForgotPassword = async () => {
     margin-top: 0.75rem;
 
     .strength-bar {
-      height: 4px;
+      height: 0.25rem;
       background: #e5e7eb;
-      border-radius: 2px;
+      border-radius: 0.125rem;
       overflow: hidden;
       margin-bottom: 0.5rem;
 
@@ -624,7 +624,7 @@ const handleForgotPassword = async () => {
   color: #fff;
   border: none;
   padding: 0.875rem;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -633,8 +633,8 @@ const handleForgotPassword = async () => {
     box-shadow 0.2s;
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(225, 48, 108, 0.25);
+    transform: translateY(-0.0625rem);
+    box-shadow: 0 0.25rem 0.75rem rgba(225, 48, 108, 0.25);
   }
 
   &:disabled {
@@ -658,7 +658,7 @@ const handleForgotPassword = async () => {
   opacity: 0;
 
   .auth-modal {
-    transform: scale(0.9) translateY(20px);
+    transform: scale(0.9) translateY(1.25rem);
   }
 }
 </style>

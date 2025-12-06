@@ -346,7 +346,7 @@ onUnmounted(() => {
 .story-container {
   width: 100%;
   height: 100%;
-  max-width: 480px;
+  max-width: 30rem;
   position: relative;
   background-color: #1a1a1a;
   background-image: var(--bg-image);
@@ -377,23 +377,23 @@ onUnmounted(() => {
 
   @media (min-width: 768px) {
     height: 90vh;
-    border-radius: 16px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border-radius: 1rem;
+    box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.5);
   }
 }
 
 .progress-group {
   display: flex;
-  gap: 4px;
+  gap: 0.25rem;
   margin-bottom: 1rem;
-  height: 3px;
+  height: 0.1875rem;
 }
 
 .progress-item {
   flex: 1;
   height: 100%;
   background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
+  border-radius: 0.125rem;
   overflow: hidden;
 
   &.completed {
@@ -424,11 +424,11 @@ onUnmounted(() => {
   gap: 0.5rem;
 
   .avatar {
-    width: 32px;
-    height: 32px;
+    width: 2rem;
+    height: 2rem;
     border-radius: 50%;
     overflow: hidden;
-    border: 2px solid #e74c3c;
+    border: 0.125rem solid #e74c3c;
 
     img {
       width: 100%;
@@ -575,9 +575,9 @@ onUnmounted(() => {
         font-size: 0.7rem;
         background: rgba(29, 185, 84, 0.2);
         color: #1db954;
-        padding: 2px 6px;
-        border-radius: 4px;
-        margin-left: 5px;
+        padding: 0.125rem 0.375rem;
+        border-radius: 0.25rem;
+        margin-left: 0.3125rem;
         font-weight: bold;
       }
     }
