@@ -831,20 +831,6 @@ const handleFavoriteKeydown = (event, imageId) => {
       .category-btn.all-btn {
         border-radius: 1.5625rem;
         width: auto;
-        aspect-ratio: unset;
-        padding: 0.75rem 1.25rem;
-        font-size: 0.875rem;
-        min-width: unset;
-        white-space: nowrap;
-        flex-shrink: 0;
-
-        &:hover:not(.active) {
-          transform: translateY(-0.0625rem);
-        }
-
-        &.active {
-          border-radius: 1.5625rem;
-        }
       }
 
       .category-btn:not(.all-btn) {
