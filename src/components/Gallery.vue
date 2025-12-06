@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { Icon } from '@iconify/vue'
-
 import { useFirebaseAuth } from '../composables/useFirebaseAuth'
 import { usePexels } from '../composables/usePexels'
 import { useToast } from '../composables/useToast'
@@ -180,10 +179,16 @@ const isFavorite = (imageId) => {
   return favorites.value.includes(imageId)
 }
 
-const setActiveTab = (tab) => {
+const setActiveTab = async (tab) => {
   const validTabs = ['all', 'favorites']
   if (!validTabs.includes(tab)) return
   activeTab.value = tab
+  if (tab === 'all') {
+    selectedCategory.value = 'all'
+    autoLoadCount.value = 0
+    await fetchCuratedImages(1)
+    if (observer && observerEl.value) observer.observe(observerEl.value)
+  }
 }
 
 const handleTabKeydown = (event, tab) => {
@@ -236,44 +241,250 @@ const handleFavoriteKeydown = (event, imageId) => {
         <button
           :class="{ active: selectedCategory === 'all' }"
           @click="selectedCategory = 'all'"
-          class="category-btn"
+          class="category-btn all-btn"
+          aria-label="All categories"
         >
-          All
+          <span>All</span>
         </button>
         <button
           :class="{ active: selectedCategory === 'nature' }"
           @click="selectedCategory = 'nature'"
           class="category-btn"
+          aria-label="Nature category"
         >
-          🌿 Nature
+          <span>🌿</span>
         </button>
         <button
           :class="{ active: selectedCategory === 'architecture' }"
           @click="selectedCategory = 'architecture'"
           class="category-btn"
+          aria-label="Architecture category"
         >
-          🏛️ Architecture
+          <span>🏛️</span>
         </button>
         <button
           :class="{ active: selectedCategory === 'people' }"
           @click="selectedCategory = 'people'"
           class="category-btn"
+          aria-label="People category"
         >
-          👥 People
+          <span>👥</span>
         </button>
         <button
           :class="{ active: selectedCategory === 'abstract' }"
           @click="selectedCategory = 'abstract'"
           class="category-btn"
+          aria-label="Abstract category"
         >
-          🎨 Abstract
+          <span>🎨</span>
         </button>
         <button
           :class="{ active: selectedCategory === 'city' }"
           @click="selectedCategory = 'city'"
           class="category-btn"
+          aria-label="City category"
         >
-          🌆 City
+          <span>🌆</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'animals' }"
+          @click="selectedCategory = 'animals'"
+          class="category-btn"
+          aria-label="Animals category"
+        >
+          <span>🐾</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'food' }"
+          @click="selectedCategory = 'food'"
+          class="category-btn"
+          aria-label="Food category"
+        >
+          <span>🍕</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'technology' }"
+          @click="selectedCategory = 'technology'"
+          class="category-btn"
+          aria-label="Technology category"
+        >
+          <span>💻</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'travel' }"
+          @click="selectedCategory = 'travel'"
+          class="category-btn"
+          aria-label="Travel category"
+        >
+          <span>✈️</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'sports' }"
+          @click="selectedCategory = 'sports'"
+          class="category-btn"
+          aria-label="Sports category"
+        >
+          <span>⚽</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'fashion' }"
+          @click="selectedCategory = 'fashion'"
+          class="category-btn"
+          aria-label="Fashion category"
+        >
+          <span>👗</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'landscape' }"
+          @click="selectedCategory = 'landscape'"
+          class="category-btn"
+          aria-label="Landscape category"
+        >
+          <span>🏞️</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'portrait' }"
+          @click="selectedCategory = 'portrait'"
+          class="category-btn"
+          aria-label="Portrait category"
+        >
+          <span>📸</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'black-and-white' }"
+          @click="selectedCategory = 'black-and-white'"
+          class="category-btn"
+          aria-label="Black and White category"
+        >
+          <span>⚫</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'wallpaper' }"
+          @click="selectedCategory = 'wallpaper'"
+          class="category-btn"
+          aria-label="Wallpaper category"
+        >
+          <span>🖼️</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'background' }"
+          @click="selectedCategory = 'background'"
+          class="category-btn"
+          aria-label="Background category"
+        >
+          <span>🎭</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'macro' }"
+          @click="selectedCategory = 'macro'"
+          class="category-btn"
+          aria-label="Macro category"
+        >
+          <span>🔍</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'aerial' }"
+          @click="selectedCategory = 'aerial'"
+          class="category-btn"
+          aria-label="Aerial category"
+        >
+          <span>✈️</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'vintage' }"
+          @click="selectedCategory = 'vintage'"
+          class="category-btn"
+          aria-label="Vintage category"
+        >
+          <span>🕰️</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'minimalist' }"
+          @click="selectedCategory = 'minimalist'"
+          class="category-btn"
+          aria-label="Minimalist category"
+        >
+          <span>🌀</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'ocean' }"
+          @click="selectedCategory = 'ocean'"
+          class="category-btn"
+          aria-label="Ocean category"
+        >
+          <span>🌊</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'forest' }"
+          @click="selectedCategory = 'forest'"
+          class="category-btn"
+          aria-label="Forest category"
+        >
+          <span>🌲</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'mountain' }"
+          @click="selectedCategory = 'mountain'"
+          class="category-btn"
+          aria-label="Mountain category"
+        >
+          <span>🏔️</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'beach' }"
+          @click="selectedCategory = 'beach'"
+          class="category-btn"
+          aria-label="Beach category"
+        >
+          <span>🏖️</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'flower' }"
+          @click="selectedCategory = 'flower'"
+          class="category-btn"
+          aria-label="Flower category"
+        >
+          <span>🌸</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'car' }"
+          @click="selectedCategory = 'car'"
+          class="category-btn"
+          aria-label="Car category"
+        >
+          <span>🚗</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'building' }"
+          @click="selectedCategory = 'building'"
+          class="category-btn"
+          aria-label="Building category"
+        >
+          <span>🏢</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'art' }"
+          @click="selectedCategory = 'art'"
+          class="category-btn"
+          aria-label="Art category"
+        >
+          <span>🎨</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'music' }"
+          @click="selectedCategory = 'music'"
+          class="category-btn"
+          aria-label="Music category"
+        >
+          <span>🎵</span>
+        </button>
+        <button
+          :class="{ active: selectedCategory === 'dance' }"
+          @click="selectedCategory = 'dance'"
+          class="category-btn"
+          aria-label="Dance category"
+        >
+          <span>💃</span>
         </button>
       </div>
       <section
@@ -449,35 +660,89 @@ const handleFavoriteKeydown = (event, imageId) => {
 
   .category-filters {
     display: flex;
-    justify-content: center;
-    gap: 0.75rem;
+    justify-content: space-around;
+    gap: 0.4rem;
     margin-bottom: 2rem;
-    flex-wrap: wrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 1rem;
 
     .category-btn {
-      padding: 0.6rem 1.5rem;
-      border: 2px solid var(--border-color);
-      border-radius: 50px;
+      padding: 0.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
       cursor: pointer;
       background: var(--card-bg);
       color: var(--text-secondary);
       font-weight: 500;
-      font-size: 0.9rem;
-      transition: all 0.3s;
+      font-size: 1.25rem;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 3rem;
+      min-height: 3rem;
+      aspect-ratio: 1;
+
+      &:focus {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+      }
 
       &.active {
-        background: linear-gradient(135deg, #667eea, #764ba2);
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         color: #fff;
         border-color: transparent;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        font-weight: 600;
       }
 
       &:hover:not(.active) {
-        border-color: #667eea;
-        transform: translateY(-2px);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        background: var(--hover-bg);
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        transform: translateY(-1px) scale(1.05);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       }
+
+      &:active {
+        transform: translateY(0) scale(1);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .category-btn.all-btn {
+      border-radius: 25px;
+      width: auto;
+      aspect-ratio: unset;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.875rem;
+      min-width: unset;
+      white-space: nowrap;
+
+      &:hover:not(.active) {
+        transform: translateY(-1px);
+      }
+
+      &.active {
+        border-radius: 25px;
+      }
+    }
+
+    .category-btn:not(.all-btn) {
+      border-radius: 50%;
+      width: 3rem;
+      height: 3rem;
     }
   }
 
