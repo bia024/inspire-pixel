@@ -251,7 +251,7 @@ Passionate about crafting immersive digital experiences that inspire creativity 
 
 - Images from [Unsplash](https://unsplash.com)
 - Icons from [Iconify](https://iconify.design)
-- Email service by [EmailJS](https://www.emailjs.com)
+- Email service by [Firebase](https://firebase.google.com/)
 - Built with ❤️ using Vue 3 and Vite
 
 ---
@@ -260,7 +260,7 @@ Passionate about crafting immersive digital experiences that inspire creativity 
 
 ### ⭐ Star this repo if you find it helpful!
 
-**Made with 💜 by Bianca**
+**Made with 💜 by Bianca Caetano**
 
 [Back to Top ↑](#-inspirepixel)
 
