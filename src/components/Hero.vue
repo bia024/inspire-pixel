@@ -20,7 +20,7 @@ const premiumImages = [
   { src: ImgSunset, title: 'Golden Sunset' },
   { src: ImgBeach, title: 'Paradise Beach' },
   { src: ImgSunflowers, title: 'Sunflower Field' },
-  { src: ImgNight, title: 'Starry Night' }
+  { src: ImgNight, title: 'Starry Night' },
 ]
 
 const currentSlide = ref(0)
@@ -76,12 +76,16 @@ watch(isPro, (newValue) => {
   }
 })
 
-watch(() => route.query.q, (newQuery) => {
-  if (newQuery !== undefined && newQuery !== searchTerm.value) {
-    searchTerm.value = newQuery
-    emit('search', newQuery)
-  }
-}, { immediate: true })
+watch(
+  () => route.query.q,
+  (newQuery) => {
+    if (newQuery !== undefined && newQuery !== searchTerm.value) {
+      searchTerm.value = newQuery
+      emit('search', newQuery)
+    }
+  },
+  { immediate: true }
+)
 
 const handleSearch = () => {
   const term = searchTerm.value?.trim()
@@ -123,19 +127,43 @@ const debouncedSearch = () => {
           <button class="search-icon-btn" type="submit" aria-label="Search">
             <Icon icon="material-symbols:search" class="search-icon" />
           </button>
-          <input type="text" v-model="searchTerm" placeholder="Search images..." @input="debouncedSearch"
-            aria-label="Search images" />
-          <button v-if="searchTerm" class="clear-search-btn" @click="clearSearch" aria-label="Clear search"
-            type="button">
+          <input
+            type="text"
+            v-model="searchTerm"
+            placeholder="Search images..."
+            @input="debouncedSearch"
+            aria-label="Search images"
+          />
+          <button
+            v-if="searchTerm"
+            class="clear-search-btn"
+            @click="clearSearch"
+            aria-label="Clear search"
+            type="button"
+          >
             <Icon icon="material-symbols:close" />
           </button>
         </form>
       </header>
-      <aside v-if="isPro" class="hero-showcase pro-carousel" aria-label="Premium Collection Carousel">
-        <article class="carousel-container" @mouseenter="pauseSlideShow" @mouseleave="resumeSlideShow">
+      <aside
+        v-if="isPro"
+        class="hero-showcase pro-carousel"
+        aria-label="Premium Collection Carousel"
+      >
+        <article
+          class="carousel-container"
+          @mouseenter="pauseSlideShow"
+          @mouseleave="resumeSlideShow"
+        >
           <transition-group name="slide" tag="section" class="carousel-slides">
-            <figure v-for="(image, index) in premiumImages" :key="index" v-show="index === currentSlide"
-              class="carousel-slide" role="img" :aria-label="image.title">
+            <figure
+              v-for="(image, index) in premiumImages"
+              :key="index"
+              v-show="index === currentSlide"
+              class="carousel-slide"
+              role="img"
+              :aria-label="image.title"
+            >
               <img :src="image.src" :alt="image.title" loading="lazy" />
               <figcaption class="slide-caption">
                 <Icon icon="material-symbols:workspace-premium" class="premium-badge" />
@@ -150,8 +178,13 @@ const debouncedSearch = () => {
             <Icon icon="material-symbols:chevron-right" />
           </button>
           <nav class="carousel-indicators" aria-label="Carousel navigation">
-            <button v-for="(image, index) in premiumImages" :key="index" :class="{ active: index === currentSlide }"
-              @click="currentSlide = index" :aria-label="'Go to slide ' + (index + 1)"></button>
+            <button
+              v-for="(image, index) in premiumImages"
+              :key="index"
+              :class="{ active: index === currentSlide }"
+              @click="currentSlide = index"
+              :aria-label="'Go to slide ' + (index + 1)"
+            ></button>
           </nav>
         </article>
       </aside>
@@ -390,7 +423,9 @@ const debouncedSearch = () => {
           border-radius: 50px;
           text-decoration: none;
           font-weight: 700;
-          transition: transform 0.3s, box-shadow 0.3s;
+          transition:
+            transform 0.3s,
+            box-shadow 0.3s;
 
           &:hover {
             transform: translateY(-3px);
@@ -472,7 +507,9 @@ const debouncedSearch = () => {
     color: #333;
     font-size: 1.5rem;
     opacity: 0;
-    transition: opacity 0.3s, transform 0.3s;
+    transition:
+      opacity 0.3s,
+      transform 0.3s;
 
     &.prev {
       left: 10px;

@@ -15,7 +15,7 @@ export function usePexels() {
   const lastQuery = ref('')
 
   const headers = {
-    Authorization: PEXELS_API_KEY
+    Authorization: PEXELS_API_KEY,
   }
 
   const formatPhotos = (data, query) => {
@@ -29,7 +29,7 @@ export function usePexels() {
       photographer: photo.photographer,
       photographerUrl: photo.photographer_url,
       premium: index % 3 === 0,
-      pexelsUrl: photo.url
+      pexelsUrl: photo.url,
     }))
   }
 
@@ -48,7 +48,10 @@ export function usePexels() {
     error.value = null
 
     try {
-      const response = await fetch(`${PEXELS_API_URL}/${endpoint}?${query ? `query=${encodeURIComponent(query)}&` : ''}page=${page}&per_page=${PER_PAGE}`, { headers })
+      const response = await fetch(
+        `${PEXELS_API_URL}/${endpoint}?${query ? `query=${encodeURIComponent(query)}&` : ''}page=${page}&per_page=${PER_PAGE}`,
+        { headers }
+      )
       if (!response.ok) throw new Error('Failed to fetch images from Pexels')
 
       const data = await response.json()
@@ -112,11 +115,9 @@ export function usePexels() {
     fetchCuratedImages,
     searchImages,
     loadMore,
-    downloadImage
+    downloadImage,
   }
 }
-
-
 
 // import { ref } from 'vue'
 

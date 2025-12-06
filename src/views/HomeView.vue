@@ -10,9 +10,13 @@ const router = useRouter()
 
 const searchQuery = ref('')
 
-watch(() => route.query.q, (newQuery) => {
-  searchQuery.value = newQuery || ''
-}, { immediate: true })
+watch(
+  () => route.query.q,
+  (newQuery) => {
+    searchQuery.value = newQuery || ''
+  },
+  { immediate: true }
+)
 
 const handleSearch = (query) => {
   searchQuery.value = query

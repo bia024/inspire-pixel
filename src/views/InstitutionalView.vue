@@ -23,8 +23,12 @@
         </p>
         <h2>Why Choose Us?</h2>
         <ul>
-          <li><strong>Curated Quality:</strong> Every image is hand-picked for its aesthetic value.</li>
-          <li><strong>Diverse Categories:</strong> From nature to architecture, we cover it all.</li>
+          <li>
+            <strong>Curated Quality:</strong> Every image is hand-picked for its aesthetic value.
+          </li>
+          <li>
+            <strong>Diverse Categories:</strong> From nature to architecture, we cover it all.
+          </li>
           <li><strong>Creator Friendly:</strong> We support artists and respect copyright.</li>
         </ul>
       </section>

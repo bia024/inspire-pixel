@@ -1,6 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { getAuth, signInAnonymously } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp } from 'firebase/app'
+import { getAuth, signInAnonymously } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
 
 const getFirebaseConfig = () => {
   const config = {
@@ -10,40 +10,40 @@ const getFirebaseConfig = () => {
     storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
     appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  };
+  }
 
   if (!config.apiKey || !config.authDomain || !config.projectId) {
     throw new Error(
-      "ERRO DE CONFIGURAÇÃO: Variáveis de ambiente do Firebase não definidas corretamente no Vercel."
-    );
+      'ERRO DE CONFIGURAÇÃO: Variáveis de ambiente do Firebase não definidas corretamente no Vercel.'
+    )
   }
 
-  return config;
-};
-
-let firebaseApp;
-let authService;
-let dbService;
-
-try {
-  const firebaseConfig = getFirebaseConfig();
-
-  firebaseApp = initializeApp(firebaseConfig);
-  authService = getAuth(firebaseApp);
-  dbService = getFirestore(firebaseApp);
-
-  signInAnonymously(authService)
-    .then(() => console.log("[Firebase] Login anônimo realizado com sucesso."))
-    .catch((error) => {
-      console.error("[Firebase] Falha no login anônimo:", error.code, error.message);
-    });
-} catch (error) {
-  console.error("[Firebase] Erro ao inicializar:", error.message);
+  return config
 }
 
-export const auth = authService;
-export const db = dbService;
-export default firebaseApp;
+let firebaseApp
+let authService
+let dbService
+
+try {
+  const firebaseConfig = getFirebaseConfig()
+
+  firebaseApp = initializeApp(firebaseConfig)
+  authService = getAuth(firebaseApp)
+  dbService = getFirestore(firebaseApp)
+
+  signInAnonymously(authService)
+    .then(() => console.log('[Firebase] Login anônimo realizado com sucesso.'))
+    .catch((error) => {
+      console.error('[Firebase] Falha no login anônimo:', error.code, error.message)
+    })
+} catch (error) {
+  console.error('[Firebase] Erro ao inicializar:', error.message)
+}
+
+export const auth = authService
+export const db = dbService
+export default firebaseApp
 
 // import { initializeApp } from "firebase/app";
 // import { getAuth, signInWithCustomToken, signInAnonymously } from "firebase/auth";
@@ -59,7 +59,7 @@ export default firebaseApp;
 //   }
 
 //   console.log("[Firebase Init] Modo de Produção. Usando import.meta.env.");
-  
+
 //   const config = {
 //     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
 //     authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -80,7 +80,7 @@ export default firebaseApp;
 
 // try {
 //   const firebaseConfig = getFirebaseConfig();
-  
+
 //   firebaseApp = initializeApp(firebaseConfig);
 //   authService = getAuth(firebaseApp);
 //   dbService = getFirestore(firebaseApp);

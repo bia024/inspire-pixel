@@ -4,7 +4,7 @@
 
 # 🎨 InspirePixel
 
-### *Where landscapes turn into inspiration*
+### _Where landscapes turn into inspiration_
 
 [![Vue 3](https://img.shields.io/badge/Vue-3.x-42b883?style=for-the-badge&logo=vue.js)](https://vuejs.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
@@ -21,6 +21,7 @@
 ## ✨ Features
 
 ### 🎯 Core Features
+
 - **🖼️ Curated Gallery** - High-quality landscape photography
 - **🔍 Smart Search** - Find inspiration instantly with debounced search
 - **❤️ Favorites System** - Save and organize your favorite images
@@ -28,6 +29,7 @@
 - **🌙 Modern UI/UX** - Glassmorphism, gradients, and smooth animations
 
 ### 💎 Pro Features
+
 - **🔓 Premium Content** - Access exclusive high-resolution images
 - **⬇️ 4K Downloads** - Download images in full quality
 - **🎨 Pro Gallery** - Exclusive collection from Unsplash API
@@ -35,12 +37,14 @@
 - **🏆 Pro Badge** - Visual distinction with premium branding
 
 ### 🔐 Authentication System
+
 - **📧 Email Validation** - Secure user registration
 - **🔒 Password Protection** - Minimum 6 characters
 - **💾 Persistent Sessions** - Stay logged in across sessions
 - **🎫 Pro Upgrade Flow** - Seamless transition to premium
 
 ### 📬 Newsletter Integration
+
 - **✉️ Firebase Google Forms** - Automated email confirmations
 - **✅ Email Validation** - Regex-based validation
 - **💾 Fallback Storage** - LocalStorage backup
@@ -51,12 +55,14 @@
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **Vue 3** - Composition API with `<script setup>`
 - **Vue Router** - SPA navigation with guards
 - **Vite** - Lightning-fast build tool
 - **SCSS** - Advanced styling with variables
 
 ### Libraries & APIs
+
 - **@iconify/vue** - 200,000+ icons
 
 - **Firebase** - Firebase integration for authentication and storage
@@ -64,6 +70,7 @@
 - **Spotify Web API** - Music integration for an immersive experience
 
 ### Code Quality
+
 - **Semantic HTML** - `<main>`, `<section>`, `<article>`, `<nav>`
 - **Accessibility** - ARIA labels, roles, keyboard navigation
 - **Clean Architecture** - Composables, reusable components
@@ -74,6 +81,7 @@
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Node.js 18+ and npm
 
 ### Installation
@@ -143,23 +151,27 @@ inspirapixel/
 ## 🎨 Key Components
 
 ### 🏠 Hero Section
+
 - Split-screen layout with search and Pro showcase
 - Debounced search with URL sync
 - Animated premium card with call-to-action
 
 ### 🖼️ Gallery
+
 - Lazy loading with Intersection Observer
 - Premium content locking for Free users
 - Favorites system with localStorage
 - Responsive grid layout
 
 ### 🔐 Authentication Modal
+
 - Tab-based UI (Login/Register)
 - Real-time validation
 - Toast notifications
 - Smooth animations
 
 ### 📧 Newsletter Form
+
 - Email validation
 - Firebase integration
 - Loading states
@@ -179,14 +191,14 @@ inspirapixel/
 
 ### Pro Benefits
 
-| Feature | Free | Pro |
-|---------|------|-----|
-| Gallery Access | ✅ Limited | ✅ Full |
-| Image Quality | Standard | 4K |
-| Downloads | ❌ | ✅ Unlimited |
-| Exclusive Content | ❌ | ✅ |
-| Pro Badge | ❌ | ✅ |
-| Priority Support | ❌ | ✅ |
+| Feature           | Free       | Pro          |
+| ----------------- | ---------- | ------------ |
+| Gallery Access    | ✅ Limited | ✅ Full      |
+| Image Quality     | Standard   | 4K           |
+| Downloads         | ❌         | ✅ Unlimited |
+| Exclusive Content | ❌         | ✅           |
+| Pro Badge         | ❌         | ✅           |
+| Priority Support  | ❌         | ✅           |
 
 ---
 
@@ -227,8 +239,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👩‍💻 Author
 
 **Bianca**
+
 - GitHub: [@bia024](https://github.com/bia024)
-- Project: [InspirePixel](https://github.com/bia024/ipx)
+- Project: [InspirePixel](inspire-pixel-kcho.vercel.app/)
 
 ---
 

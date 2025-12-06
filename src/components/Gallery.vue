@@ -33,7 +33,12 @@ onMounted(async () => {
   observer = new IntersectionObserver(
     (entries) => {
       const firstEntry = entries[0]
-      if (firstEntry.isIntersecting && hasMore.value && !loading.value && autoLoadCount.value < AUTO_LOAD_LIMIT) {
+      if (
+        firstEntry.isIntersecting &&
+        hasMore.value &&
+        !loading.value &&
+        autoLoadCount.value < AUTO_LOAD_LIMIT
+      ) {
         loadMore()
       }
     },
@@ -56,17 +61,20 @@ watch(selectedCategory, async (newCategory) => {
   observer.observe(observerEl.value)
 })
 
-watch(() => props.searchQuery, async (newQuery) => {
-  autoLoadCount.value = 0
-  if (newQuery && newQuery.trim() !== '') {
-    await searchImages(newQuery, 1)
-  } else if (selectedCategory.value === 'all') {
-    await fetchCuratedImages(1)
-  } else {
-    await searchImages(selectedCategory.value, 1)
+watch(
+  () => props.searchQuery,
+  async (newQuery) => {
+    autoLoadCount.value = 0
+    if (newQuery && newQuery.trim() !== '') {
+      await searchImages(newQuery, 1)
+    } else if (selectedCategory.value === 'all') {
+      await fetchCuratedImages(1)
+    } else {
+      await searchImages(selectedCategory.value, 1)
+    }
+    observer.observe(observerEl.value)
   }
-  observer.observe(observerEl.value)
-})
+)
 
 watch(loading, (newValue, oldValue) => {
   if (oldValue === true && newValue === false) {
@@ -150,9 +158,11 @@ const handleDownload = async (img) => {
 
     if (isPro.value) URL.revokeObjectURL(downloadUrl)
 
-    addToast(isPro.value
-      ? `Downloading "${img.title}"...`
-      : 'Download started! Upgrade to Pro to remove watermark.', 'success'
+    addToast(
+      isPro.value
+        ? `Downloading "${img.title}"...`
+        : 'Download started! Upgrade to Pro to remove watermark.',
+      'success'
     )
   } catch (error) {
     console.error('Download error:', error)
@@ -196,97 +206,182 @@ const handleFavoriteKeydown = (event, imageId) => {
     <div class="container">
       <h2 id="gallery-title" class="section-title">Get Inspired</h2>
       <nav class="tabs" role="tablist" aria-label="Gallery navigation">
-        <button :class="{ active: activeTab === 'all' }" @click="setActiveTab('all')"
-          @keydown="handleTabKeydown($event, 'all')" role="tab" :aria-selected="activeTab === 'all'"
-          :aria-controls="'tabpanel-all'" :tabindex="activeTab === 'all' ? 0 : -1" aria-label="View all images">
+        <button
+          :class="{ active: activeTab === 'all' }"
+          @click="setActiveTab('all')"
+          @keydown="handleTabKeydown($event, 'all')"
+          role="tab"
+          :aria-selected="activeTab === 'all'"
+          :aria-controls="'tabpanel-all'"
+          :tabindex="activeTab === 'all' ? 0 : -1"
+          aria-label="View all images"
+        >
           All Images
         </button>
-        <button :class="{ active: activeTab === 'favorites' }" @click="setActiveTab('favorites')"
-          @keydown="handleTabKeydown($event, 'favorites')" role="tab" :aria-selected="activeTab === 'favorites'"
-          :aria-controls="'tabpanel-favorites'" :tabindex="activeTab === 'favorites' ? 0 : -1"
-          :aria-label="'View favorite images (' + favorites.length + ' items)'">
+        <button
+          :class="{ active: activeTab === 'favorites' }"
+          @click="setActiveTab('favorites')"
+          @keydown="handleTabKeydown($event, 'favorites')"
+          role="tab"
+          :aria-selected="activeTab === 'favorites'"
+          :aria-controls="'tabpanel-favorites'"
+          :tabindex="activeTab === 'favorites' ? 0 : -1"
+          :aria-label="'View favorite images (' + favorites.length + ' items)'"
+        >
           <Icon icon="material-symbols:favorite" aria-hidden="true" />
           Favorites ({{ favorites.length }})
         </button>
       </nav>
       <div class="category-filters" role="group" aria-label="Category filters">
-        <button :class="{ active: selectedCategory === 'all' }" @click="selectedCategory = 'all'" class="category-btn">
+        <button
+          :class="{ active: selectedCategory === 'all' }"
+          @click="selectedCategory = 'all'"
+          class="category-btn"
+        >
           All
         </button>
-        <button :class="{ active: selectedCategory === 'nature' }" @click="selectedCategory = 'nature'" class="category-btn">
+        <button
+          :class="{ active: selectedCategory === 'nature' }"
+          @click="selectedCategory = 'nature'"
+          class="category-btn"
+        >
           🌿 Nature
         </button>
-        <button :class="{ active: selectedCategory === 'architecture' }" @click="selectedCategory = 'architecture'" class="category-btn">
+        <button
+          :class="{ active: selectedCategory === 'architecture' }"
+          @click="selectedCategory = 'architecture'"
+          class="category-btn"
+        >
           🏛️ Architecture
         </button>
-        <button :class="{ active: selectedCategory === 'people' }" @click="selectedCategory = 'people'" class="category-btn">
+        <button
+          :class="{ active: selectedCategory === 'people' }"
+          @click="selectedCategory = 'people'"
+          class="category-btn"
+        >
           👥 People
         </button>
-        <button :class="{ active: selectedCategory === 'abstract' }" @click="selectedCategory = 'abstract'" class="category-btn">
+        <button
+          :class="{ active: selectedCategory === 'abstract' }"
+          @click="selectedCategory = 'abstract'"
+          class="category-btn"
+        >
           🎨 Abstract
         </button>
-        <button :class="{ active: selectedCategory === 'city' }" @click="selectedCategory = 'city'" class="category-btn">
+        <button
+          :class="{ active: selectedCategory === 'city' }"
+          @click="selectedCategory = 'city'"
+          class="category-btn"
+        >
           🌆 City
         </button>
       </div>
-      <section class="gallery" :id="'tabpanel-' + activeTab" role="tabpanel" :aria-labelledby="'tab-' + activeTab"
-        aria-live="polite">
+      <section
+        class="gallery"
+        :id="'tabpanel-' + activeTab"
+        role="tabpanel"
+        :aria-labelledby="'tab-' + activeTab"
+        aria-live="polite"
+      >
         <template v-if="loading && images.length === 0">
           <SkeletonCard v-for="n in 6" :key="n" />
         </template>
         <template v-else>
-          <article v-for="img in filteredImages" :key="img.id" class="image-card" role="article"
-            :aria-label="'Image: ' + img.title + ', Category: ' + img.category">
-            <figure class="image-container" :class="{ 'is-locked': img.premium && !isPro }"
-              @click="handlePremiumClick(img)">
-              <img :src="img.src" :alt="img.title + ' - ' + img.category + ' image'" loading="lazy" />
+          <article
+            v-for="img in filteredImages"
+            :key="img.id"
+            class="image-card"
+            role="article"
+            :aria-label="'Image: ' + img.title + ', Category: ' + img.category"
+          >
+            <figure
+              class="image-container"
+              :class="{ 'is-locked': img.premium && !isPro }"
+              @click="handlePremiumClick(img)"
+            >
+              <img
+                :src="img.src"
+                :alt="img.title + ' - ' + img.category + ' image'"
+                loading="lazy"
+              />
               <figcaption v-if="img.premium && !isPro" class="lock-overlay">
                 <Icon icon="material-symbols:lock" class="lock-icon" />
                 <span>Premium</span>
               </figcaption>
               <aside class="overlay" v-else>
-                <button class="favorite-btn" :class="{ favorited: isFavorite(img.id) }"
-                  @click.stop="toggleFavorite(img.id)" @keydown.stop="handleFavoriteKeydown($event, img.id)"
-                  :aria-label="isFavorite(img.id)
-                    ? 'Remove ' + img.title + ' from favorites'
-                    : 'Add ' + img.title + ' to favorites'"
-                  :aria-pressed="isFavorite(img.id)" role="button" tabindex="0">
-                  <Icon :icon="isFavorite(img.id)
-                    ? 'material-symbols:favorite'
-                    : 'material-symbols:favorite-outline'" aria-hidden="true" />
+                <button
+                  class="favorite-btn"
+                  :class="{ favorited: isFavorite(img.id) }"
+                  @click.stop="toggleFavorite(img.id)"
+                  @keydown.stop="handleFavoriteKeydown($event, img.id)"
+                  :aria-label="
+                    isFavorite(img.id)
+                      ? 'Remove ' + img.title + ' from favorites'
+                      : 'Add ' + img.title + ' to favorites'
+                  "
+                  :aria-pressed="isFavorite(img.id)"
+                  role="button"
+                  tabindex="0"
+                >
+                  <Icon
+                    :icon="
+                      isFavorite(img.id)
+                        ? 'material-symbols:favorite'
+                        : 'material-symbols:favorite-outline'
+                    "
+                    aria-hidden="true"
+                  />
                 </button>
-                <button class="download-btn" @click.stop="handleDownload(img)" :aria-label="'Download ' + img.title"
-                  role="button" tabindex="0">
+                <button
+                  class="download-btn"
+                  @click.stop="handleDownload(img)"
+                  :aria-label="'Download ' + img.title"
+                  role="button"
+                  tabindex="0"
+                >
                   <Icon icon="material-symbols:download" aria-hidden="true" />
                 </button>
               </aside>
               <figcaption class="image-info">
                 <h3>{{ img.title }}</h3>
-                <span class="category" role="text" :aria-label="'Category: ' + img.category">{{ img.category }}</span>
+                <span class="category" role="text" :aria-label="'Category: ' + img.category">{{
+                  img.category
+                }}</span>
               </figcaption>
             </figure>
           </article>
         </template>
       </section>
-      <aside v-if="activeTab === 'favorites' && favorites.length === 0" class="empty-state" role="status"
-        aria-live="polite" aria-label="No favorite images">
+      <aside
+        v-if="activeTab === 'favorites' && favorites.length === 0"
+        class="empty-state"
+        role="status"
+        aria-live="polite"
+        aria-label="No favorite images"
+      >
         <Icon icon="material-symbols:favorite-outline" aria-hidden="true" />
         <p>No favorite images yet.</p>
         <p>Explore the gallery and click the heart to add to favorites!</p>
       </aside>
     </div>
     <div ref="observerEl" class="scroll-observer"></div>
-    <div v-if="loading && images.length > 0 && autoLoadCount < AUTO_LOAD_LIMIT" class="loading-more-state">
+    <div
+      v-if="loading && images.length > 0 && autoLoadCount < AUTO_LOAD_LIMIT"
+      class="loading-more-state"
+    >
       <Icon icon="svg-spinners:ring-resize" />
     </div>
     <div v-if="hasMore && autoLoadCount >= AUTO_LOAD_LIMIT" class="load-more-container">
       <button @click="handleManualLoadMore" :disabled="loading" class="load-more-btn">
-        <span v-if="loading">
-          <Icon icon="svg-spinners:ring-resize" /> Loading...</span>
+        <span v-if="loading"> <Icon icon="svg-spinners:ring-resize" /> Loading...</span>
         <span v-else>View More</span>
       </button>
     </div>
-    <AuthModal :is-open="isAuthModalOpen" @close="isAuthModalOpen = false" @register-success="handleRegisterSuccess" />
+    <AuthModal
+      :is-open="isAuthModalOpen"
+      @close="isAuthModalOpen = false"
+      @register-success="handleRegisterSuccess"
+    />
   </section>
 </template>
 
@@ -412,7 +507,9 @@ const handleFavoriteKeydown = (event, imageId) => {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          transition: transform 0.3s, filter 0.3s;
+          transition:
+            transform 0.3s,
+            filter 0.3s;
         }
 
         &:hover img {

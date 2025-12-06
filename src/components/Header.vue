@@ -24,7 +24,7 @@ const startTypeWriterLoop = async () => {
     const text = user.value?.name || ''
 
     if (isEditingName.value || !text) {
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 500))
       continue
     }
 
@@ -32,20 +32,20 @@ const startTypeWriterLoop = async () => {
       if (isEditingName.value || !isMounted) break
       displayedName.value = text.substring(0, i)
       const randomDelay = 150 + Math.random() * 50
-      await new Promise(resolve => setTimeout(resolve, randomDelay))
+      await new Promise((resolve) => setTimeout(resolve, randomDelay))
     }
 
     if (isEditingName.value || !isMounted) continue
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await new Promise((resolve) => setTimeout(resolve, 2000))
 
     for (let i = text.length; i >= 0; i--) {
       if (isEditingName.value || !isMounted) break
       displayedName.value = text.substring(0, i)
-      await new Promise(resolve => setTimeout(resolve, 75))
+      await new Promise((resolve) => setTimeout(resolve, 75))
     }
 
     if (isEditingName.value || !isMounted) continue
-    await new Promise(resolve => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500))
   }
 }
 
@@ -120,13 +120,20 @@ const handleLogout = () => {
       <ul>
         <li><router-link :to="{ name: 'home' }" @click="closeMenu">Home</router-link></li>
         <li>
-          <router-link :to="{ name: 'home', hash: '#gallery' }" @click="closeMenu">Gallery</router-link>
+          <router-link :to="{ name: 'home', hash: '#gallery' }" @click="closeMenu"
+            >Gallery</router-link
+          >
         </li>
         <li class="mobile-only search-item">
           <div class="search-input-wrapper">
             <Icon icon="material-symbols:search" class="search-icon" />
-            <input type="text" placeholder="Search..." aria-label="Search" v-model="headerSearchTerm"
-              @keyup.enter="handleHeaderSearch" />
+            <input
+              type="text"
+              placeholder="Search..."
+              aria-label="Search"
+              v-model="headerSearchTerm"
+              @keyup.enter="handleHeaderSearch"
+            />
           </div>
         </li>
         <li class="desktop-only">
@@ -135,27 +142,47 @@ const handleLogout = () => {
           </button>
         </li>
         <li>
-          <button @click="toggleDarkMode" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
-            class="icon-button theme-toggle">
+          <button
+            @click="toggleDarkMode"
+            :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+            class="icon-button theme-toggle"
+          >
             <Icon :icon="isDark ? 'material-symbols:light-mode' : 'material-symbols:dark-mode'" />
             <span class="mobile-only">{{ isDark ? 'Light Mode' : 'Dark Mode' }}</span>
           </button>
         </li>
         <li>
           <div v-if="user" class="user-menu">
-            <div class="greeting-container" @click="startEditingName" title="Click to edit your name">
+            <div
+              class="greeting-container"
+              @click="startEditingName"
+              title="Click to edit your name"
+            >
               <span class="greeting-text">Hi, </span>
-              <input v-if="isEditingName" ref="nameInputRef" v-model="displayedName" @blur="finishEditingName"
-                @keyup.enter="finishEditingName" class="name-input" />
-              <span v-else class="typewriter-text">{{ displayedName }}<span class="cursor">!</span></span>
+              <input
+                v-if="isEditingName"
+                ref="nameInputRef"
+                v-model="displayedName"
+                @blur="finishEditingName"
+                @keyup.enter="finishEditingName"
+                class="name-input"
+              />
+              <span v-else class="typewriter-text"
+                >{{ displayedName }}<span class="cursor">!</span></span
+              >
               <Icon icon="material-symbols:edit" class="edit-icon" />
             </div>
             <button @click="handleLogout" class="icon-button logout-btn" aria-label="Logout">
               <Icon icon="material-symbols:logout" />
             </button>
           </div>
-          <button v-else @click="openAuthModal" aria-label="User Profile" class="icon-button profile-btn"
-            :class="{ 'is-pro': isPro }">
+          <button
+            v-else
+            @click="openAuthModal"
+            aria-label="User Profile"
+            class="icon-button profile-btn"
+            :class="{ 'is-pro': isPro }"
+          >
             <Icon :icon="isPro ? 'material-symbols:verified' : 'material-symbols:person-outline'" />
             <span class="mobile-only">{{ isPro ? 'Pro Member' : 'Login / Register' }}</span>
           </button>
@@ -212,7 +239,9 @@ const handleLogout = () => {
   }
 
   .theme-toggle {
-    transition: transform 0.3s ease, color 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      color 0.3s ease;
 
     &:hover {
       transform: rotate(20deg);
@@ -236,7 +265,7 @@ const handleLogout = () => {
 
     .close-icon {
       font-size: 2.5rem;
-      color: #E1306C;
+      color: #e1306c;
       transition: transform 0.3s ease;
 
       &:hover {
@@ -265,7 +294,7 @@ const handleLogout = () => {
     }
 
     a:hover {
-      color: #E1306C;
+      color: #e1306c;
     }
 
     .user-menu {
@@ -329,7 +358,7 @@ const handleLogout = () => {
 
       .cursor {
         display: inline-block;
-        color: #E1306C;
+        color: #e1306c;
         animation: blink 1s infinite;
         margin-left: 1px;
         font-weight: 700;
@@ -344,7 +373,6 @@ const handleLogout = () => {
       }
 
       @keyframes blink {
-
         0%,
         100% {
           opacity: 1;
@@ -380,7 +408,7 @@ const handleLogout = () => {
       gap: 0.5rem;
 
       &:hover {
-        color: #E1306C;
+        color: #e1306c;
       }
     }
   }
@@ -446,7 +474,7 @@ const handleLogout = () => {
 
           &:hover,
           &.router-link-active {
-            color: #E1306C;
+            color: #e1306c;
             padding-left: 10px;
           }
         }
@@ -459,7 +487,7 @@ const handleLogout = () => {
           color: #2c3e50;
 
           &:hover {
-            color: #E1306C;
+            color: #e1306c;
           }
         }
 
@@ -478,7 +506,7 @@ const handleLogout = () => {
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #E1306C;
+            color: #e1306c;
             font-size: 1.2rem;
           }
 
@@ -493,7 +521,7 @@ const handleLogout = () => {
 
             &:focus {
               outline: none;
-              border-color: #E1306C;
+              border-color: #e1306c;
               background: #fff;
               box-shadow: 0 4px 15px rgba(225, 48, 108, 0.1);
             }

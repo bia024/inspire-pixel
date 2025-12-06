@@ -84,8 +84,12 @@ const handleUpgrade = async () => {
   <main class="mode-selection">
     <header class="welcome-header">
       <figure class="brand-identity">
-        <img src="../assets/logo.svg" alt="InspirePixel Logo" class="official-logo"
-          aria-label="InspirePixel Official Logo" />
+        <img
+          src="../assets/logo.svg"
+          alt="InspirePixel Logo"
+          class="official-logo"
+          aria-label="InspirePixel Official Logo"
+        />
         <figcaption class="brand-name">InspirePixel</figcaption>
       </figure>
       <p class="welcome-text">Welcome! Let's get started by choosing your plan.</p>
@@ -96,7 +100,13 @@ const handleUpgrade = async () => {
         <p class="subtitle">Unlock the power of inspiration with our premium features</p>
       </header>
       <div class="plans" role="radiogroup" aria-label="Subscription Plans">
-        <article class="plan-card free-plan" role="radio" aria-checked="false" tabindex="0" @click="selectMode('free')">
+        <article
+          class="plan-card free-plan"
+          role="radio"
+          aria-checked="false"
+          tabindex="0"
+          @click="selectMode('free')"
+        >
           <header class="plan-header">
             <h2>Free</h2>
             <p class="price">
@@ -115,20 +125,33 @@ const handleUpgrade = async () => {
               <Icon icon="material-symbols:check" aria-hidden="true" /> Favorite images
             </li>
             <li role="listitem" class="feature-disabled">
-              <Icon icon="material-symbols:close" class="disabled" aria-hidden="true" /> High-resolution downloads
+              <Icon icon="material-symbols:close" class="disabled" aria-hidden="true" />
+              High-resolution downloads
             </li>
             <li role="listitem" class="feature-disabled">
-              <Icon icon="material-symbols:close" class="disabled" aria-hidden="true" /> Unlimited image access
+              <Icon icon="material-symbols:close" class="disabled" aria-hidden="true" /> Unlimited
+              image access
             </li>
             <li role="listitem" class="feature-disabled">
-              <Icon icon="material-symbols:close" class="disabled" aria-hidden="true" /> Commercial use rights
+              <Icon icon="material-symbols:close" class="disabled" aria-hidden="true" /> Commercial
+              use rights
             </li>
           </ul>
-          <button class="plan-button free-button" @click.stop="selectMode('free')" aria-label="Select Free Plan">
+          <button
+            class="plan-button free-button"
+            @click.stop="selectMode('free')"
+            aria-label="Select Free Plan"
+          >
             Start for Free
           </button>
         </article>
-        <article class="plan-card pro-plan" role="radio" aria-checked="false" tabindex="0" @click="openProModal">
+        <article
+          class="plan-card pro-plan"
+          role="radio"
+          aria-checked="false"
+          tabindex="0"
+          @click="openProModal"
+        >
           <span class="plan-badge">Most Popular</span>
           <header class="plan-header">
             <h2>Pro</h2>
@@ -157,7 +180,11 @@ const handleUpgrade = async () => {
               <Icon icon="material-symbols:check" aria-hidden="true" /> Exclusive premium content
             </li>
           </ul>
-          <button class="plan-button pro-button" @click.stop="openProModal" aria-label="Upgrade to Pro Plan">
+          <button
+            class="plan-button pro-button"
+            @click.stop="openProModal"
+            aria-label="Upgrade to Pro Plan"
+          >
             Upgrade to Pro
           </button>
         </article>
@@ -167,8 +194,14 @@ const handleUpgrade = async () => {
         <span>30-day money-back guarantee</span>
       </footer>
     </section>
-    <div v-if="showUpgradeModal" class="modal-overlay" @click="closeUpgradeModal" role="dialog" aria-modal="true"
-      aria-labelledby="modal-upgrade-title">
+    <div
+      v-if="showUpgradeModal"
+      class="modal-overlay"
+      @click="closeUpgradeModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-upgrade-title"
+    >
       <section class="modal-content" @click.stop>
         <header class="modal-header">
           <h2 id="modal-upgrade-title">Activate Pro Mode</h2>
@@ -177,14 +210,27 @@ const handleUpgrade = async () => {
           </button>
         </header>
         <div class="modal-padding-content">
-          <p>Confirm your upgrade to Pro Mode? You will get unlimited access to all premium features.</p>
+          <p>
+            Confirm your upgrade to Pro Mode? You will get unlimited access to all premium features.
+          </p>
           <div class="email-input-wrapper">
             <label for="user-email">Account Email</label>
             <div class="input-with-icon">
-              <input id="user-email" type="email" :value="user?.email" readonly class="email-input"
-                aria-describedby="email-readonly-info" />
-              <span class="lock-emoji" title="This field is read-only" id="email-readonly-info"
-                aria-hidden="true">🔒</span>
+              <input
+                id="user-email"
+                type="email"
+                :value="user?.email"
+                readonly
+                class="email-input"
+                aria-describedby="email-readonly-info"
+              />
+              <span
+                class="lock-emoji"
+                title="This field is read-only"
+                id="email-readonly-info"
+                aria-hidden="true"
+                >🔒</span
+              >
             </div>
           </div>
         </div>
@@ -196,7 +242,11 @@ const handleUpgrade = async () => {
         </footer>
       </section>
     </div>
-    <AuthModal :is-open="isAuthModalOpen" @close="isAuthModalOpen = false" @register-success="handleAuthSuccess" />
+    <AuthModal
+      :is-open="isAuthModalOpen"
+      @close="isAuthModalOpen = false"
+      @register-success="handleAuthSuccess"
+    />
     <transition name="congrats-fade">
       <div v-if="showCongrats" class="congrats-overlay" role="alert" aria-live="assertive">
         <section class="congrats-modal">
@@ -208,13 +258,9 @@ const handleUpgrade = async () => {
               <Icon icon="material-symbols:check-circle" aria-hidden="true" />
             </div>
             <h2 class="congrats-title">Congratulations! 🎉</h2>
-            <p class="congrats-message">
-              You're now a <strong>Pro Member</strong>!
-            </p>
+            <p class="congrats-message">You're now a <strong>Pro Member</strong>!</p>
             <div class="pro-badge-large">PRO</div>
-            <p class="congrats-subtitle">
-              Enjoy unlimited access to all premium features
-            </p>
+            <p class="congrats-subtitle">Enjoy unlimited access to all premium features</p>
           </div>
         </section>
       </div>

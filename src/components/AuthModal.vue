@@ -5,7 +5,7 @@ import { useFirebaseAuth } from '../composables/useFirebaseAuth'
 import { useToast } from '../composables/useToast'
 
 const props = defineProps({
-  isOpen: Boolean
+  isOpen: Boolean,
 })
 
 const emit = defineEmits(['close', 'register-success'])
@@ -30,7 +30,7 @@ const passwordRequirements = computed(() => {
     hasUpperCase: /[A-Z]/.test(pwd),
     hasLowerCase: /[a-z]/.test(pwd),
     hasNumber: /[0-9]/.test(pwd),
-    hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(pwd)
+    hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(pwd),
   }
 })
 
@@ -105,7 +105,7 @@ const handleRegister = async () => {
     const result = await register({
       name: registerForm.value.name,
       email: registerForm.value.email,
-      password: registerForm.value.password
+      password: registerForm.value.password,
     })
 
     if (result.success) {
@@ -160,10 +160,18 @@ const handleForgotPassword = async () => {
         </button>
         <header class="auth-header">
           <nav class="tabs" role="tablist">
-            <button :class="{ active: activeTab === 'login' }" @click="switchTab('login')" role="tab">
+            <button
+              :class="{ active: activeTab === 'login' }"
+              @click="switchTab('login')"
+              role="tab"
+            >
               Login
             </button>
-            <button :class="{ active: activeTab === 'register' }" @click="switchTab('register')" role="tab">
+            <button
+              :class="{ active: activeTab === 'register' }"
+              @click="switchTab('register')"
+              role="tab"
+            >
               Register
             </button>
           </nav>
@@ -174,23 +182,46 @@ const handleForgotPassword = async () => {
               <label>Email</label>
               <div class="input-wrapper">
                 <Icon icon="material-symbols:mail-outline" class="input-icon" />
-                <input type="email" v-model="loginForm.email" placeholder="hello@example.com" required />
+                <input
+                  type="email"
+                  v-model="loginForm.email"
+                  placeholder="hello@example.com"
+                  required
+                />
               </div>
             </fieldset>
             <fieldset class="form-group">
               <label>Password</label>
               <div class="input-wrapper">
                 <Icon icon="material-symbols:lock-outline" class="input-icon" />
-                <input :type="showPassword ? 'text' : 'password'" v-model="loginForm.password" placeholder="••••••••"
-                  required />
-                <button type="button" class="toggle-password" @click="togglePasswordVisibility"
-                  aria-label="Toggle password visibility">
-                  <Icon :icon="showPassword ? 'material-symbols:visibility-off' : 'material-symbols:visibility'" />
+                <input
+                  :type="showPassword ? 'text' : 'password'"
+                  v-model="loginForm.password"
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  class="toggle-password"
+                  @click="togglePasswordVisibility"
+                  aria-label="Toggle password visibility"
+                >
+                  <Icon
+                    :icon="
+                      showPassword
+                        ? 'material-symbols:visibility-off'
+                        : 'material-symbols:visibility'
+                    "
+                  />
                 </button>
               </div>
             </fieldset>
             <div class="forgot-password-link">
-              <button type="button" @click="showForgotPassword = !showForgotPassword" class="link-button">
+              <button
+                type="button"
+                @click="showForgotPassword = !showForgotPassword"
+                class="link-button"
+              >
                 {{ showForgotPassword ? 'Back to Login' : 'Forgot Password?' }}
               </button>
             </div>
@@ -199,10 +230,19 @@ const handleForgotPassword = async () => {
                 <label>Email for Password Reset</label>
                 <div class="input-wrapper">
                   <Icon icon="material-symbols:mail-outline" class="input-icon" />
-                  <input type="email" v-model="forgotPasswordEmail" placeholder="hello@example.com" />
+                  <input
+                    type="email"
+                    v-model="forgotPasswordEmail"
+                    placeholder="hello@example.com"
+                  />
                 </div>
               </fieldset>
-              <button type="button" @click="handleForgotPassword" class="submit-btn" :disabled="isLoading">
+              <button
+                type="button"
+                @click="handleForgotPassword"
+                class="submit-btn"
+                :disabled="isLoading"
+              >
                 {{ isLoading ? 'Sending...' : 'Send Reset Link' }}
               </button>
             </div>
@@ -222,26 +262,48 @@ const handleForgotPassword = async () => {
               <label>Email</label>
               <div class="input-wrapper">
                 <Icon icon="material-symbols:mail-outline" class="input-icon" />
-                <input type="email" v-model="registerForm.email" placeholder="hello@example.com" required />
+                <input
+                  type="email"
+                  v-model="registerForm.email"
+                  placeholder="hello@example.com"
+                  required
+                />
               </div>
             </fieldset>
             <fieldset class="form-group">
               <label>Password</label>
               <div class="input-wrapper">
                 <Icon icon="material-symbols:lock-outline" class="input-icon" />
-                <input :type="showRegisterPassword ? 'text' : 'password'" v-model="registerForm.password"
-                  placeholder="••••••••" required />
-                <button type="button" class="toggle-password" @click="toggleRegisterPasswordVisibility"
-                  aria-label="Toggle password visibility">
+                <input
+                  :type="showRegisterPassword ? 'text' : 'password'"
+                  v-model="registerForm.password"
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  class="toggle-password"
+                  @click="toggleRegisterPasswordVisibility"
+                  aria-label="Toggle password visibility"
+                >
                   <Icon
-                    :icon="showRegisterPassword ? 'material-symbols:visibility-off' : 'material-symbols:visibility'" />
+                    :icon="
+                      showRegisterPassword
+                        ? 'material-symbols:visibility-off'
+                        : 'material-symbols:visibility'
+                    "
+                  />
                 </button>
               </div>
               <aside v-if="registerForm.password" class="password-strength">
                 <div class="strength-bar">
-                  <div class="strength-fill"
-                    :style="{ width: passwordStrength.percentage + '%', backgroundColor: passwordStrength.color }">
-                  </div>
+                  <div
+                    class="strength-fill"
+                    :style="{
+                      width: passwordStrength.percentage + '%',
+                      backgroundColor: passwordStrength.color,
+                    }"
+                  ></div>
                 </div>
                 <span class="strength-label" :style="{ color: passwordStrength.color }">
                   {{ passwordStrength.label }}
@@ -250,27 +312,52 @@ const handleForgotPassword = async () => {
               <aside v-if="registerForm.password" class="password-requirements">
                 <div class="requirement" :class="{ met: passwordRequirements.minLength }">
                   <Icon
-                    :icon="passwordRequirements.minLength ? 'material-symbols:check-circle' : 'material-symbols:circle'" />
+                    :icon="
+                      passwordRequirements.minLength
+                        ? 'material-symbols:check-circle'
+                        : 'material-symbols:circle'
+                    "
+                  />
                   <span>At least 8 characters</span>
                 </div>
                 <div class="requirement" :class="{ met: passwordRequirements.hasUpperCase }">
                   <Icon
-                    :icon="passwordRequirements.hasUpperCase ? 'material-symbols:check-circle' : 'material-symbols:circle'" />
+                    :icon="
+                      passwordRequirements.hasUpperCase
+                        ? 'material-symbols:check-circle'
+                        : 'material-symbols:circle'
+                    "
+                  />
                   <span>One uppercase letter</span>
                 </div>
                 <div class="requirement" :class="{ met: passwordRequirements.hasLowerCase }">
                   <Icon
-                    :icon="passwordRequirements.hasLowerCase ? 'material-symbols:check-circle' : 'material-symbols:circle'" />
+                    :icon="
+                      passwordRequirements.hasLowerCase
+                        ? 'material-symbols:check-circle'
+                        : 'material-symbols:circle'
+                    "
+                  />
                   <span>One lowercase letter</span>
                 </div>
                 <div class="requirement" :class="{ met: passwordRequirements.hasNumber }">
                   <Icon
-                    :icon="passwordRequirements.hasNumber ? 'material-symbols:check-circle' : 'material-symbols:circle'" />
+                    :icon="
+                      passwordRequirements.hasNumber
+                        ? 'material-symbols:check-circle'
+                        : 'material-symbols:circle'
+                    "
+                  />
                   <span>One number</span>
                 </div>
                 <div class="requirement" :class="{ met: passwordRequirements.hasSpecial }">
                   <Icon
-                    :icon="passwordRequirements.hasSpecial ? 'material-symbols:check-circle' : 'material-symbols:circle'" />
+                    :icon="
+                      passwordRequirements.hasSpecial
+                        ? 'material-symbols:check-circle'
+                        : 'material-symbols:circle'
+                    "
+                  />
                   <span>One special character (!@#$%...)</span>
                 </div>
               </aside>
@@ -541,7 +628,9 @@ const handleForgotPassword = async () => {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 
   &:hover {
     transform: translateY(-1px);

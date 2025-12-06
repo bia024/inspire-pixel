@@ -64,7 +64,7 @@ const loadStories = async () => {
           return
         }
 
-        const track = tracks.find(t => t.preview_url) || tracks[0]
+        const track = tracks.find((t) => t.preview_url) || tracks[0]
 
         if (track) {
           console.log(`Found track for ${artist}: ${track.name} (Preview: ${!!track.preview_url})`)
@@ -74,7 +74,7 @@ const loadStories = async () => {
             track: track.name,
             image: photo,
             previewUrl: track.preview_url,
-            avatar: track.album.images[2]?.url || photo
+            avatar: track.album.images[2]?.url || photo,
           })
         } else {
           console.log(`No tracks found for ${artist}`)
@@ -91,7 +91,7 @@ const loadStories = async () => {
   console.log(`Loaded ${newStories.length} stories`)
   stories.value = newStories
 
-  newStories.forEach(story => {
+  newStories.forEach((story) => {
     const audio = new Audio()
     if (story.previewUrl) {
       audio.src = story.previewUrl
@@ -100,7 +100,7 @@ const loadStories = async () => {
         'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3',
         'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=relaxing-mountains-113886.mp3',
         'https://cdn.pixabay.com/download/audio/2022/02/07/audio_1808fbf07a.mp3?filename=jazz-happy-110946.mp3',
-        'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=ambient-piano-110254.mp3'
+        'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=ambient-piano-110254.mp3',
       ]
       story.ambientUrl = ambientTracks[Math.floor(Math.random() * ambientTracks.length)]
       audio.src = story.ambientUrl
@@ -129,7 +129,7 @@ const playStory = () => {
 
   if (story.audioObject) {
     audioPlayer.value = story.audioObject
-    audioPlayer.value.play().catch(e => console.error("Audio play failed:", e))
+    audioPlayer.value.play().catch((e) => console.error('Audio play failed:', e))
   }
 
   isPaused.value = false
@@ -204,7 +204,7 @@ const shareStory = async () => {
       await navigator.share({
         title: 'InspirePixel Music Story',
         text: text,
-        url: window.location.href
+        url: window.location.href,
       })
     } else {
       await navigator.clipboard.writeText(text)
@@ -233,24 +233,27 @@ onUnmounted(() => {
         <Icon icon="logos:spotify-icon" class="spotify-logo" />
         <h2>Connect to Spotify</h2>
         <p>To view music stories, we need to connect to your Spotify account.</p>
-        <button @click="login" class="spotify-btn">
-          Connect Spotify
-        </button>
-        <button @click="router.push({ name: 'home' })" class="cancel-btn">
-          Go Back
-        </button>
+        <button @click="login" class="spotify-btn">Connect Spotify</button>
+        <button @click="router.push({ name: 'home' })" class="cancel-btn">Go Back</button>
       </section>
     </div>
     <div v-else-if="loading" class="loading-state">
       <Icon icon="svg-spinners:bars-scale-middle" class="spinner" />
       <p>Curating stories...</p>
     </div>
-    <article v-else class="story-container" :style="{ '--bg-image': `url(${stories[currentStoryIndex].image})` }">
+    <article
+      v-else
+      class="story-container"
+      :style="{ '--bg-image': `url(${stories[currentStoryIndex].image})` }"
+    >
       <div class="progress-group">
-        <div v-for="(story, index) in stories" :key="story.id" class="progress-item"
-          :class="{ 'active': index === currentStoryIndex, 'completed': index < currentStoryIndex }"
-          :style="index === currentStoryIndex ? { '--progress': progress + '%' } : {}">
-        </div>
+        <div
+          v-for="(story, index) in stories"
+          :key="story.id"
+          class="progress-item"
+          :class="{ active: index === currentStoryIndex, completed: index < currentStoryIndex }"
+          :style="index === currentStoryIndex ? { '--progress': progress + '%' } : {}"
+        ></div>
       </div>
       <header class="story-header">
         <div class="user-info">
@@ -268,7 +271,11 @@ onUnmounted(() => {
         <button class="nav-btn left" @click="prevStory" aria-label="Previous story">
           <Icon icon="material-symbols:chevron-left" class="nav-arrow" />
         </button>
-        <button class="nav-btn center" @click="togglePause" :aria-label="isPaused ? 'Play' : 'Pause'">
+        <button
+          class="nav-btn center"
+          @click="togglePause"
+          :aria-label="isPaused ? 'Play' : 'Pause'"
+        >
           <Icon v-if="isPaused" icon="material-symbols:play-circle" class="play-icon" />
         </button>
         <button class="nav-btn right" @click="nextStory" aria-label="Next story">
@@ -277,7 +284,11 @@ onUnmounted(() => {
       </nav>
       <footer class="story-footer">
         <div class="music-info">
-          <button class="mute-btn" @click.stop="toggleMute" :aria-label="isMuted ? 'Unmute' : 'Mute'">
+          <button
+            class="mute-btn"
+            @click.stop="toggleMute"
+            :aria-label="isMuted ? 'Unmute' : 'Mute'"
+          >
             <Icon :icon="isMuted ? 'material-symbols:volume-off' : 'material-symbols:volume-up'" />
           </button>
           <div class="equalizer-container" v-if="!isMuted">
@@ -288,16 +299,26 @@ onUnmounted(() => {
             <h3>{{ stories[currentStoryIndex].track }}</h3>
             <p>
               {{ stories[currentStoryIndex].artist }}
-              <span v-if="!stories[currentStoryIndex].previewUrl" class="ambient-badge">• Ambient Mode</span>
+              <span v-if="!stories[currentStoryIndex].previewUrl" class="ambient-badge"
+                >• Ambient Mode</span
+              >
             </p>
           </div>
         </div>
         <div class="actions">
-          <button class="action-btn" @click.stop="toggleLike"
-            :aria-label="likedStories.has(stories[currentStoryIndex].id) ? 'Unlike' : 'Like'">
+          <button
+            class="action-btn"
+            @click.stop="toggleLike"
+            :aria-label="likedStories.has(stories[currentStoryIndex].id) ? 'Unlike' : 'Like'"
+          >
             <Icon
-              :icon="likedStories.has(stories[currentStoryIndex].id) ? 'material-symbols:favorite' : 'material-symbols:favorite-outline'"
-              :class="{ 'liked': likedStories.has(stories[currentStoryIndex].id) }" />
+              :icon="
+                likedStories.has(stories[currentStoryIndex].id)
+                  ? 'material-symbols:favorite'
+                  : 'material-symbols:favorite-outline'
+              "
+              :class="{ liked: likedStories.has(stories[currentStoryIndex].id) }"
+            />
           </button>
           <button class="action-btn" @click.stop="shareStory" aria-label="Share story">
             <Icon icon="material-symbols:share-outline" />
@@ -349,7 +370,7 @@ onUnmounted(() => {
     z-index: 0;
   }
 
-  >* {
+  > * {
     position: relative;
     z-index: 1;
   }
@@ -380,7 +401,11 @@ onUnmounted(() => {
   }
 
   &.active {
-    background: linear-gradient(to right, white var(--progress, 0%), rgba(255, 255, 255, 0.3) var(--progress, 0%));
+    background: linear-gradient(
+      to right,
+      white var(--progress, 0%),
+      rgba(255, 255, 255, 0.3) var(--progress, 0%)
+    );
   }
 }
 
@@ -531,7 +556,7 @@ onUnmounted(() => {
 
   .equalizer {
     font-size: 1.5rem;
-    color: #1DB954;
+    color: #1db954;
   }
 
   .track-details {
@@ -549,7 +574,7 @@ onUnmounted(() => {
       .ambient-badge {
         font-size: 0.7rem;
         background: rgba(29, 185, 84, 0.2);
-        color: #1DB954;
+        color: #1db954;
         padding: 2px 6px;
         border-radius: 4px;
         margin-left: 5px;
@@ -630,7 +655,7 @@ onUnmounted(() => {
   }
 
   .spotify-btn {
-    background: #1DB954;
+    background: #1db954;
     color: white;
     border: none;
     padding: 1rem 2rem;
@@ -673,7 +698,7 @@ onUnmounted(() => {
 
   .spinner {
     font-size: 3rem;
-    color: #1DB954;
+    color: #1db954;
   }
 }
 </style>
