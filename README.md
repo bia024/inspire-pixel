@@ -41,7 +41,7 @@
 - **🎫 Pro Upgrade Flow** - Seamless transition to premium
 
 ### 📬 Newsletter Integration
-- **✉️ EmailJS Integration** - Automated email confirmations
+- **✉️ Firebase Google Forms** - Automated email confirmations
 - **✅ Email Validation** - Regex-based validation
 - **💾 Fallback Storage** - LocalStorage backup
 - **🎨 Premium Design** - Gradient form with animations
@@ -58,8 +58,10 @@
 
 ### Libraries & APIs
 - **@iconify/vue** - 200,000+ icons
-- **@emailjs/browser** - Email service integration
+
+- **Firebase** - Firebase integration for authentication and storage
 - **Unsplash API** - High-quality image source (Pro)
+- **Spotify Web API** - Music integration for an immersive experience
 
 ### Code Quality
 - **Semantic HTML** - `<main>`, `<section>`, `<article>`, `<nav>`
@@ -86,7 +88,7 @@ npm install
 
 # Set up environment variables
 cp .env.example .env
-# Add your EmailJS credentials to .env
+# Add your API credentials to .env
 
 # Start development server
 npm run dev
@@ -97,10 +99,8 @@ npm run dev
 Create a `.env` file in the root directory:
 
 ```env
-VITE_EMAILJS_SERVICE_ID=your_service_id
-VITE_EMAILJS_TEMPLATE_ID=your_template_id
-VITE_EMAILJS_PUBLIC_KEY=your_public_key
 VITE_UNSPLASH_ACCESS_KEY=your_unsplash_key
+VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
 ```
 
 ---
@@ -161,7 +161,7 @@ inspirapixel/
 
 ### 📧 Newsletter Form
 - Email validation
-- EmailJS integration
+- Firebase integration
 - Loading states
 - Success/error feedback
 
