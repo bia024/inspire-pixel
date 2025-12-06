@@ -9,7 +9,6 @@ import ImgBeach from '../assets/beach.png'
 import ImgSunflowers from '../assets/sunflowers.jpg'
 import ImgNight from '../assets/night.jpg'
 import ImgMountain from '../assets/mountain.jpg'
-// atualizei
 
 const route = useRoute()
 const { isPro } = useFirebaseAuth()
@@ -132,7 +131,6 @@ const debouncedSearch = () => {
           </button>
         </form>
       </header>
-
       <aside v-if="isPro" class="hero-showcase pro-carousel" aria-label="Premium Collection Carousel">
         <article class="carousel-container" @mouseenter="pauseSlideShow" @mouseleave="resumeSlideShow">
           <transition-group name="slide" tag="section" class="carousel-slides">
@@ -157,7 +155,6 @@ const debouncedSearch = () => {
           </nav>
         </article>
       </aside>
-
       <aside v-else class="hero-showcase" aria-label="Premium Content Preview">
         <figure class="showcase-card">
           <img :src="ImgMountain" alt="Premium Image Preview" loading="lazy" />
@@ -202,7 +199,7 @@ const debouncedSearch = () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 0;
   }
 
@@ -227,10 +224,11 @@ const debouncedSearch = () => {
       font-weight: 800;
       margin-bottom: 1rem;
       line-height: 1.2;
+
       span {
         color: #e1306c;
         font-style: italic;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
       }
     }
 
@@ -257,7 +255,7 @@ const debouncedSearch = () => {
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #7f8c8d;
+        color: var(--text-secondary);
         transition: color 0.3s;
         z-index: 2;
 
@@ -275,16 +273,23 @@ const debouncedSearch = () => {
         padding: 1rem 3rem;
         font-size: 1.1rem;
         border-radius: 50px;
-        border: 2px solid #fff;
-        background: rgba(255,255,255,0.95);
+        border: 2px solid transparent;
+        background: #fff;
         color: #333;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+
+        [data-theme='dark'] & {
+          background: #2c3e50;
+          color: #fff;
+          border-color: #3498db;
+        }
+
+        box-shadow: 0 8px 30px var(--card-shadow);
         transition: all 0.3s ease;
 
         &:focus {
           outline: none;
           border-color: #e1306c;
-          box-shadow: 0 0 0 3px rgba(225,48,108,0.5);
+          box-shadow: 0 0 0 3px rgba(225, 48, 108, 0.5);
         }
       }
 
@@ -295,8 +300,8 @@ const debouncedSearch = () => {
         transform: translateY(-50%);
         background: none;
         border: none;
-        font-size: 1.4rem;
-        color: #999;
+        font-size: 1.5rem;
+        color: var(--text-secondary);
         cursor: pointer;
         transition: color 0.3s;
         z-index: 2;
@@ -314,12 +319,12 @@ const debouncedSearch = () => {
     animation: float 6s ease-in-out infinite;
 
     .showcase-card {
-      background: rgba(255,255,255,0.15);
+      background: rgba(255, 255, 255, 0.15);
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       margin: 0;
 
       img {
@@ -335,7 +340,7 @@ const debouncedSearch = () => {
         left: 0;
         width: 100%;
         height: 200px;
-        background: rgba(0,0,0,0.6);
+        background: rgba(0, 0, 0, 0.6);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -357,9 +362,11 @@ const debouncedSearch = () => {
       }
 
       .card-content {
+        min-height: 180px;
+        width: 100%;
         padding: 1.5rem;
         text-align: center;
-        background: rgba(255,255,255,0.9);
+        background: rgba(255, 255, 255, 0.9);
 
         h3 {
           font-size: 1.5rem;
@@ -377,7 +384,7 @@ const debouncedSearch = () => {
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
-          background: linear-gradient(90deg,#e1306c,#f77737);
+          background: linear-gradient(90deg, #e1306c, #f77737);
           color: #fff;
           padding: 0.8rem 2rem;
           border-radius: 50px;
@@ -387,17 +394,139 @@ const debouncedSearch = () => {
 
           &:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(225,48,108,0.4);
+            box-shadow: 0 10px 20px rgba(225, 48, 108, 0.4);
           }
         }
       }
     }
   }
 
+  .carousel-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 350 / 380;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .carousel-slides {
+    width: 100%;
+    height: 100%;
+  }
+
+  .carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .slide-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    color: white;
+    text-align: left;
+
+    .premium-badge {
+      color: #f1c40f;
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+      vertical-align: middle;
+    }
+
+    h3 {
+      display: inline;
+      vertical-align: middle;
+      font-size: 1rem;
+    }
+  }
+
+  .carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #333;
+    font-size: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+
+    &.prev {
+      left: 10px;
+    }
+
+    &.next {
+      right: 10px;
+    }
+
+    &:hover {
+      background: #fff;
+      transform: translateY(-50%) scale(1.1);
+    }
+  }
+
+  .carousel-container:hover .carousel-nav {
+    opacity: 1;
+  }
+
+  .carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+
+    button {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &.active {
+        background: #fff;
+      }
+    }
+  }
+
   @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
-    100% { transform: translateY(0px); }
+    0% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-15px);
+    }
+
+    100% {
+      transform: translateY(0px);
+    }
   }
 
   @media (min-width: 992px) {

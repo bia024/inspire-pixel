@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
-
 import { useFirebaseAuth } from '../composables/useFirebaseAuth'
 import { usePexels } from '../composables/usePexels'
 import { useToast } from '../composables/useToast'
@@ -176,19 +175,24 @@ const handleFavoriteKeydown = (event, imageId) => {
         <button :class="{ active: selectedCategory === 'all' }" @click="selectedCategory = 'all'" class="category-btn">
           All
         </button>
-        <button :class="{ active: selectedCategory === 'nature' }" @click="selectedCategory = 'nature'" class="category-btn">
+        <button :class="{ active: selectedCategory === 'nature' }" @click="selectedCategory = 'nature'"
+          class="category-btn">
           🌿 Nature
         </button>
-        <button :class="{ active: selectedCategory === 'architecture' }" @click="selectedCategory = 'architecture'" class="category-btn">
+        <button :class="{ active: selectedCategory === 'architecture' }" @click="selectedCategory = 'architecture'"
+          class="category-btn">
           🏛️ Architecture
         </button>
-        <button :class="{ active: selectedCategory === 'people' }" @click="selectedCategory = 'people'" class="category-btn">
+        <button :class="{ active: selectedCategory === 'people' }" @click="selectedCategory = 'people'"
+          class="category-btn">
           👥 People
         </button>
-        <button :class="{ active: selectedCategory === 'abstract' }" @click="selectedCategory = 'abstract'" class="category-btn">
+        <button :class="{ active: selectedCategory === 'abstract' }" @click="selectedCategory = 'abstract'"
+          class="category-btn">
           🎨 Abstract
         </button>
-        <button :class="{ active: selectedCategory === 'city' }" @click="selectedCategory = 'city'" class="category-btn">
+        <button :class="{ active: selectedCategory === 'city' }" @click="selectedCategory = 'city'"
+          class="category-btn">
           🌆 City
         </button>
       </div>
@@ -212,8 +216,8 @@ const handleFavoriteKeydown = (event, imageId) => {
                   @click.stop="toggleFavorite(img.id)" @keydown.stop="handleFavoriteKeydown($event, img.id)"
                   :aria-label="isFavorite(img.id)
                     ? 'Remove ' + img.title + ' from favorites'
-                    : 'Add ' + img.title + ' to favorites'"
-                  :aria-pressed="isFavorite(img.id)" role="button" tabindex="0">
+                    : 'Add ' + img.title + ' to favorites'" :aria-pressed="isFavorite(img.id)" role="button"
+                  tabindex="0">
                   <Icon :icon="isFavorite(img.id)
                     ? 'material-symbols:favorite'
                     : 'material-symbols:favorite-outline'" aria-hidden="true" />
@@ -409,6 +413,7 @@ const handleFavoriteKeydown = (event, imageId) => {
           display: flex;
           gap: 0.5rem;
           transition: opacity 0.3s;
+          z-index: 4;
 
           .favorite-btn,
           .download-btn {
@@ -423,6 +428,12 @@ const handleFavoriteKeydown = (event, imageId) => {
             font-size: 1.5rem;
             border: none;
             transition: all 0.3s;
+          }
+
+          .favorite-btn:hover:not(.favorited) {
+            background: #e74c3c;
+            color: #fff;
+            transform: scale(1.1);
           }
 
           .favorite-btn.favorited {
