@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { Icon } from '@iconify/vue'
+
 import { useFirebaseAuth } from '../composables/useFirebaseAuth'
 import { usePexels } from '../composables/usePexels'
 import { useToast } from '../composables/useToast'
@@ -19,25 +20,57 @@ const isAuthModalOpen = ref(false)
 const activeTab = ref('all')
 const selectedCategory = ref('all')
 
+const autoLoadCount = ref(0)
+const AUTO_LOAD_LIMIT = 3
+
+const observerEl = ref(null)
+let observer = null
+
 onMounted(async () => {
   await fetchCuratedImages(1)
+  autoLoadCount.value = 0
+
+  observer = new IntersectionObserver(
+    (entries) => {
+      const firstEntry = entries[0]
+      if (firstEntry.isIntersecting && hasMore.value && !loading.value && autoLoadCount.value < AUTO_LOAD_LIMIT) {
+        loadMore()
+      }
+    },
+    { threshold: 0.8 }
+  )
+  if (observerEl.value) observer.observe(observerEl.value)
+})
+
+onUnmounted(() => {
+  if (observer && observerEl.value) observer.unobserve(observerEl.value)
 })
 
 watch(selectedCategory, async (newCategory) => {
+  autoLoadCount.value = 0
   if (newCategory === 'all') {
     await fetchCuratedImages(1)
   } else {
     await searchImages(newCategory, 1)
   }
+  observer.observe(observerEl.value)
 })
 
 watch(() => props.searchQuery, async (newQuery) => {
+  autoLoadCount.value = 0
   if (newQuery && newQuery.trim() !== '') {
     await searchImages(newQuery, 1)
   } else if (selectedCategory.value === 'all') {
     await fetchCuratedImages(1)
   } else {
     await searchImages(selectedCategory.value, 1)
+  }
+  observer.observe(observerEl.value)
+})
+
+watch(loading, (newValue, oldValue) => {
+  if (oldValue === true && newValue === false) {
+    autoLoadCount.value++
   }
 })
 
@@ -127,6 +160,11 @@ const handleDownload = async (img) => {
   }
 }
 
+const handleManualLoadMore = () => {
+  autoLoadCount.value = 0
+  loadMore()
+}
+
 const isFavorite = (imageId) => {
   if (typeof imageId !== 'number' || !Number.isInteger(imageId)) return false
   return favorites.value.includes(imageId)
@@ -175,24 +213,19 @@ const handleFavoriteKeydown = (event, imageId) => {
         <button :class="{ active: selectedCategory === 'all' }" @click="selectedCategory = 'all'" class="category-btn">
           All
         </button>
-        <button :class="{ active: selectedCategory === 'nature' }" @click="selectedCategory = 'nature'"
-          class="category-btn">
+        <button :class="{ active: selectedCategory === 'nature' }" @click="selectedCategory = 'nature'" class="category-btn">
           🌿 Nature
         </button>
-        <button :class="{ active: selectedCategory === 'architecture' }" @click="selectedCategory = 'architecture'"
-          class="category-btn">
+        <button :class="{ active: selectedCategory === 'architecture' }" @click="selectedCategory = 'architecture'" class="category-btn">
           🏛️ Architecture
         </button>
-        <button :class="{ active: selectedCategory === 'people' }" @click="selectedCategory = 'people'"
-          class="category-btn">
+        <button :class="{ active: selectedCategory === 'people' }" @click="selectedCategory = 'people'" class="category-btn">
           👥 People
         </button>
-        <button :class="{ active: selectedCategory === 'abstract' }" @click="selectedCategory = 'abstract'"
-          class="category-btn">
+        <button :class="{ active: selectedCategory === 'abstract' }" @click="selectedCategory = 'abstract'" class="category-btn">
           🎨 Abstract
         </button>
-        <button :class="{ active: selectedCategory === 'city' }" @click="selectedCategory = 'city'"
-          class="category-btn">
+        <button :class="{ active: selectedCategory === 'city' }" @click="selectedCategory = 'city'" class="category-btn">
           🌆 City
         </button>
       </div>
@@ -216,8 +249,8 @@ const handleFavoriteKeydown = (event, imageId) => {
                   @click.stop="toggleFavorite(img.id)" @keydown.stop="handleFavoriteKeydown($event, img.id)"
                   :aria-label="isFavorite(img.id)
                     ? 'Remove ' + img.title + ' from favorites'
-                    : 'Add ' + img.title + ' to favorites'" :aria-pressed="isFavorite(img.id)" role="button"
-                  tabindex="0">
+                    : 'Add ' + img.title + ' to favorites'"
+                  :aria-pressed="isFavorite(img.id)" role="button" tabindex="0">
                   <Icon :icon="isFavorite(img.id)
                     ? 'material-symbols:favorite'
                     : 'material-symbols:favorite-outline'" aria-hidden="true" />
@@ -241,6 +274,17 @@ const handleFavoriteKeydown = (event, imageId) => {
         <p>No favorite images yet.</p>
         <p>Explore the gallery and click the heart to add to favorites!</p>
       </aside>
+    </div>
+    <div ref="observerEl" class="scroll-observer"></div>
+    <div v-if="loading && images.length > 0 && autoLoadCount < AUTO_LOAD_LIMIT" class="loading-more-state">
+      <Icon icon="svg-spinners:ring-resize" />
+    </div>
+    <div v-if="hasMore && autoLoadCount >= AUTO_LOAD_LIMIT" class="load-more-container">
+      <button @click="handleManualLoadMore" :disabled="loading" class="load-more-btn">
+        <span v-if="loading">
+          <Icon icon="svg-spinners:ring-resize" /> Loading...</span>
+        <span v-else>View More</span>
+      </button>
     </div>
     <AuthModal :is-open="isAuthModalOpen" @close="isAuthModalOpen = false" @register-success="handleRegisterSuccess" />
   </section>
@@ -297,13 +341,13 @@ const handleFavoriteKeydown = (event, imageId) => {
       gap: 0.5rem;
       transition: all 0.3s;
 
+      &:hover {
+        transform: translateY(-2px);
+      }
+
       &.active {
         background: linear-gradient(135deg, #e74c3c, #f39c12);
         color: #fff;
-      }
-
-      &:hover {
-        transform: translateY(-2px);
       }
     }
   }
@@ -493,6 +537,54 @@ const handleFavoriteKeydown = (event, imageId) => {
         }
       }
     }
+  }
+
+  .load-more-container {
+    position: relative;
+    text-align: center;
+    margin-top: 2rem;
+    padding-bottom: 2rem;
+
+    .load-more-btn {
+      padding: 1rem 3rem;
+      background: linear-gradient(135deg, #e74c3c, #f39c12);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 20px rgba(225, 48, 108, 0.3);
+
+      &:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(225, 48, 108, 0.4);
+      }
+
+      &:disabled {
+        opacity: 0.7;
+        cursor: wait;
+      }
+
+      span {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+    }
+  }
+
+  .scroll-observer {
+    height: 50px;
+  }
+
+  .loading-more-state {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    font-size: 2rem;
+    color: var(--text-secondary);
   }
 
   .empty-state {
