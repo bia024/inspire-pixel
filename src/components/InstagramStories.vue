@@ -45,8 +45,15 @@ function viewStory(story) {
   <section class="stories-section" aria-label="Stories de usuários">
     <div class="container">
       <ul class="stories-list">
-        <li class="story" v-for="story in stories" :key="story.id" @click="viewStory(story)" tabindex="0"
-          @keydown.enter="viewStory(story)" @keydown.space.prevent="viewStory(story)">
+        <li
+          class="story"
+          v-for="story in stories"
+          :key="story.id"
+          @click="viewStory(story)"
+          tabindex="0"
+          @keydown.enter="viewStory(story)"
+          @keydown.space.prevent="viewStory(story)"
+        >
           <div class="story-avatar" :class="{ 'is-viewed': story.isViewed }">
             <img :src="story.avatar" :alt="`Story de ${story.user}`" />
           </div>

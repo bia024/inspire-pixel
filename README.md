@@ -27,6 +27,7 @@
 - **❤️ Favorites System** - Save and organize your favorite images
 - **📱 Fully Responsive** - Seamless experience across all devices
 - **🌙 Modern UI/UX** - Glassmorphism, gradients, and smooth animations
+- **🤖 AI Descriptions** - Automatic image descriptions powered by Hugging Face
 
 ### 💎 Pro Features
 
@@ -35,6 +36,14 @@
 - **🎨 Pro Gallery** - Exclusive collection from Unsplash API
 - **✉️ Email Validation** - LGPD-compliant Pro activation
 - **🏆 Pro Badge** - Visual distinction with premium branding
+
+### 🤖 AI-Powered Features
+
+- **🧠 Hugging Face Integration** - Free AI image captioning using VIT-GPT2 model
+- **📝 Smart Fallbacks** - 30+ categories with creative descriptions when API unavailable
+- **💾 Intelligent Caching** - LocalStorage caching prevents repeated API calls
+- **🎯 Category Detection** - Automatic category extraction from image URLs
+- **⚡ Real-time Generation** - Instant description generation with loading states
 
 ### 🔐 Authentication System
 
@@ -52,6 +61,53 @@
 
 ---
 
+## 🤖 AI Description System
+
+### How It Works
+
+1. **Primary AI Generation** - Uses Hugging Face's VIT-GPT2 model for intelligent image captioning
+2. **Smart Category Detection** - Automatically extracts image categories from URLs (nature, architecture, people, etc.)
+3. **Creative Fallbacks** - When API fails, provides category-specific creative descriptions
+4. **Intelligent Caching** - Stores descriptions in localStorage to prevent redundant API calls
+5. **Real-time UI** - Shows loading states and instant feedback
+
+### Supported Categories
+
+The system supports 30+ image categories with unique creative descriptions:
+
+- **Nature**: "Majestic natural scenery showcasing the harmony between earth and sky"
+- **Architecture**: "Impressive architectural marvel showcasing human ingenuity and design"
+- **People**: "Captivating portrait revealing the depth of human emotion and character"
+- **Abstract**: "Intriguing abstract composition exploring form, color, and texture"
+- **City**: "Vibrant urban landscape capturing the energy of modern city life"
+- **Animals**: "Fascinating wildlife portrait showcasing animal grace and natural behavior"
+- **Food**: "Appetizing culinary creation showcasing gastronomic artistry and flavor"
+- **Technology**: "Innovative technological marvel demonstrating human progress and ingenuity"
+- **Travel**: "Exotic destination capturing the allure of adventure and exploration"
+- **Sports**: "Dynamic athletic moment capturing the intensity of competitive spirit"
+- **Fashion**: "Elegant fashion statement showcasing style and contemporary trends"
+- **Landscape**: "Breathtaking panoramic vista celebrating the grandeur of natural landscapes"
+- **Portrait**: "Compelling portrait study revealing personality and human depth"
+- **Black & White**: "Timeless monochromatic composition emphasizing form and contrast"
+- **Wallpaper**: "Versatile background design offering aesthetic and functional appeal"
+- **Background**: "Versatile backdrop design providing clean and functional aesthetics"
+- **Macro**: "Intricate macro study revealing hidden details and microscopic beauty"
+- **Aerial**: "Spectacular aerial perspective showcasing geographical patterns and scale"
+- **Vintage**: "Nostalgic vintage composition evoking historical charm and character"
+- **Minimalist**: "Clean minimalist composition celebrating simplicity and essential forms"
+- **Ocean**: "Majestic ocean vista celebrating the power and beauty of marine landscapes"
+- **Forest**: "Lush forest landscape celebrating biodiversity and natural harmony"
+- **Mountain**: "Majestic mountain landscape showcasing geological grandeur and scale"
+- **Beach**: "Idyllic beach scene celebrating coastal tranquility and natural beauty"
+- **Flower**: "Delicate floral composition celebrating botanical beauty and color diversity"
+- **Car**: "Sleek automotive design showcasing engineering excellence and style"
+- **Building**: "Impressive architectural structure showcasing design innovation and purpose"
+- **Art**: "Creative artistic composition showcasing imaginative expression and vision"
+- **Music**: "Dynamic musical composition celebrating rhythm, melody, and artistic expression"
+- **Dance**: "Graceful dance composition celebrating movement, rhythm, and human expression"
+
+---
+
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -64,7 +120,7 @@
 ### Libraries & APIs
 
 - **@iconify/vue** - 200,000+ icons
-
+- **Hugging Face** - Free AI image captioning API
 - **Firebase** - Firebase integration for authentication and storage
 - **Unsplash API** - High-quality image source (Pro)
 - **Spotify Web API** - Music integration for an immersive experience
@@ -109,6 +165,7 @@ Create a `.env` file in the root directory:
 ```env
 VITE_UNSPLASH_ACCESS_KEY=your_unsplash_key
 VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
+VITE_HF_API_KEY=your_hugging_face_api_key
 ```
 
 ---
@@ -130,6 +187,7 @@ inspirapixel/
 │   ├── composables/     # Vue composables
 │   │   ├── useAuth.js
 │   │   ├── useToast.js
+│   │   ├── useLLM.js
 │   │   └── useUnsplash.js (planned)
 │   ├── views/           # Page components
 │   │   ├── HomeView.vue
@@ -162,6 +220,7 @@ inspirapixel/
 - Premium content locking for Free users
 - Favorites system with localStorage
 - Responsive grid layout
+- AI-powered description generation
 
 ### 🔐 Authentication Modal
 
@@ -209,6 +268,7 @@ inspirapixel/
 - [x] Pro/Free mode distinction
 - [x] Newsletter integration
 - [x] Semantic HTML refactoring
+- [x] AI-powered image descriptions
 - [ ] Unsplash API integration
 - [ ] Image lightbox/modal
 - [ ] Backend API
@@ -251,6 +311,7 @@ Passionate about crafting immersive digital experiences that inspire creativity 
 
 - Images from [Unsplash](https://unsplash.com)
 - Icons from [Iconify](https://iconify.design)
+- AI descriptions powered by [Hugging Face](https://huggingface.co)
 - Email service by [Firebase](https://firebase.google.com/)
 - Built with ❤️ using Vue 3 and Vite
 

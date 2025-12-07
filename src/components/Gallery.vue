@@ -1,4 +1,5 @@
 <script setup>
+import { useLLM } from '../composables/useLLM'
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useFirebaseAuth } from '../composables/useFirebaseAuth'
@@ -13,6 +14,7 @@ const props = defineProps({ searchQuery: String })
 const { isPro, isAuthenticated, favorites, toggleFavorite: authToggleFavorite } = useFirebaseAuth()
 const { images, loading, error, hasMore, fetchCuratedImages, searchImages, loadMore } = usePexels()
 const { addToast } = useToast()
+const { generateDescription, getDescription, isLoadingDescription } = useLLM()
 const router = useRouter()
 
 const isAuthModalOpen = ref(false)
@@ -230,12 +232,24 @@ const smoothScrollRight = () => {
 
 const isLeftDisabled = computed(() => scrollPosition.value.left <= 0)
 
-const isRightDisabled = computed(() => scrollPosition.value.left + scrollPosition.value.width >= scrollPosition.value.scrollWidth - 1)
+const isRightDisabled = computed(
+  () =>
+    scrollPosition.value.left + scrollPosition.value.width >= scrollPosition.value.scrollWidth - 1
+)
 
 const handleFavoriteKeydown = (event, imageId) => {
   if (event.key === 'Enter' || event.key === ' ') {
     event.preventDefault()
     toggleFavorite(imageId)
+  }
+}
+
+const handleGenerateDescription = async (img) => {
+  try {
+    await generateDescription(img.src, img.id)
+    addToast('Description generated successfully!', 'success')
+  } catch (error) {
+    addToast('Failed to generate description. Please try again.', 'error')
   }
 }
 </script>
@@ -610,6 +624,22 @@ const handleFavoriteKeydown = (event, imageId) => {
                 <span class="category" role="text" :aria-label="'Category: ' + img.category">{{
                   img.category
                 }}</span>
+                <div v-if="getDescription(img.id)" class="description">
+                  <p>{{ getDescription(img.id) }}</p>
+                </div>
+                <button
+                  v-if="!getDescription(img.id) && !isLoadingDescription(img.id)"
+                  class="generate-desc-btn"
+                  @click.stop="handleGenerateDescription(img)"
+                  :aria-label="'Generate description for ' + img.title"
+                >
+                  <Icon icon="material-symbols:auto-awesome" />
+                  Generate Description
+                </button>
+                <div v-if="isLoadingDescription(img.id)" class="loading-desc">
+                  <Icon icon="svg-spinners:ring-resize" />
+                  Generating...
+                </div>
               </figcaption>
             </figure>
           </article>
@@ -636,7 +666,7 @@ const handleFavoriteKeydown = (event, imageId) => {
     </div>
     <div v-if="hasMore && autoLoadCount >= AUTO_LOAD_LIMIT" class="load-more-container">
       <button @click="handleManualLoadMore" :disabled="loading" class="load-more-btn">
-        <span v-if="loading"> <Icon icon="svg-spinners:ring-resize" /> Loading...</span>
+        <span v-if="loading"> <Icon icon="svg-spinners:ring-resize" /> Loading... </span>
         <span v-else>View More</span>
       </button>
     </div>
@@ -992,6 +1022,56 @@ const handleFavoriteKeydown = (event, imageId) => {
             border-radius: 1.25rem;
             display: inline-block;
             backdrop-filter: blur(0.625rem);
+            margin-bottom: 0.5rem;
+          }
+
+          .description {
+            margin-bottom: 0.5rem;
+
+            p {
+              font-size: 0.85rem;
+              color: rgba(255, 255, 255, 0.95);
+              line-height: 1.4;
+              margin: 0;
+            }
+          }
+
+          .generate-desc-btn {
+            background: linear-gradient(135deg, #e74c3c, #f39c12);
+            color: #fff;
+            border: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: 1.25rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+
+            &:hover {
+              transform: scale(1.05);
+              box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.3);
+            }
+
+            &:active {
+              transform: scale(0.95);
+            }
+          }
+
+          .loading-desc {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+
+            svg {
+              font-size: 1rem;
+            }
           }
         }
 
