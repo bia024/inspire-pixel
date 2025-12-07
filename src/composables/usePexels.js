@@ -25,7 +25,7 @@ export function usePexels() {
       srcOriginal: photo.src.original,
       srcMedium: photo.src.medium,
       title: photo.alt || (query ? `${query} photo ${photo.id}` : `Photo ${photo.id}`),
-      category: query ? query.toLowerCase() : 'curated',
+      category: query ? query.toLowerCase() : 'all',
       photographer: photo.photographer,
       photographerUrl: photo.photographer_url,
       premium: index % 3 === 0,
