@@ -17,6 +17,7 @@ const isAuthModalOpen = ref(false)
 const displayedName = ref('')
 const isEditingName = ref(false)
 const nameInputRef = ref(null)
+const themeToggleRef = ref(null)
 let isMounted = false
 
 const startTypeWriterLoop = async () => {
@@ -78,6 +79,16 @@ const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
 }
 
+const toggleTheme = () => {
+  toggleDarkMode()
+  if (isMenuOpen.value) {
+    navRef.value?.classList.add('shake')
+    setTimeout(() => {
+      navRef.value?.classList.remove('shake')
+    }, 500)
+  }
+}
+
 const closeMenu = () => {
   isMenuOpen.value = false
 }
@@ -116,9 +127,9 @@ const handleLogout = () => {
       <Icon v-if="isMenuOpen" icon="material-symbols:close" class="close-icon" />
       <img v-else src="../assets/icon-mobile.svg" alt="Menu" />
     </button>
-    <nav :class="{ 'nav-open': isMenuOpen }" aria-label="Main Navigation">
+    <nav ref="navRef" :class="{ 'nav-open': isMenuOpen }" aria-label="Main Navigation">
       <ul>
-        <li><router-link :to="{ name: 'home' }" @click="closeMenu">Home</router-link></li>
+        <li><router-link :to="{ name: 'home', hash: '#hero' }" @click="closeMenu">Home</router-link></li>
         <li>
           <router-link :to="{ name: 'home', hash: '#gallery' }" @click="closeMenu"
             >Gallery</router-link
@@ -143,7 +154,8 @@ const handleLogout = () => {
         </li>
         <li>
           <button
-            @click="toggleDarkMode"
+            ref="themeToggleRef"
+            @click="toggleTheme"
             :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
             class="icon-button theme-toggle"
           >
@@ -247,6 +259,16 @@ const handleLogout = () => {
       transform: rotate(20deg);
       color: #f39c12;
     }
+
+    &.shake {
+      animation: shake 0.5s ease-in-out;
+    }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
   }
 
   .hamburger {
@@ -297,23 +319,23 @@ const handleLogout = () => {
       color: #e1306c;
     }
 
-    .user-menu {
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      padding: 0.6rem 1.5rem;
-      background-color: #f8f9fa;
-      border: 0.0625rem solid #e1e8ed;
-      border-radius: 3.125rem;
-      min-width: 12.5rem;
-      justify-content: space-between;
-      transition: all 0.3s ease;
+      .user-menu {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        padding: 0.6rem 1.5rem;
+        background-color: var(--bg-secondary);
+        border: 0.0625rem solid var(--border-color);
+        border-radius: 3.125rem;
+        min-width: 12.5rem;
+        justify-content: space-between;
+        transition: all 0.3s ease;
 
-      &:hover {
-        background-color: #fff;
-        box-shadow: 0 0.25rem 0.9375rem rgba(0, 0, 0, 0.05);
-        border-color: #d1d8dd;
-      }
+        &:hover {
+          background-color: var(--bg-primary);
+          box-shadow: 0 0.25rem 0.9375rem var(--card-shadow);
+          border-color: var(--border-light);
+        }
 
       .user-name {
         display: none;
@@ -439,9 +461,9 @@ const handleLogout = () => {
       width: 85%;
       max-width: 25rem;
       height: 100vh;
-      background: rgba(255, 255, 255, 0.98);
+      background: var(--bg-primary);
       backdrop-filter: blur(0.625rem);
-      box-shadow: -0.3125rem 0 1.5625rem rgba(0, 0, 0, 0.15);
+      box-shadow: -0.3125rem 0 1.5625rem var(--card-shadow);
       padding: 6rem 2rem 2rem;
       transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       overflow-y: auto;
@@ -457,7 +479,7 @@ const handleLogout = () => {
 
         li {
           width: 100%;
-          border-bottom: 0.0625rem solid rgba(0, 0, 0, 0.05);
+          border-bottom: 0.0625rem solid var(--border-color);
           padding-bottom: 1rem;
 
           &:last-child {
@@ -469,12 +491,12 @@ const handleLogout = () => {
           font-size: 1.3rem;
           display: block;
           padding: 0.5rem 0;
-          color: #2c3e50;
+          color: var(--text-primary);
           font-weight: 600;
 
           &:hover,
           &.router-link-active {
-            color: #e1306c;
+            color: var(--accent-pink);
             padding-left: 0.625rem;
           }
         }
@@ -506,7 +528,7 @@ const handleLogout = () => {
             left: 0.9375rem;
             top: 50%;
             transform: translateY(-50%);
-            color: #e1306c;
+            color: var(--accent-pink);
             font-size: 1.2rem;
           }
 
@@ -516,18 +538,18 @@ const handleLogout = () => {
             border: 0.125rem solid transparent;
             border-radius: 0.75rem;
             font-size: 1rem;
-            background: #f0f2f5;
+            background: var(--bg-secondary);
             transition: all 0.3s ease;
 
             &:focus {
               outline: none;
-              border-color: #e1306c;
-              background: #fff;
+              border-color: var(--accent-pink);
+              background: var(--bg-primary);
               box-shadow: 0 0.25rem 0.9375rem rgba(225, 48, 108, 0.1);
             }
 
             &::placeholder {
-              color: #95a5a6;
+              color: var(--text-muted);
             }
           }
         }
