@@ -314,9 +314,69 @@ const fallbackDescriptions = {
     'Beautiful dance scene honoring rhythm, grace, and human creativity',
     'Evocative dance arrangement showcasing movement as artistic language',
   ],
+  ski: [
+    'Thrilling ski adventure on snow-covered slopes capturing speed and excitement',
+    'Majestic winter sports scene showcasing alpine skiing and mountain beauty',
+    'Dynamic skiing action highlighting technique and athletic prowess',
+    'Serene snow landscape with skiers demonstrating winter sports elegance',
+    'Adrenaline-filled ski run through pristine powder evoking adventure',
+    'Stunning alpine vista with skiers celebrating winter recreation',
+    'Powerful skiing composition honoring speed, skill, and mountain majesty',
+    'Captivating winter sports moment inspiring outdoor adventure and thrill',
+  ],
+  kayak: [
+    'Adventurous kayaking through calm waters showcasing exploration and nature',
+    'Serene paddling scene on lagoon highlighting tranquility and adventure',
+    'Dynamic kayak journey capturing rhythm of paddles and water flow',
+    'Peaceful lagoon kayaking evoking harmony with nature and serenity',
+    'Exciting water adventure with kayak demonstrating exploration spirit',
+    'Beautiful lagoon vista with kayaker celebrating outdoor recreation',
+    'Thrilling kayaking experience honoring water sports and natural beauty',
+    'Captivating paddling moment inspiring adventure and environmental connection',
+  ],
+  sunset: [
+    'Breathtaking sunset over horizon painting sky in vibrant colors',
+    'Serene evening vista capturing the magic of sunset transition',
+    "Majestic sunset scene showcasing nature's daily artistic display",
+    'Tranquil sunset landscape evoking peace and reflection',
+    'Vivid sunset composition highlighting warm tones and sky drama',
+    "Captivating twilight moment celebrating day's end beauty",
+    'Stunning sunset vista inspiring wonder and contemplation',
+    'Beautiful evening sky painting with sunset colors and light',
+  ],
+  waterfall: [
+    "Majestic waterfall cascading through lush greenery showcasing nature's power",
+    'Serene water feature tumbling down rocks creating misty beauty',
+    'Dynamic waterfall scene capturing flow and natural energy',
+    "Tranquil cascade highlighting water's journey through landscape",
+    'Impressive waterfall vista evoking awe and environmental wonder',
+    'Beautiful falling water composition celebrating hydrological beauty',
+    'Powerful waterfall display inspiring adventure and nature appreciation',
+    "Captivating cascade moment honoring water's sculpting force",
+  ],
+  bridge: [
+    'Impressive architectural bridge spanning water connecting landscapes',
+    'Elegant structure showcasing engineering and aesthetic harmony',
+    'Majestic bridge vista highlighting human achievement and nature',
+    'Serene crossing scene evoking journey and connection',
+    'Dynamic bridge composition celebrating design and functionality',
+    'Beautiful architectural feature spanning natural elements',
+    'Iconic bridge landmark inspiring travel and exploration',
+    'Stunning bridge structure honoring connectivity and beauty',
+  ],
+  canoe: [
+    'Peaceful canoeing on calm waters capturing serenity and adventure',
+    'Serene paddling scene showcasing exploration and nature connection',
+    'Dynamic canoe journey highlighting rhythm and outdoor recreation',
+    'Tranquil water adventure with canoe evoking relaxation',
+    'Beautiful lake vista with canoeist celebrating peaceful outing',
+    'Captivating paddling moment inspiring water sports and tranquility',
+    'Adventurous canoe trip honoring exploration and natural beauty',
+    'Elegant canoe composition demonstrating grace on water',
+  ],
 }
 
-const generateDescription = async (imageUrl, imageId) => {
+const generateDescription = async (imageUrl, imageId, category = 'nature') => {
   if (loadingDescriptions.value[imageId]) return
 
   loadingDescriptions.value[imageId] = true
@@ -362,10 +422,6 @@ const generateDescription = async (imageUrl, imageId) => {
       console.warn('Hugging Face API failed, using fallback:', apiError)
     }
 
-    const urlParts = imageUrl.split('/')
-    const imageName = urlParts[urlParts.length - 1] || ''
-    const categoryMatch = imageName.match(/([a-z-]+)(?=\d|\.)/)
-    const category = categoryMatch ? categoryMatch[1].toLowerCase() : 'nature'
     const categoryDescriptions = fallbackDescriptions[category] || fallbackDescriptions['nature']
     const randomFallback =
       categoryDescriptions[Math.floor(Math.random() * categoryDescriptions.length)]

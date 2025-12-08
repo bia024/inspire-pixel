@@ -246,7 +246,7 @@ const handleFavoriteKeydown = (event, imageId) => {
 
 const handleGenerateDescription = async (img) => {
   try {
-    await generateDescription(img.src, img.id)
+    await generateDescription(img.src, img.id, img.category)
     addToast('Description generated successfully!', 'success')
   } catch (error) {
     addToast('Failed to generate description. Please try again.', 'error')

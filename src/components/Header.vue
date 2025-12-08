@@ -129,7 +129,9 @@ const handleLogout = () => {
     </button>
     <nav ref="navRef" :class="{ 'nav-open': isMenuOpen }" aria-label="Main Navigation">
       <ul>
-        <li><router-link :to="{ name: 'home', hash: '#hero' }" @click="closeMenu">Home</router-link></li>
+        <li>
+          <router-link :to="{ name: 'home', hash: '#hero' }" @click="closeMenu">Home</router-link>
+        </li>
         <li>
           <router-link :to="{ name: 'home', hash: '#gallery' }" @click="closeMenu"
             >Gallery</router-link
@@ -266,9 +268,23 @@ const handleLogout = () => {
   }
 
   @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-    20%, 40%, 60%, 80% { transform: translateX(5px); }
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+      transform: translateX(-5px);
+    }
+    20%,
+    40%,
+    60%,
+    80% {
+      transform: translateX(5px);
+    }
   }
 
   .hamburger {
@@ -319,23 +335,23 @@ const handleLogout = () => {
       color: #e1306c;
     }
 
-      .user-menu {
-        display: flex;
-        align-items: center;
-        gap: 1.2rem;
-        padding: 0.6rem 1.5rem;
-        background-color: var(--bg-secondary);
-        border: 0.0625rem solid var(--border-color);
-        border-radius: 3.125rem;
-        min-width: 12.5rem;
-        justify-content: space-between;
-        transition: all 0.3s ease;
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      padding: 0.6rem 1.5rem;
+      background-color: var(--bg-secondary);
+      border: 0.0625rem solid var(--border-color);
+      border-radius: 3.125rem;
+      min-width: 12.5rem;
+      justify-content: space-between;
+      transition: all 0.3s ease;
 
-        &:hover {
-          background-color: var(--bg-primary);
-          box-shadow: 0 0.25rem 0.9375rem var(--card-shadow);
-          border-color: var(--border-light);
-        }
+      &:hover {
+        background-color: var(--bg-primary);
+        box-shadow: 0 0.25rem 0.9375rem var(--card-shadow);
+        border-color: var(--border-light);
+      }
 
       .user-name {
         display: none;
