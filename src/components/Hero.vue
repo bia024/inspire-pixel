@@ -121,7 +121,7 @@ const debouncedSearch = () => {
   <section class="hero" id="hero" aria-label="Hero Section">
     <article class="hero-content">
       <header class="hero-text">
-        <h2>Where landscapes turn into <span>inspiration</span></h2>
+        <h2>Where landscapes turn into <span>inspiration</span>.</h2>
         <p>Discover colors, light, and scenery that spark new stories through the lens.</p>
         <form role="search" class="search-container" @submit.prevent="executeSearch">
           <button class="search-icon-btn" type="submit" aria-label="Search">

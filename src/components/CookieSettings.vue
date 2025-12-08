@@ -1,7 +1,32 @@
 <script setup>
+import { ref, computed, onMounted } from 'vue'
 import { useCookieConsent } from '../composables/useCookieConsent.mjs'
 
-const { consents, setConsent, closeSettings, acceptAll, rejectAll } = useCookieConsent()
+const { consents, setConsent, closeSettings, acceptAll, rejectAll, saveCustom } = useCookieConsent()
+
+const originalConsents = ref(null)
+
+onMounted(() => {
+  originalConsents.value = { ...consents.value }
+})
+
+const hasUnsavedChanges = computed(() => {
+  if (!originalConsents.value) return false
+  return JSON.stringify(consents.value) !== JSON.stringify(originalConsents.value)
+})
+
+const handleClose = () => {
+  if (hasUnsavedChanges.value) {
+    if (confirm('Você tem alterações não salvas. Deseja salvar antes de fechar?')) {
+      closeSettings()
+    } else {
+      consents.value = { ...originalConsents.value }
+      closeSettings()
+    }
+  } else {
+    closeSettings()
+  }
+}
 
 const cookieTypes = [
   {
@@ -46,7 +71,7 @@ const handleRejectAll = () => {
   >
     <div
       class="cookie-settings-backdrop"
-      @click="closeSettings"
+      @click="handleClose"
       aria-label="Fechar configurações"
     ></div>
     <dialog class="cookie-settings-dialog" open>
@@ -54,7 +79,7 @@ const handleRejectAll = () => {
         <h2 id="cookie-settings-title" class="cookie-settings-title">Configurações de Cookies</h2>
         <button
           class="cookie-settings-close"
-          @click="closeSettings"
+          @click="handleClose"
           aria-label="Fechar configurações"
         >
           ×

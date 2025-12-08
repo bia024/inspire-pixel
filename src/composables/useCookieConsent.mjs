@@ -69,13 +69,14 @@ export function useCookieConsent() {
     showSettings.value = true
   }
 
+  const saveCustom = () => {
+    consentGiven.value = true
+    localStorage.setItem('cookieConsent', 'custom')
+    localStorage.setItem('cookieConsents', JSON.stringify(consents.value))
+  }
+
   const closeSettings = () => {
     showSettings.value = false
-    if (Object.values(consents.value).some((v) => v)) {
-      consentGiven.value = true
-      localStorage.setItem('cookieConsent', 'custom')
-      localStorage.setItem('cookieConsents', JSON.stringify(consents.value))
-    }
   }
 
   const storedConsent = localStorage.getItem('cookieConsent')
@@ -102,5 +103,6 @@ export function useCookieConsent() {
     showSettings,
     openSettings,
     closeSettings,
+    saveCustom,
   }
 }
