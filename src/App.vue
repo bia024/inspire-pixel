@@ -4,6 +4,9 @@ import { useRoute } from 'vue-router'
 import Footer from './components/Footer.vue'
 import ToastNotification from './components/ToastNotification.vue'
 import BackToActions from './components/BackToActions.vue'
+import CookieBanner from './components/CookieBanner.vue'
+import CookieSettings from './components/CookieSettings.vue'
+import { useCookieConsent } from './composables/useCookieConsent.mjs'
 
 const route = useRoute()
 
@@ -12,12 +15,16 @@ const showGlobalComponents = computed(() => route.name !== 'mode-selection')
 const transitionName = computed(() => {
   return route.name === 'mode-selection' ? 'slide-up' : 'fade'
 })
+
+const { showSettings } = useCookieConsent()
 </script>
 
 <template>
   <div class="app-container">
     <ToastNotification />
     <BackToActions v-if="showGlobalComponents" />
+    <CookieBanner />
+    <CookieSettings v-if="showSettings" />
     <router-view v-slot="{ Component }">
       <transition :name="transitionName" mode="out-in">
         <component :is="Component" />
