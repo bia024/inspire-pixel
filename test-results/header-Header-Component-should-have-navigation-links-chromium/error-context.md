@@ -1,0 +1,205 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner "Banner de consentimento de cookies" [ref=e4]:
+    - generic [ref=e5]:
+      - paragraph [ref=e6]:
+        - text: Usamos cookies para melhorar sua experiência no site.
+        - link "Saiba mais" [ref=e7] [cursor=pointer]:
+          - /url: /privacy
+      - generic [ref=e8]:
+        - button "Configurações de cookies" [ref=e9] [cursor=pointer]: Configurações
+        - button "Rejeitar cookies" [ref=e10] [cursor=pointer]: Rejeitar
+        - button "Aceitar cookies" [ref=e11] [cursor=pointer]: Aceitar
+  - generic [ref=e12]:
+    - banner [ref=e13]:
+      - link "Back to home" [ref=e15] [cursor=pointer]:
+        - /url: /
+        - img "InspirePixel Logo" [ref=e16]
+      - navigation "Main Navigation" [ref=e17]:
+        - list [ref=e18]:
+          - listitem [ref=e19]:
+            - link "Home" [ref=e20] [cursor=pointer]:
+              - /url: /#hero
+          - listitem [ref=e21]:
+            - link "Gallery" [ref=e22] [cursor=pointer]:
+              - /url: /#gallery
+          - listitem [ref=e23]:
+            - button "Search" [ref=e24] [cursor=pointer]:
+              - img [ref=e25]
+          - listitem [ref=e26]:
+            - button "Switch to dark mode" [ref=e27] [cursor=pointer]:
+              - img [ref=e28]
+          - listitem [ref=e29]:
+            - button "User Profile" [ref=e30] [cursor=pointer]:
+              - img [ref=e31]
+    - region "Hero Section" [ref=e32]:
+      - article [ref=e33]:
+        - generic [ref=e34]:
+          - heading "Where landscapes turn into inspiration." [level=2] [ref=e35]
+          - paragraph [ref=e36]: Discover colors, light, and scenery that spark new stories through the lens.
+          - search [ref=e37]:
+            - button "Search" [ref=e38] [cursor=pointer]:
+              - img [ref=e39]
+            - textbox "Search images" [ref=e40]:
+              - /placeholder: Search images...
+        - complementary "Premium Content Preview" [ref=e41]:
+          - figure "Premium Collection" [ref=e42]:
+            - img "Premium Image Preview" [ref=e43]
+            - generic [ref=e44]:
+              - img [ref=e45]
+              - generic [ref=e46]: Premium Collection
+            - generic [ref=e47]:
+              - heading "Unlock the Extraordinary" [level=3] [ref=e48]
+              - paragraph [ref=e49]: Get unlimited access to 4K downloads and exclusive content.
+              - link "Go Pro" [ref=e50] [cursor=pointer]:
+                - /url: /mode-selection
+                - text: Go Pro
+                - img [ref=e51]
+    - main [ref=e52]:
+      - region "Get Inspired" [ref=e53]:
+        - generic [ref=e54]:
+          - heading "Get Inspired" [level=2] [ref=e55]
+          - tablist "Gallery navigation" [ref=e56]:
+            - tab "View all images" [selected] [ref=e57] [cursor=pointer]: All Images
+            - tab "View favorite images (0 items)" [ref=e58] [cursor=pointer]:
+              - img [ref=e59]
+              - text: Favorites (0)
+          - navigation "Category filters" [ref=e60]:
+            - button "Scroll categories left" [disabled] [ref=e61]:
+              - img [ref=e62]
+            - generic [ref=e63]:
+              - button "All categories" [ref=e64] [cursor=pointer]:
+                - generic [ref=e65]: All
+              - button "Nature category" [ref=e66] [cursor=pointer]:
+                - generic [ref=e67]: 🌿
+              - button "Architecture category" [ref=e68] [cursor=pointer]:
+                - generic [ref=e69]: 🏛️
+              - button "People category" [ref=e70] [cursor=pointer]:
+                - generic [ref=e71]: 👥
+              - button "Abstract category" [ref=e72] [cursor=pointer]:
+                - generic [ref=e73]: 🎨
+              - button "City category" [ref=e74] [cursor=pointer]:
+                - generic [ref=e75]: 🌆
+              - button "Animals category" [ref=e76] [cursor=pointer]:
+                - generic [ref=e77]: 🐾
+              - button "Food category" [ref=e78] [cursor=pointer]:
+                - generic [ref=e79]: 🍕
+              - button "Technology category" [ref=e80] [cursor=pointer]:
+                - generic [ref=e81]: 💻
+              - button "Travel category" [ref=e82] [cursor=pointer]:
+                - generic [ref=e83]: ✈️
+              - button "Sports category" [ref=e84] [cursor=pointer]:
+                - generic [ref=e85]: ⚽
+              - button "Fashion category" [ref=e86] [cursor=pointer]:
+                - generic [ref=e87]: 👗
+              - button "Landscape category" [ref=e88] [cursor=pointer]:
+                - generic [ref=e89]: 🏞️
+              - button "Portrait category" [ref=e90] [cursor=pointer]:
+                - generic [ref=e91]: 📸
+              - button "Black and White category" [ref=e92] [cursor=pointer]:
+                - generic [ref=e93]: ⚫
+              - button "Wallpaper category" [ref=e94] [cursor=pointer]:
+                - generic [ref=e95]: 🖼️
+              - button "Background category" [ref=e96] [cursor=pointer]:
+                - generic [ref=e97]: 🎭
+              - button "Macro category" [ref=e98] [cursor=pointer]:
+                - generic [ref=e99]: 🔍
+              - button "Aerial category" [ref=e100] [cursor=pointer]:
+                - generic [ref=e101]: ✈️
+              - button "Vintage category" [ref=e102] [cursor=pointer]:
+                - generic [ref=e103]: 🕰️
+              - button "Minimalist category" [ref=e104] [cursor=pointer]:
+                - generic [ref=e105]: 🌀
+              - button "Ocean category" [ref=e106] [cursor=pointer]:
+                - generic [ref=e107]: 🌊
+              - button "Forest category" [ref=e108] [cursor=pointer]:
+                - generic [ref=e109]: 🌲
+              - button "Mountain category" [ref=e110] [cursor=pointer]:
+                - generic [ref=e111]: 🏔️
+              - button "Beach category" [ref=e112] [cursor=pointer]:
+                - generic [ref=e113]: 🏖️
+              - button "Flower category" [ref=e114] [cursor=pointer]:
+                - generic [ref=e115]: 🌸
+              - button "Car category" [ref=e116] [cursor=pointer]:
+                - generic [ref=e117]: 🚗
+              - button "Building category" [ref=e118] [cursor=pointer]:
+                - generic [ref=e119]: 🏢
+              - button "Art category" [ref=e120] [cursor=pointer]:
+                - generic [ref=e121]: 🎨
+              - button "Music category" [ref=e122] [cursor=pointer]:
+                - generic [ref=e123]: 🎵
+              - button "Dance category" [ref=e124] [cursor=pointer]:
+                - generic [ref=e125]: 💃
+            - button "Scroll categories right" [ref=e126] [cursor=pointer]:
+              - img [ref=e127]
+          - tabpanel [ref=e128]
+  - contentinfo [ref=e160]:
+    - generic [ref=e161]:
+      - generic [ref=e162]:
+        - heading "InspirePixel" [level=3] [ref=e163]
+        - paragraph [ref=e164]: Where creativity meets inspiration
+        - paragraph [ref=e165]: Discover stunning visuals that spark your imagination and bring your creative projects to life.
+        - navigation "Social Media" [ref=e166]:
+          - list [ref=e167]:
+            - listitem [ref=e168]:
+              - link "Facebook" [ref=e169] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e170]
+            - listitem [ref=e171]:
+              - link "Instagram" [ref=e172] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e173]
+            - listitem [ref=e174]:
+              - link "Twitter" [ref=e175] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e176]
+            - listitem [ref=e177]:
+              - link "LinkedIn" [ref=e178] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e179]
+      - navigation "Footer Navigation" [ref=e180]:
+        - heading "Quick Links" [level=4] [ref=e181]
+        - list [ref=e182]:
+          - listitem [ref=e183]:
+            - link "Home" [ref=e184] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e185]:
+            - link "Music Stories New" [ref=e186] [cursor=pointer]:
+              - /url: /stories
+          - listitem [ref=e187]:
+            - link "About Us" [ref=e188] [cursor=pointer]:
+              - /url: /about
+          - listitem [ref=e189]:
+            - link "Contact" [ref=e190] [cursor=pointer]:
+              - /url: /contact
+          - listitem [ref=e191]:
+            - link "Go Pro" [ref=e192] [cursor=pointer]:
+              - /url: /mode-selection
+      - navigation "Legal Navigation" [ref=e193]:
+        - heading "Legal" [level=4] [ref=e194]
+        - list [ref=e195]:
+          - listitem [ref=e196]:
+            - link "Privacy Policy" [ref=e197] [cursor=pointer]:
+              - /url: /privacy
+          - listitem [ref=e198]:
+            - link "Terms of Use" [ref=e199] [cursor=pointer]:
+              - /url: /terms
+          - listitem [ref=e200]:
+            - link "Copyright / DMCA" [ref=e201] [cursor=pointer]:
+              - /url: /dmca
+    - generic [ref=e203]:
+      - generic [ref=e204]:
+        - heading "Subscribe to Our Newsletter" [level=3] [ref=e205]:
+          - img [ref=e206]
+          - text: Subscribe to Our Newsletter
+        - paragraph [ref=e207]: Get the latest updates, exclusive content, and inspiration delivered to your inbox.
+      - generic [ref=e209]:
+        - img
+        - textbox "Email for newsletter" [ref=e210]:
+          - /placeholder: Enter your email
+        - button "Subscribe to newsletter" [ref=e211] [cursor=pointer]:
+          - generic [ref=e212]: Subscribe
+    - paragraph [ref=e214]: © 2025 InspirePixel. All rights reserved.
+```

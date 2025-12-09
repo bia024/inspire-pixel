@@ -57,7 +57,7 @@ const subscribeNewsletter = async () => {
 </script>
 
 <template>
-  <footer class="footer">
+  <footer class="footer" data-testid="footer">
     <section class="footer-content">
       <section class="footer-brand">
         <h3 class="brand-name">InspirePixel</h3>

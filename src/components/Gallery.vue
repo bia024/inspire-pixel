@@ -255,7 +255,7 @@ const handleGenerateDescription = async (img) => {
 </script>
 
 <template>
-  <section class="gallery-section" id="gallery" aria-labelledby="gallery-title">
+  <section class="gallery-section" id="gallery" aria-labelledby="gallery-title" data-testid="gallery-section">
     <div class="container">
       <h2 id="gallery-title" class="section-title">Get Inspired</h2>
       <nav class="tabs" role="tablist" aria-label="Gallery navigation">

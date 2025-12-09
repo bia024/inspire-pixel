@@ -118,7 +118,7 @@ const debouncedSearch = () => {
 </script>
 
 <template>
-  <section class="hero" id="hero" aria-label="Hero Section">
+  <section class="hero" id="hero" aria-label="Hero Section" data-testid="hero-section">
     <article class="hero-content">
       <header class="hero-text">
         <h2>Where landscapes turn into <span>inspiration</span>.</h2>

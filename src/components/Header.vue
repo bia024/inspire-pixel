@@ -113,7 +113,7 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <header class="header">
+  <header class="header" data-testid="header">
     <div class="logo">
       <router-link :to="{ name: 'home' }" aria-label="Back to home" @click="closeMenu">
         <img src="../assets/logo.svg" alt="InspirePixel Logo" />

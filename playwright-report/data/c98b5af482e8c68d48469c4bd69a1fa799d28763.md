@@ -1,0 +1,598 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner "Banner de consentimento de cookies" [ref=e4]:
+    - generic [ref=e5]:
+      - paragraph [ref=e6]:
+        - text: Usamos cookies para melhorar sua experiência no site.
+        - link "Saiba mais" [ref=e7] [cursor=pointer]:
+          - /url: /privacy
+      - generic [ref=e8]:
+        - button "Configurações de cookies" [ref=e9] [cursor=pointer]: Configurações
+        - button "Rejeitar cookies" [ref=e10] [cursor=pointer]: Rejeitar
+        - button "Aceitar cookies" [ref=e11] [cursor=pointer]: Aceitar
+  - generic [ref=e12]:
+    - banner [ref=e13]:
+      - link "Back to home" [ref=e15] [cursor=pointer]:
+        - /url: /
+        - img "InspirePixel Logo" [ref=e16]
+      - button "Toggle navigation menu" [ref=e17] [cursor=pointer]:
+        - img "Menu" [ref=e18]
+      - navigation "Main Navigation" [ref=e19]:
+        - list [ref=e20]:
+          - listitem [ref=e21]:
+            - link "Home" [ref=e22] [cursor=pointer]:
+              - /url: /#hero
+          - listitem [ref=e23]:
+            - link "Gallery" [ref=e24] [cursor=pointer]:
+              - /url: /#gallery
+          - listitem [ref=e25]:
+            - generic [ref=e26]:
+              - img [ref=e27]
+              - textbox "Search" [ref=e28]:
+                - /placeholder: Search...
+          - listitem [ref=e29]:
+            - button "Switch to dark mode" [ref=e30] [cursor=pointer]:
+              - img [ref=e31]
+              - generic [ref=e32]: Dark Mode
+          - listitem [ref=e33]:
+            - button "User Profile" [ref=e34] [cursor=pointer]:
+              - img [ref=e35]
+              - generic [ref=e36]: Login / Register
+    - region "Hero Section" [ref=e37]:
+      - article [ref=e38]:
+        - generic [ref=e39]:
+          - heading "Where landscapes turn into inspiration." [level=2] [ref=e40]
+          - paragraph [ref=e41]: Discover colors, light, and scenery that spark new stories through the lens.
+          - search [ref=e42]:
+            - button "Search" [ref=e43] [cursor=pointer]:
+              - img [ref=e44]
+            - textbox "Search images" [ref=e45]:
+              - /placeholder: Search images...
+    - main [ref=e46]:
+      - region "Get Inspired" [ref=e47]:
+        - generic [ref=e48]:
+          - heading "Get Inspired" [level=2] [ref=e49]
+          - tablist "Gallery navigation" [ref=e50]:
+            - tab "View all images" [selected] [ref=e51] [cursor=pointer]: All Images
+            - tab "View favorite images (0 items)" [ref=e52] [cursor=pointer]:
+              - img [ref=e53]
+              - text: Favorites (0)
+          - navigation "Category filters" [ref=e54]:
+            - button "Scroll categories left" [disabled] [ref=e55]:
+              - img [ref=e56]
+            - generic [ref=e57]:
+              - button "All categories" [ref=e58] [cursor=pointer]:
+                - generic [ref=e59]: All
+              - button "Nature category" [ref=e60] [cursor=pointer]:
+                - generic [ref=e61]: 🌿
+              - button "Architecture category" [ref=e62] [cursor=pointer]:
+                - generic [ref=e63]: 🏛️
+              - button "People category" [ref=e64] [cursor=pointer]:
+                - generic [ref=e65]: 👥
+              - button "Abstract category" [ref=e66] [cursor=pointer]:
+                - generic [ref=e67]: 🎨
+              - button "City category" [ref=e68] [cursor=pointer]:
+                - generic [ref=e69]: 🌆
+              - button "Animals category" [ref=e70] [cursor=pointer]:
+                - generic [ref=e71]: 🐾
+              - button "Food category" [ref=e72] [cursor=pointer]:
+                - generic [ref=e73]: 🍕
+              - button "Technology category" [ref=e74] [cursor=pointer]:
+                - generic [ref=e75]: 💻
+              - button "Travel category" [ref=e76] [cursor=pointer]:
+                - generic [ref=e77]: ✈️
+              - button "Sports category" [ref=e78] [cursor=pointer]:
+                - generic [ref=e79]: ⚽
+              - button "Fashion category" [ref=e80] [cursor=pointer]:
+                - generic [ref=e81]: 👗
+              - button "Landscape category" [ref=e82] [cursor=pointer]:
+                - generic [ref=e83]: 🏞️
+              - button "Portrait category" [ref=e84] [cursor=pointer]:
+                - generic [ref=e85]: 📸
+              - button "Black and White category" [ref=e86] [cursor=pointer]:
+                - generic [ref=e87]: ⚫
+              - button "Wallpaper category" [ref=e88] [cursor=pointer]:
+                - generic [ref=e89]: 🖼️
+              - button "Background category" [ref=e90] [cursor=pointer]:
+                - generic [ref=e91]: 🎭
+              - button "Macro category" [ref=e92] [cursor=pointer]:
+                - generic [ref=e93]: 🔍
+              - button "Aerial category" [ref=e94] [cursor=pointer]:
+                - generic [ref=e95]: ✈️
+              - button "Vintage category" [ref=e96] [cursor=pointer]:
+                - generic [ref=e97]: 🕰️
+              - button "Minimalist category" [ref=e98] [cursor=pointer]:
+                - generic [ref=e99]: 🌀
+              - button "Ocean category" [ref=e100] [cursor=pointer]:
+                - generic [ref=e101]: 🌊
+              - button "Forest category" [ref=e102] [cursor=pointer]:
+                - generic [ref=e103]: 🌲
+              - button "Mountain category" [ref=e104] [cursor=pointer]:
+                - generic [ref=e105]: 🏔️
+              - button "Beach category" [ref=e106] [cursor=pointer]:
+                - generic [ref=e107]: 🏖️
+              - button "Flower category" [ref=e108] [cursor=pointer]:
+                - generic [ref=e109]: 🌸
+              - button "Car category" [ref=e110] [cursor=pointer]:
+                - generic [ref=e111]: 🚗
+              - button "Building category" [ref=e112] [cursor=pointer]:
+                - generic [ref=e113]: 🏢
+              - button "Art category" [ref=e114] [cursor=pointer]:
+                - generic [ref=e115]: 🎨
+              - button "Music category" [ref=e116] [cursor=pointer]:
+                - generic [ref=e117]: 🎵
+              - button "Dance category" [ref=e118] [cursor=pointer]:
+                - generic [ref=e119]: 💃
+            - button "Scroll categories right" [ref=e120] [cursor=pointer]:
+              - img [ref=e121]
+          - tabpanel [ref=e122]:
+            - 'article "Image: Black and white image of Barcelona beach with W Hotel and scattered people enjoying the day., Category: all" [ref=e123] [cursor=pointer]':
+              - figure "Premium" [ref=e124]:
+                - img "Black and white image of Barcelona beach with W Hotel and scattered people enjoying the day. - all image" [ref=e125]
+                - generic [ref=e126]:
+                  - img [ref=e127]
+                  - generic [ref=e129]: Premium
+                - generic [ref=e130]:
+                  - heading "Black and white image of Barcelona beach with W Hotel and scattered people enjoying the day." [level=3] [ref=e131]
+                  - 'generic "Category: all" [ref=e132]': all
+                  - button "Generate description for Black and white image of Barcelona beach with W Hotel and scattered people enjoying the day." [ref=e133]:
+                    - img [ref=e134]
+                    - text: Generate Description
+            - 'article "Image: Free stock photo of 2025 wallpaper, 4k nature, 4k nature background, Category: all" [ref=e136] [cursor=pointer]':
+              - 'figure "Free stock photo of 2025 wallpaper, 4k nature, 4k nature background Category: all Generate description for Free stock photo of 2025 wallpaper, 4k nature, 4k nature background" [ref=e137]':
+                - img "Free stock photo of 2025 wallpaper, 4k nature, 4k nature background - all image" [ref=e138]
+                - complementary [ref=e139]:
+                  - button "Add Free stock photo of 2025 wallpaper, 4k nature, 4k nature background to favorites" [ref=e140]:
+                    - img [ref=e141]
+                  - button "Download Free stock photo of 2025 wallpaper, 4k nature, 4k nature background" [ref=e143]:
+                    - img [ref=e144]
+                - generic [ref=e146]:
+                  - heading "Free stock photo of 2025 wallpaper, 4k nature, 4k nature background" [level=3] [ref=e147]
+                  - 'generic "Category: all" [ref=e148]': all
+                  - button "Generate description for Free stock photo of 2025 wallpaper, 4k nature, 4k nature background" [ref=e149]:
+                    - img [ref=e150]
+                    - text: Generate Description
+            - 'article "Image: Photo 34965535, Category: all" [ref=e152] [cursor=pointer]':
+              - 'figure "Photo 34965535 Category: all Generate description for Photo 34965535" [ref=e153]':
+                - img "Photo 34965535 - all image" [ref=e154]
+                - complementary [ref=e155]:
+                  - button "Add Photo 34965535 to favorites" [ref=e156]:
+                    - img [ref=e157]
+                  - button "Download Photo 34965535" [ref=e159]:
+                    - img [ref=e160]
+                - generic [ref=e162]:
+                  - heading "Photo 34965535" [level=3] [ref=e163]
+                  - 'generic "Category: all" [ref=e164]': all
+                  - button "Generate description for Photo 34965535" [ref=e165]:
+                    - img [ref=e166]
+                    - text: Generate Description
+            - 'article "Image: Photo 34955542, Category: all" [ref=e168] [cursor=pointer]':
+              - figure "Premium" [ref=e169]:
+                - img "Photo 34955542 - all image" [ref=e170]
+                - generic [ref=e171]:
+                  - img [ref=e172]
+                  - generic [ref=e174]: Premium
+                - generic [ref=e175]:
+                  - heading "Photo 34955542" [level=3] [ref=e176]
+                  - 'generic "Category: all" [ref=e177]': all
+                  - button "Generate description for Photo 34955542" [ref=e178]:
+                    - img [ref=e179]
+                    - text: Generate Description
+            - 'article "Image: A winding road through misty mountains at dawn, creating a tranquil and scenic landscape., Category: all" [ref=e181] [cursor=pointer]':
+              - 'figure "A winding road through misty mountains at dawn, creating a tranquil and scenic landscape. Category: all Generate description for A winding road through misty mountains at dawn, creating a tranquil and scenic landscape." [ref=e182]':
+                - img "A winding road through misty mountains at dawn, creating a tranquil and scenic landscape. - all image" [ref=e183]
+                - complementary [ref=e184]:
+                  - button "Add A winding road through misty mountains at dawn, creating a tranquil and scenic landscape. to favorites" [ref=e185]:
+                    - img [ref=e186]
+                  - button "Download A winding road through misty mountains at dawn, creating a tranquil and scenic landscape." [ref=e188]:
+                    - img [ref=e189]
+                - generic [ref=e191]:
+                  - heading "A winding road through misty mountains at dawn, creating a tranquil and scenic landscape." [level=3] [ref=e192]
+                  - 'generic "Category: all" [ref=e193]': all
+                  - button "Generate description for A winding road through misty mountains at dawn, creating a tranquil and scenic landscape." [ref=e194]:
+                    - img [ref=e195]
+                    - text: Generate Description
+            - 'article "Image: A red espresso cup on a dark table with shadows and light play., Category: all" [ref=e197] [cursor=pointer]':
+              - 'figure "A red espresso cup on a dark table with shadows and light play. Category: all Generate description for A red espresso cup on a dark table with shadows and light play." [ref=e198]':
+                - img "A red espresso cup on a dark table with shadows and light play. - all image" [ref=e199]
+                - complementary [ref=e200]:
+                  - button "Add A red espresso cup on a dark table with shadows and light play. to favorites" [ref=e201]:
+                    - img [ref=e202]
+                  - button "Download A red espresso cup on a dark table with shadows and light play." [ref=e204]:
+                    - img [ref=e205]
+                - generic [ref=e207]:
+                  - heading "A red espresso cup on a dark table with shadows and light play." [level=3] [ref=e208]
+                  - 'generic "Category: all" [ref=e209]': all
+                  - button "Generate description for A red espresso cup on a dark table with shadows and light play." [ref=e210]:
+                    - img [ref=e211]
+                    - text: Generate Description
+            - 'article "Image: Photo 34929918, Category: all" [ref=e213] [cursor=pointer]':
+              - figure "Premium" [ref=e214]:
+                - img "Photo 34929918 - all image" [ref=e215]
+                - generic [ref=e216]:
+                  - img [ref=e217]
+                  - generic [ref=e219]: Premium
+                - generic [ref=e220]:
+                  - heading "Photo 34929918" [level=3] [ref=e221]
+                  - 'generic "Category: all" [ref=e222]': all
+                  - button "Generate description for Photo 34929918" [ref=e223]:
+                    - img [ref=e224]
+                    - text: Generate Description
+            - 'article "Image: Black and white photo of a neoclassical building facade in a city setting., Category: all" [ref=e226] [cursor=pointer]':
+              - 'figure "Black and white photo of a neoclassical building facade in a city setting. Category: all Generate description for Black and white photo of a neoclassical building facade in a city setting." [ref=e227]':
+                - img "Black and white photo of a neoclassical building facade in a city setting. - all image" [ref=e228]
+                - complementary [ref=e229]:
+                  - button "Add Black and white photo of a neoclassical building facade in a city setting. to favorites" [ref=e230]:
+                    - img [ref=e231]
+                  - button "Download Black and white photo of a neoclassical building facade in a city setting." [ref=e233]:
+                    - img [ref=e234]
+                - generic [ref=e236]:
+                  - heading "Black and white photo of a neoclassical building facade in a city setting." [level=3] [ref=e237]
+                  - 'generic "Category: all" [ref=e238]': all
+                  - button "Generate description for Black and white photo of a neoclassical building facade in a city setting." [ref=e239]:
+                    - img [ref=e240]
+                    - text: Generate Description
+            - 'article "Image: Refreshing iced coffee with cookies on a marble table, perfect indoor cafe setting., Category: all" [ref=e242] [cursor=pointer]':
+              - 'figure "Refreshing iced coffee with cookies on a marble table, perfect indoor cafe setting. Category: all Generate description for Refreshing iced coffee with cookies on a marble table, perfect indoor cafe setting." [ref=e243]':
+                - img "Refreshing iced coffee with cookies on a marble table, perfect indoor cafe setting. - all image" [ref=e244]
+                - complementary [ref=e245]:
+                  - button "Add Refreshing iced coffee with cookies on a marble table, perfect indoor cafe setting. to favorites" [ref=e246]:
+                    - img [ref=e247]
+                  - button "Download Refreshing iced coffee with cookies on a marble table, perfect indoor cafe setting." [ref=e249]:
+                    - img [ref=e250]
+                - generic [ref=e252]:
+                  - heading "Refreshing iced coffee with cookies on a marble table, perfect indoor cafe setting." [level=3] [ref=e253]
+                  - 'generic "Category: all" [ref=e254]': all
+                  - button "Generate description for Refreshing iced coffee with cookies on a marble table, perfect indoor cafe setting." [ref=e255]:
+                    - img [ref=e256]
+                    - text: Generate Description
+            - 'article "Image: Festive woman in Santa hat seated indoors with Christmas decorations, spreading joy., Category: all" [ref=e258] [cursor=pointer]':
+              - figure "Premium" [ref=e259]:
+                - img "Festive woman in Santa hat seated indoors with Christmas decorations, spreading joy. - all image" [ref=e260]
+                - generic [ref=e261]:
+                  - img [ref=e262]
+                  - generic [ref=e264]: Premium
+                - generic [ref=e265]:
+                  - heading "Festive woman in Santa hat seated indoors with Christmas decorations, spreading joy." [level=3] [ref=e266]
+                  - 'generic "Category: all" [ref=e267]': all
+                  - button "Generate description for Festive woman in Santa hat seated indoors with Christmas decorations, spreading joy." [ref=e268]:
+                    - img [ref=e269]
+                    - text: Generate Description
+            - 'article "Image: A collection of colorful snowshoes hangs on a wooden wall in snowy Jukkasjärvi., Category: all" [ref=e271] [cursor=pointer]':
+              - 'figure "A collection of colorful snowshoes hangs on a wooden wall in snowy Jukkasjärvi. Category: all Generate description for A collection of colorful snowshoes hangs on a wooden wall in snowy Jukkasjärvi." [ref=e272]':
+                - img "A collection of colorful snowshoes hangs on a wooden wall in snowy Jukkasjärvi. - all image" [ref=e273]
+                - complementary [ref=e274]:
+                  - button "Add A collection of colorful snowshoes hangs on a wooden wall in snowy Jukkasjärvi. to favorites" [ref=e275]:
+                    - img [ref=e276]
+                  - button "Download A collection of colorful snowshoes hangs on a wooden wall in snowy Jukkasjärvi." [ref=e278]:
+                    - img [ref=e279]
+                - generic [ref=e281]:
+                  - heading "A collection of colorful snowshoes hangs on a wooden wall in snowy Jukkasjärvi." [level=3] [ref=e282]
+                  - 'generic "Category: all" [ref=e283]': all
+                  - button "Generate description for A collection of colorful snowshoes hangs on a wooden wall in snowy Jukkasjärvi." [ref=e284]:
+                    - img [ref=e285]
+                    - text: Generate Description
+            - 'article "Image: Photo 34910828, Category: all" [ref=e287] [cursor=pointer]':
+              - 'figure "Photo 34910828 Category: all Generate description for Photo 34910828" [ref=e288]':
+                - img "Photo 34910828 - all image" [ref=e289]
+                - complementary [ref=e290]:
+                  - button "Add Photo 34910828 to favorites" [ref=e291]:
+                    - img [ref=e292]
+                  - button "Download Photo 34910828" [ref=e294]:
+                    - img [ref=e295]
+                - generic [ref=e297]:
+                  - heading "Photo 34910828" [level=3] [ref=e298]
+                  - 'generic "Category: all" [ref=e299]': all
+                  - button "Generate description for Photo 34910828" [ref=e300]:
+                    - img [ref=e301]
+                    - text: Generate Description
+            - 'article "Image: Photo 34911809, Category: all" [ref=e303] [cursor=pointer]':
+              - figure "Premium" [ref=e304]:
+                - img "Photo 34911809 - all image" [ref=e305]
+                - generic [ref=e306]:
+                  - img [ref=e307]
+                  - generic [ref=e309]: Premium
+                - generic [ref=e310]:
+                  - heading "Photo 34911809" [level=3] [ref=e311]
+                  - 'generic "Category: all" [ref=e312]': all
+                  - button "Generate description for Photo 34911809" [ref=e313]:
+                    - img [ref=e314]
+                    - text: Generate Description
+            - 'article "Image: Artistic black and white photo capturing detailed tropical leaves with dew drops., Category: all" [ref=e316] [cursor=pointer]':
+              - 'figure "Artistic black and white photo capturing detailed tropical leaves with dew drops. Category: all Generate description for Artistic black and white photo capturing detailed tropical leaves with dew drops." [ref=e317]':
+                - img "Artistic black and white photo capturing detailed tropical leaves with dew drops. - all image" [ref=e318]
+                - complementary [ref=e319]:
+                  - button "Add Artistic black and white photo capturing detailed tropical leaves with dew drops. to favorites" [ref=e320]:
+                    - img [ref=e321]
+                  - button "Download Artistic black and white photo capturing detailed tropical leaves with dew drops." [ref=e323]:
+                    - img [ref=e324]
+                - generic [ref=e326]:
+                  - heading "Artistic black and white photo capturing detailed tropical leaves with dew drops." [level=3] [ref=e327]
+                  - 'generic "Category: all" [ref=e328]': all
+                  - button "Generate description for Artistic black and white photo capturing detailed tropical leaves with dew drops." [ref=e329]:
+                    - img [ref=e330]
+                    - text: Generate Description
+            - 'article "Image: Woman in silk robe reading a book in bed, creating a serene and cozy atmosphere., Category: all" [ref=e332] [cursor=pointer]':
+              - 'figure "Woman in silk robe reading a book in bed, creating a serene and cozy atmosphere. Category: all Generate description for Woman in silk robe reading a book in bed, creating a serene and cozy atmosphere." [ref=e333]':
+                - img "Woman in silk robe reading a book in bed, creating a serene and cozy atmosphere. - all image" [ref=e334]
+                - complementary [ref=e335]:
+                  - button "Add Woman in silk robe reading a book in bed, creating a serene and cozy atmosphere. to favorites" [ref=e336]:
+                    - img [ref=e337]
+                  - button "Download Woman in silk robe reading a book in bed, creating a serene and cozy atmosphere." [ref=e339]:
+                    - img [ref=e340]
+                - generic [ref=e342]:
+                  - heading "Woman in silk robe reading a book in bed, creating a serene and cozy atmosphere." [level=3] [ref=e343]
+                  - 'generic "Category: all" [ref=e344]': all
+                  - button "Generate description for Woman in silk robe reading a book in bed, creating a serene and cozy atmosphere." [ref=e345]:
+                    - img [ref=e346]
+                    - text: Generate Description
+            - 'article "Image: Photo 34891304, Category: all" [ref=e348] [cursor=pointer]':
+              - figure "Premium" [ref=e349]:
+                - img "Photo 34891304 - all image" [ref=e350]
+                - generic [ref=e351]:
+                  - img [ref=e352]
+                  - generic [ref=e354]: Premium
+                - generic [ref=e355]:
+                  - heading "Photo 34891304" [level=3] [ref=e356]
+                  - 'generic "Category: all" [ref=e357]': all
+                  - button "Generate description for Photo 34891304" [ref=e358]:
+                    - img [ref=e359]
+                    - text: Generate Description
+            - 'article "Image: Photo 34889482, Category: all" [ref=e361] [cursor=pointer]':
+              - 'figure "Photo 34889482 Category: all Generate description for Photo 34889482" [ref=e362]':
+                - img "Photo 34889482 - all image" [ref=e363]
+                - complementary [ref=e364]:
+                  - button "Add Photo 34889482 to favorites" [ref=e365]:
+                    - img [ref=e366]
+                  - button "Download Photo 34889482" [ref=e368]:
+                    - img [ref=e369]
+                - generic [ref=e371]:
+                  - heading "Photo 34889482" [level=3] [ref=e372]
+                  - 'generic "Category: all" [ref=e373]': all
+                  - button "Generate description for Photo 34889482" [ref=e374]:
+                    - img [ref=e375]
+                    - text: Generate Description
+            - 'article "Image: Charming lake house surrounded by autumn foliage in Bolu, Turkey, capturing serene natural beauty., Category: all" [ref=e377] [cursor=pointer]':
+              - 'figure "Charming lake house surrounded by autumn foliage in Bolu, Turkey, capturing serene natural beauty. Category: all Generate description for Charming lake house surrounded by autumn foliage in Bolu, Turkey, capturing serene natural beauty." [ref=e378]':
+                - img "Charming lake house surrounded by autumn foliage in Bolu, Turkey, capturing serene natural beauty. - all image" [ref=e379]
+                - complementary [ref=e380]:
+                  - button "Add Charming lake house surrounded by autumn foliage in Bolu, Turkey, capturing serene natural beauty. to favorites" [ref=e381]:
+                    - img [ref=e382]
+                  - button "Download Charming lake house surrounded by autumn foliage in Bolu, Turkey, capturing serene natural beauty." [ref=e384]:
+                    - img [ref=e385]
+                - generic [ref=e387]:
+                  - heading "Charming lake house surrounded by autumn foliage in Bolu, Turkey, capturing serene natural beauty." [level=3] [ref=e388]
+                  - 'generic "Category: all" [ref=e389]': all
+                  - button "Generate description for Charming lake house surrounded by autumn foliage in Bolu, Turkey, capturing serene natural beauty." [ref=e390]:
+                    - img [ref=e391]
+                    - text: Generate Description
+            - 'article "Image: Discover the captivating view of Rome''s architecture during a golden sunset, showcasing historic charm., Category: all" [ref=e393] [cursor=pointer]':
+              - figure "Premium" [ref=e394]:
+                - img "Discover the captivating view of Rome's architecture during a golden sunset, showcasing historic charm. - all image" [ref=e395]
+                - generic [ref=e396]:
+                  - img [ref=e397]
+                  - generic [ref=e399]: Premium
+                - generic [ref=e400]:
+                  - heading "Discover the captivating view of Rome's architecture during a golden sunset, showcasing historic charm." [level=3] [ref=e401]
+                  - 'generic "Category: all" [ref=e402]': all
+                  - button "Generate description for Discover the captivating view of Rome's architecture during a golden sunset, showcasing historic charm." [ref=e403]:
+                    - img [ref=e404]
+                    - text: Generate Description
+            - 'article "Image: Photo 34879476, Category: all" [ref=e406] [cursor=pointer]':
+              - 'figure "Photo 34879476 Category: all Generate description for Photo 34879476" [ref=e407]':
+                - img "Photo 34879476 - all image" [ref=e408]
+                - complementary [ref=e409]:
+                  - button "Add Photo 34879476 to favorites" [ref=e410]:
+                    - img [ref=e411]
+                  - button "Download Photo 34879476" [ref=e413]:
+                    - img [ref=e414]
+                - generic [ref=e416]:
+                  - heading "Photo 34879476" [level=3] [ref=e417]
+                  - 'generic "Category: all" [ref=e418]': all
+                  - button "Generate description for Photo 34879476" [ref=e419]:
+                    - img [ref=e420]
+                    - text: Generate Description
+            - 'article "Image: Elegant grilled octopus dish with tomato and olives on a wooden table setting., Category: all" [ref=e422] [cursor=pointer]':
+              - 'figure "Elegant grilled octopus dish with tomato and olives on a wooden table setting. Category: all Generate description for Elegant grilled octopus dish with tomato and olives on a wooden table setting." [ref=e423]':
+                - img "Elegant grilled octopus dish with tomato and olives on a wooden table setting. - all image" [ref=e424]
+                - complementary [ref=e425]:
+                  - button "Add Elegant grilled octopus dish with tomato and olives on a wooden table setting. to favorites" [ref=e426]:
+                    - img [ref=e427]
+                  - button "Download Elegant grilled octopus dish with tomato and olives on a wooden table setting." [ref=e429]:
+                    - img [ref=e430]
+                - generic [ref=e432]:
+                  - heading "Elegant grilled octopus dish with tomato and olives on a wooden table setting." [level=3] [ref=e433]
+                  - 'generic "Category: all" [ref=e434]': all
+                  - button "Generate description for Elegant grilled octopus dish with tomato and olives on a wooden table setting." [ref=e435]:
+                    - img [ref=e436]
+                    - text: Generate Description
+            - 'article "Image: Photo 34865637, Category: all" [ref=e438] [cursor=pointer]':
+              - figure "Premium" [ref=e439]:
+                - img "Photo 34865637 - all image" [ref=e440]
+                - generic [ref=e441]:
+                  - img [ref=e442]
+                  - generic [ref=e444]: Premium
+                - generic [ref=e445]:
+                  - heading "Photo 34865637" [level=3] [ref=e446]
+                  - 'generic "Category: all" [ref=e447]': all
+                  - button "Generate description for Photo 34865637" [ref=e448]:
+                    - img [ref=e449]
+                    - text: Generate Description
+            - 'article "Image: Photo 34871769, Category: all" [ref=e451] [cursor=pointer]':
+              - 'figure "Photo 34871769 Category: all Generate description for Photo 34871769" [ref=e452]':
+                - img "Photo 34871769 - all image" [ref=e453]
+                - complementary [ref=e454]:
+                  - button "Add Photo 34871769 to favorites" [ref=e455]:
+                    - img [ref=e456]
+                  - button "Download Photo 34871769" [ref=e458]:
+                    - img [ref=e459]
+                - generic [ref=e461]:
+                  - heading "Photo 34871769" [level=3] [ref=e462]
+                  - 'generic "Category: all" [ref=e463]': all
+                  - button "Generate description for Photo 34871769" [ref=e464]:
+                    - img [ref=e465]
+                    - text: Generate Description
+            - 'article "Image: Photo 34870435, Category: all" [ref=e467] [cursor=pointer]':
+              - 'figure "Photo 34870435 Category: all Generate description for Photo 34870435" [ref=e468]':
+                - img "Photo 34870435 - all image" [ref=e469]
+                - complementary [ref=e470]:
+                  - button "Add Photo 34870435 to favorites" [ref=e471]:
+                    - img [ref=e472]
+                  - button "Download Photo 34870435" [ref=e474]:
+                    - img [ref=e475]
+                - generic [ref=e477]:
+                  - heading "Photo 34870435" [level=3] [ref=e478]
+                  - 'generic "Category: all" [ref=e479]': all
+                  - button "Generate description for Photo 34870435" [ref=e480]:
+                    - img [ref=e481]
+                    - text: Generate Description
+            - 'article "Image: Free stock photo of peaceful, rapeseed, yellow fields, Category: all" [ref=e483] [cursor=pointer]':
+              - figure "Premium" [ref=e484]:
+                - img "Free stock photo of peaceful, rapeseed, yellow fields - all image" [ref=e485]
+                - generic [ref=e486]:
+                  - img [ref=e487]
+                  - generic [ref=e489]: Premium
+                - generic [ref=e490]:
+                  - heading "Free stock photo of peaceful, rapeseed, yellow fields" [level=3] [ref=e491]
+                  - 'generic "Category: all" [ref=e492]': all
+                  - button "Generate description for Free stock photo of peaceful, rapeseed, yellow fields" [ref=e493]:
+                    - img [ref=e494]
+                    - text: Generate Description
+            - 'article "Image: Photo 34869485, Category: all" [ref=e496] [cursor=pointer]':
+              - 'figure "Photo 34869485 Category: all Generate description for Photo 34869485" [ref=e497]':
+                - img "Photo 34869485 - all image" [ref=e498]
+                - complementary [ref=e499]:
+                  - button "Add Photo 34869485 to favorites" [ref=e500]:
+                    - img [ref=e501]
+                  - button "Download Photo 34869485" [ref=e503]:
+                    - img [ref=e504]
+                - generic [ref=e506]:
+                  - heading "Photo 34869485" [level=3] [ref=e507]
+                  - 'generic "Category: all" [ref=e508]': all
+                  - button "Generate description for Photo 34869485" [ref=e509]:
+                    - img [ref=e510]
+                    - text: Generate Description
+            - 'article "Image: Photo 34860330, Category: all" [ref=e512] [cursor=pointer]':
+              - 'figure "Photo 34860330 Category: all Generate description for Photo 34860330" [ref=e513]':
+                - img "Photo 34860330 - all image" [ref=e514]
+                - complementary [ref=e515]:
+                  - button "Add Photo 34860330 to favorites" [ref=e516]:
+                    - img [ref=e517]
+                  - button "Download Photo 34860330" [ref=e519]:
+                    - img [ref=e520]
+                - generic [ref=e522]:
+                  - heading "Photo 34860330" [level=3] [ref=e523]
+                  - 'generic "Category: all" [ref=e524]': all
+                  - button "Generate description for Photo 34860330" [ref=e525]:
+                    - img [ref=e526]
+                    - text: Generate Description
+            - 'article "Image: Photo 34860323, Category: all" [ref=e528] [cursor=pointer]':
+              - figure "Premium" [ref=e529]:
+                - img "Photo 34860323 - all image" [ref=e530]
+                - generic [ref=e531]:
+                  - img [ref=e532]
+                  - generic [ref=e534]: Premium
+                - generic [ref=e535]:
+                  - heading "Photo 34860323" [level=3] [ref=e536]
+                  - 'generic "Category: all" [ref=e537]': all
+                  - button "Generate description for Photo 34860323" [ref=e538]:
+                    - img [ref=e539]
+                    - text: Generate Description
+            - 'article "Image: Photo 34858878, Category: all" [ref=e541] [cursor=pointer]':
+              - 'figure "Photo 34858878 Category: all Generate description for Photo 34858878" [ref=e542]':
+                - img "Photo 34858878 - all image" [ref=e543]
+                - complementary [ref=e544]:
+                  - button "Add Photo 34858878 to favorites" [ref=e545]:
+                    - img [ref=e546]
+                  - button "Download Photo 34858878" [ref=e548]:
+                    - img [ref=e549]
+                - generic [ref=e551]:
+                  - heading "Photo 34858878" [level=3] [ref=e552]
+                  - 'generic "Category: all" [ref=e553]': all
+                  - button "Generate description for Photo 34858878" [ref=e554]:
+                    - img [ref=e555]
+                    - text: Generate Description
+            - 'article "Image: Photo 34858871, Category: all" [ref=e557] [cursor=pointer]':
+              - 'figure "Photo 34858871 Category: all Generate description for Photo 34858871" [ref=e558]':
+                - img "Photo 34858871 - all image" [ref=e559]
+                - complementary [ref=e560]:
+                  - button "Add Photo 34858871 to favorites" [ref=e561]:
+                    - img [ref=e562]
+                  - button "Download Photo 34858871" [ref=e564]:
+                    - img [ref=e565]
+                - generic [ref=e567]:
+                  - heading "Photo 34858871" [level=3] [ref=e568]
+                  - 'generic "Category: all" [ref=e569]': all
+                  - button "Generate description for Photo 34858871" [ref=e570]:
+                    - img [ref=e571]
+                    - text: Generate Description
+  - contentinfo [ref=e574]:
+    - generic [ref=e575]:
+      - generic [ref=e576]:
+        - heading "InspirePixel" [level=3] [ref=e577]
+        - paragraph [ref=e578]: Where creativity meets inspiration
+        - paragraph [ref=e579]: Discover stunning visuals that spark your imagination and bring your creative projects to life.
+        - navigation "Social Media" [ref=e580]:
+          - list [ref=e581]:
+            - listitem [ref=e582]:
+              - link "Facebook" [ref=e583] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e584]
+            - listitem [ref=e585]:
+              - link "Instagram" [ref=e586] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e587]
+            - listitem [ref=e588]:
+              - link "Twitter" [ref=e589] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e590]
+            - listitem [ref=e591]:
+              - link "LinkedIn" [ref=e592] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e593]
+      - navigation "Footer Navigation" [ref=e594]:
+        - heading "Quick Links" [level=4] [ref=e595]
+        - list [ref=e596]:
+          - listitem [ref=e597]:
+            - link "Home" [ref=e598] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e599]:
+            - link "Music Stories New" [ref=e600] [cursor=pointer]:
+              - /url: /stories
+          - listitem [ref=e601]:
+            - link "About Us" [ref=e602] [cursor=pointer]:
+              - /url: /about
+          - listitem [ref=e603]:
+            - link "Contact" [ref=e604] [cursor=pointer]:
+              - /url: /contact
+          - listitem [ref=e605]:
+            - link "Go Pro" [ref=e606] [cursor=pointer]:
+              - /url: /mode-selection
+      - navigation "Legal Navigation" [ref=e607]:
+        - heading "Legal" [level=4] [ref=e608]
+        - list [ref=e609]:
+          - listitem [ref=e610]:
+            - link "Privacy Policy" [ref=e611] [cursor=pointer]:
+              - /url: /privacy
+          - listitem [ref=e612]:
+            - link "Terms of Use" [ref=e613] [cursor=pointer]:
+              - /url: /terms
+          - listitem [ref=e614]:
+            - link "Copyright / DMCA" [ref=e615] [cursor=pointer]:
+              - /url: /dmca
+    - generic [ref=e617]:
+      - generic [ref=e618]:
+        - heading "Subscribe to Our Newsletter" [level=3] [ref=e619]:
+          - img [ref=e620]
+          - text: Subscribe to Our Newsletter
+        - paragraph [ref=e621]: Get the latest updates, exclusive content, and inspiration delivered to your inbox.
+      - generic [ref=e623]:
+        - img
+        - textbox "Email for newsletter" [ref=e624]:
+          - /placeholder: Enter your email
+        - button "Subscribe to newsletter" [ref=e625] [cursor=pointer]:
+          - generic [ref=e626]: Subscribe
+    - paragraph [ref=e628]: © 2025 InspirePixel. All rights reserved.
+```
